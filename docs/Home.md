@@ -1,6 +1,6 @@
-# VNoHitTracker Wiki
+# VNoHitTracker Documentation
 
-Welcome to the VNoHitTracker wiki! This documentation covers how to use the application, create game plugins, and extend its functionality.
+Welcome to the VNoHitTracker documentation! This covers how to use the application, create game plugins, and extend its functionality.
 
 ## Quick Links
 
@@ -8,6 +8,8 @@ Welcome to the VNoHitTracker wiki! This documentation covers how to use the appl
 - [Autosplitter Guide](Autosplitter-Guide.md) - How the autosplitter works
 - [SDK Reference](SDK-Reference.md) - API documentation for developers
 - [Flag Algorithms](Flag-Algorithms.md) - Memory reading algorithms explained
+- [Language SDK](LANGUAGE_SDK.md) - Create custom translations
+- [Plugin SDK](PLUGIN_SDK.md) - Detailed plugin development guide
 
 ## What is VNoHitTracker?
 
@@ -27,13 +29,12 @@ Built-in support for:
 - Dark Souls II: Scholar of the First Sin
 - Dark Souls III
 - Sekiro: Shadows Die Twice
-- Elden Ring (including Shadow of the Erdtree DLC)
+- Elden Ring
+- Armored Core 6
 
 ## Adding Game Support
 
-There are two ways to add support for new games:
-
-### 1. TOML Plugin (Recommended for most games)
+### TOML Plugin (Recommended)
 
 Create a `plugin.toml` file with boss definitions and autosplitter patterns:
 
@@ -57,24 +58,7 @@ flag_id = 12345678
 
 See [Creating Plugins](Creating-Plugins.md) for full documentation.
 
-### 2. Rust Plugin (For custom memory structures)
-
-Implement the `FlagReader` trait for games with unique memory layouts:
-
-```rust
-use hitcounter_sdk::{FlagReader, MemoryContext, PatternConfig};
-
-pub struct MyGameFlagReader;
-
-impl FlagReader for MyGameFlagReader {
-    fn algorithm_name(&self) -> &'static str { "my_game" }
-    // ... implement pattern scanning and flag reading
-}
-```
-
-See [SDK Reference](SDK-Reference.md) for full documentation.
-
 ## Getting Help
 
-- [GitHub Issues](https://github.com/valkyaha/HitCounter/issues) - Report bugs or request features
+- [GitHub Issues](https://github.com/valkyaha/HitTracker-Release/issues) - Report bugs or request features
 - [Releases](https://github.com/valkyaha/HitTracker-Release/releases) - Download latest version
