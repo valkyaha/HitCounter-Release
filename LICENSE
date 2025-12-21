@@ -1,0 +1,45 @@
+NYA Core - Proprietary Software License
+
+Copyright (c) 2024-2025 Charlotte. All Rights Reserved.
+
+TERMS AND CONDITIONS
+
+1. GRANT OF LICENSE
+   This software is provided for personal, non-commercial use only. You are
+   granted a limited, non-exclusive, non-transferable license to download,
+   install, and use the compiled binary of this software on your personal
+   devices.
+
+2. RESTRICTIONS
+   You may NOT:
+   - Modify, adapt, translate, or create derivative works of this software
+   - Reverse engineer, decompile, disassemble, or attempt to derive the
+     source code of this software
+   - Redistribute, sublicense, rent, lease, or lend this software
+   - Use this software for any commercial purpose
+   - Remove or alter any proprietary notices, labels, or marks
+   - Use this software in any way that violates applicable laws
+
+3. INTELLECTUAL PROPERTY
+   This software and all copies thereof are proprietary to Charlotte and
+   title thereto remains exclusively with Charlotte. All rights in the
+   software not specifically granted in this license are reserved.
+
+4. NO WARRANTY
+   THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+5. LIMITATION OF LIABILITY
+   IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES
+   OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+   OTHER DEALINGS IN THE SOFTWARE.
+
+6. TERMINATION
+   This license is effective until terminated. Your rights under this license
+   will terminate automatically without notice if you fail to comply with any
+   of its terms.
+
+For inquiries regarding licensing, please open an issue on the official
+GitHub repository.
