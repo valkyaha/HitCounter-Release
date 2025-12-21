@@ -1,251 +1,317 @@
 # SDK Reference
 
-The HitCounter SDK provides types and traits for creating game plugins.
+NYA Core uses a TOML-based plugin system. Plugins are loaded from the `plugins/` directory next to the executable.
 
-## Installation
+## Plugin Structure
 
-Add to your `Cargo.toml`:
+Each plugin is a folder containing a `plugin.toml` file:
+
+```
+plugins/
+  ds3/
+    plugin.toml
+  eldenring/
+    plugin.toml
+  my_custom_game/
+    plugin.toml
+```
+
+## Plugin Manifest (plugin.toml)
+
+### Basic Structure
 
 ```toml
-[dependencies]
-hitcounter-sdk = { git = "https://github.com/valkyaha/HitCounter" }
+[plugin]
+id = "my_game"
+name = "My Game Name"
+short_name = "MG"
+version = "1.0.0"
+author = "Your Name"
+description = "Description of the plugin"
+
+[process]
+names = ["MyGame.exe"]
+
+[autosplitter]
+enabled = true
+algorithm = "category_decomposition"  # or "binary_tree", "offset_table", "kill_counter"
+
+# Algorithm-specific configuration goes here
+
+# Memory patterns
+[[autosplitter.patterns]]
+name = "pattern_name"
+pattern = "48 8B 0D ? ? ? ?"
+rip_offset = 3
+instruction_len = 7
+
+# Boss definitions
+[[bosses]]
+id = "first_boss"
+name = "First Boss"
+flag_id = 12345678
+
+# Presets
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+boss_ids = ["first_boss", "second_boss"]
 ```
 
-## Core Types
+## Plugin Metadata
 
-### PatternConfig
-
-Memory pattern for finding game data structures.
-
-```rust
-pub struct PatternConfig {
-    /// Pattern name (e.g., "sprj_event_flag_man")
-    pub name: String,
-    /// Byte pattern with ? wildcards (e.g., "48 c7 05 ? ? ? ?")
-    pub pattern: String,
-    /// Position of RIP-relative offset
-    pub rip_offset: usize,
-    /// Total instruction length
-    pub instruction_len: usize,
-    /// Fallback patterns if primary fails
-    pub fallback_patterns: Vec<String>,
-}
+```toml
+[plugin]
+id = "unique_id"           # Unique identifier (lowercase, no spaces)
+name = "Display Name"      # Full game name
+short_name = "ABBR"        # Short abbreviation (optional)
+version = "1.0.0"          # Plugin version
+author = "Author Name"     # Plugin author
+description = "..."        # Brief description
 ```
 
-### PointerChainConfig
+## Process Detection
 
-Pointer chain for memory traversal.
-
-```rust
-pub struct PointerChainConfig {
-    /// Chain name (e.g., "event_flags")
-    pub name: String,
-    /// Offsets to follow from base pointer
-    pub offsets: Vec<i64>,
-}
+```toml
+[process]
+names = ["Game.exe", "Game_Alt.exe"]  # Process names to detect
 ```
 
-### AutosplitterConfig
+## Autosplitter Algorithms
 
-Autosplitter configuration from plugin.toml.
+NYA Core supports four flag reading algorithms based on how different games store boss defeat flags:
 
-```rust
-pub struct AutosplitterConfig {
-    /// Whether autosplitter is enabled
-    pub enabled: bool,
-    /// Algorithm name ("ds3", "eldenring", etc.)
-    pub algorithm: String,
-    /// Memory patterns
-    pub patterns: Vec<PatternConfig>,
-    /// Pointer chains
-    pub pointer_chains: Vec<PointerChainConfig>,
-}
+### 1. Category Decomposition (DS3/Sekiro)
+
+Used for games that store flags in categorized memory structures.
+
+```toml
+[autosplitter]
+enabled = true
+algorithm = "category_decomposition"
+
+[autosplitter.category_config]
+primary_pattern = "sprj_event_flag_man"
+secondary_pattern = "field_area"        # Optional, for world area flags
+base_offset = 0x218                     # Offset to category table
+entry_size = 0x18                       # Size of each category entry
+category_count = 6                      # Number of categories (DS3: 6, Sekiro: 1)
+category_multiplier = 0xa8              # Category multiplier in address calc
+field_area_base_offset = 0x0            # First offset from FieldArea
+world_info_offset = 0x10                # Offset to world info (DS3: 0x10, Sekiro: 0x18)
+world_info_struct_size = 0x38           # Size of worldInfo struct
+world_block_struct_size = 0x70          # Size of worldBlockInfo (DS3: 0x70, Sekiro: 0xb0)
 ```
 
-### BossDefinition
+### 2. Binary Tree (Elden Ring/Armored Core 6)
 
-Boss definition from plugin.toml.
+Used for games that store flags in a binary tree structure.
 
-```rust
-pub struct BossDefinition {
-    pub id: String,
-    pub name: String,
-    pub location: String,
-    pub required: bool,
-    pub is_dlc: bool,
-    pub dlc_name: Option<String>,
-    pub flag_id: u32,
-    pub order: u32,
-    pub aliases: Vec<String>,
-}
+```toml
+[autosplitter]
+enabled = true
+algorithm = "binary_tree"
+
+[autosplitter.tree_config]
+primary_pattern = "virtual_memory_flag"
+pointer_chain = [0x0, 0x28]             # Offsets after initial resolution
+divisor_offset = 0x1c                   # Offset to divisor value
+tree_root_offset = 0x38                 # Offset to tree root pointer
+multiplier_offset = 0x20                # Offset to multiplier value
+base_addr_offset = 0x28                 # Offset to base address value
 ```
 
-### MemoryContext
+### 3. Offset Table (Dark Souls Remastered)
 
-Context for flag reading after connecting to a game.
+Used for games with static offset tables for flag groups.
 
-```rust
-pub struct MemoryContext {
-    /// Process handle (platform-specific)
-    pub handle: usize,
-    /// Discovered pointers (pattern_name -> address)
-    pub pointers: HashMap<String, usize>,
-}
+```toml
+[autosplitter]
+enabled = true
+algorithm = "offset_table"
+
+[autosplitter.offset_table_config]
+primary_pattern = "event_flags"
+
+[autosplitter.offset_table_config.group_offsets]
+"0" = 0x00000
+"1" = 0x00500
+"5" = 0x05F00
+"6" = 0x06100
+"7" = 0x06300
+
+[autosplitter.offset_table_config.area_indices]
+"000" = 0
+"100" = 1
+"101" = 2
+# ... more area mappings
 ```
 
-## FlagReader Trait
+### 4. Kill Counter (Dark Souls 2)
 
-Implement this trait for custom flag reading algorithms.
+Used for games that track boss defeats via kill counters.
 
-```rust
-pub trait FlagReader: Send + Sync {
-    /// Algorithm name (e.g., "my_game")
-    fn algorithm_name(&self) -> &'static str;
+```toml
+[autosplitter]
+enabled = true
+algorithm = "kill_counter"
 
-    /// Scan patterns and return discovered pointers
-    fn scan_patterns(
-        &self,
-        handle: usize,
-        base: usize,
-        size: usize,
-        patterns: &[PatternConfig],
-    ) -> Option<HashMap<String, usize>>;
+[autosplitter.kill_counter_config]
+primary_pattern = "game_manager_imp"
+chain_offsets = [0xD0, 0x60, 0x8]       # Pointer chain to kill counter array
+```
 
-    /// Check if a flag is set
-    fn is_flag_set(&self, ctx: &MemoryContext, flag_id: u32) -> bool;
+## Memory Patterns
 
-    /// Get all defeated flags (optional override)
-    fn get_defeated_flags(&self, ctx: &MemoryContext, flag_ids: &[u32]) -> Vec<u32> {
-        flag_ids.iter()
-            .filter(|&&id| self.is_flag_set(ctx, id))
-            .copied()
-            .collect()
+Patterns are byte sequences used to find game data structures in memory.
+
+```toml
+[[autosplitter.patterns]]
+name = "pattern_name"                   # Identifier for this pattern
+pattern = "48 c7 05 ? ? ? ? 00 00"      # Byte pattern (? = wildcard)
+rip_offset = 3                          # Position of RIP-relative offset
+instruction_len = 11                    # Total instruction length
+fallback_patterns = [                   # Alternative patterns (optional)
+    "48 8b 0d ? ? ? ?",
+]
+```
+
+### Pattern Syntax
+
+- Hex bytes: `48 c7 05`
+- Wildcards: `?` or `??` (matches any byte)
+- Example: `"48 c7 05 ? ? ? ? 00 00 00 00"` matches instructions like `mov qword ptr [rip+offset], 0`
+
+## Pointer Chains
+
+Named pointer chains for memory traversal:
+
+```toml
+[[autosplitter.pointer_chains]]
+name = "event_flags"
+offsets = [0x10, 0x28, 0x0]
+```
+
+## Boss Definitions
+
+```toml
+[[bosses]]
+id = "boss_unique_id"                   # Unique identifier
+name = "Boss Display Name"              # Name shown in UI
+location = "Area Name"                  # Where the boss is (optional)
+required = true                         # Required for any% (optional)
+is_dlc = false                          # DLC boss (optional)
+dlc_name = "DLC Name"                   # DLC name if is_dlc (optional)
+flag_id = 12345678                      # Memory flag ID for defeat
+order = 1                               # Display order (optional)
+aliases = ["Nickname", "Alt Name"]      # Search aliases (optional)
+```
+
+## Presets
+
+Presets define boss lists for different run categories:
+
+```toml
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+description = "All main game bosses"
+boss_ids = [
+    "first_boss",
+    "second_boss",
+    "third_boss"
+]
+```
+
+## Tauri Commands API
+
+### Run Control
+| Command | Description |
+|---------|-------------|
+| `get_state()` | Get current run state |
+| `add_hit()` | Add hit to current split |
+| `undo_hit()` | Undo last hit |
+| `boss_defeated()` | Advance to next split |
+| `undo_split()` | Go back one split |
+| `toggle_timer()` | Start/stop timer |
+| `reset_run()` | Reset current run |
+| `save_run_as_pb()` | Save as personal best |
+
+### Autosplitter
+| Command | Description |
+|---------|-------------|
+| `start_autosplitter(game_id, boss_flags)` | Start with specific flags |
+| `start_autosplitter_autodetect()` | Auto-detect game |
+| `stop_autosplitter()` | Stop autosplitter |
+| `get_autosplitter_state()` | Get current status |
+
+### OBS Integration
+| Command | Description |
+|---------|-------------|
+| `start_obs_server()` | Start HTTP server |
+| `stop_obs_server()` | Stop HTTP server |
+| `get_obs_status()` | Get server status |
+| `update_obs_style(config)` | Update overlay styling |
+
+### Games/Plugins
+| Command | Description |
+|---------|-------------|
+| `get_games()` | Get all available games |
+| `get_plugins()` | Get all loaded plugins |
+| `get_game_bosses(game_id)` | Get bosses for a game |
+| `select_game(game_id, preset_id)` | Select game and preset |
+
+## OBS HTTP API
+
+**Endpoint:** `GET http://localhost:9876/`
+
+**Response:**
+```json
+{
+  "game_name": "Dark Souls III",
+  "preset_name": "All Bosses",
+  "total_hits": 42,
+  "hits_this_split": 3,
+  "timer_running": true,
+  "elapsed_ms": 180000,
+  "elapsed_formatted": "03:00.000",
+  "current_split": 5,
+  "splits_completed": 4,
+  "splits_total": 25,
+  "progress_percent": 20.0,
+  "pb_hits": 38,
+  "splits": [
+    {
+      "name": "Iudex Gundyr",
+      "hits": 3,
+      "completed": true,
+      "is_current": false,
+      "pb_hits": 2
     }
+  ],
+  "style": { ... }
 }
 ```
 
-## Memory Utilities
+## Complete Example
 
-### parse_pattern
+See the built-in plugins for complete examples:
+- `plugins/ds3/plugin.toml` - Category decomposition example
+- `plugins/eldenring/plugin.toml` - Binary tree example
+- `plugins/ds1/plugin.toml` - Offset table example
+- `plugins/ds2/plugin.toml` - Kill counter example
 
-Parse a pattern string into bytes and mask.
+## Finding Flag IDs
 
-```rust
-use hitcounter_sdk::memory::parse_pattern;
+Flag IDs for boss defeats can be found using:
+1. Cheat Engine with game-specific tables
+2. Existing autosplitter projects (LiveSplit, SoulSplitter)
+3. Game modding communities and wikis
 
-let pattern = parse_pattern("48 c7 05 ? ? ? ?");
-// Returns: [(0x48, false), (0xc7, false), (0x05, false), (0, true), ...]
-```
+## Testing Your Plugin
 
-### resolve_rip_relative
-
-Resolve a RIP-relative address.
-
-```rust
-use hitcounter_sdk::memory::resolve_rip_relative;
-
-let addr = resolve_rip_relative(
-    instruction_addr,  // Where the instruction is
-    instruction_len,   // Total length (e.g., 11)
-    offset_value,      // The 4-byte signed offset
-);
-```
-
-## Example: Custom FlagReader
-
-```rust
-use hitcounter_sdk::{FlagReader, MemoryContext, PatternConfig};
-use std::collections::HashMap;
-
-pub struct MyGameFlagReader;
-
-impl FlagReader for MyGameFlagReader {
-    fn algorithm_name(&self) -> &'static str {
-        "my_game"
-    }
-
-    fn scan_patterns(
-        &self,
-        handle: usize,
-        base: usize,
-        size: usize,
-        patterns: &[PatternConfig],
-    ) -> Option<HashMap<String, usize>> {
-        let mut result = HashMap::new();
-
-        // Get pattern from config or use default
-        let pattern = patterns.iter()
-            .find(|p| p.name == "event_flags")
-            .map(|p| p.pattern.as_str())
-            .unwrap_or("48 8B 0D ? ? ? ?");
-
-        // TODO: Implement pattern scanning
-        // - Read memory at base..base+size
-        // - Search for pattern match
-        // - Resolve RIP-relative address
-        // - Store in result map
-
-        // result.insert("event_flags".to_string(), found_address);
-
-        if result.is_empty() {
-            None
-        } else {
-            Some(result)
-        }
-    }
-
-    fn is_flag_set(&self, ctx: &MemoryContext, flag_id: u32) -> bool {
-        let event_flags = match ctx.pointers.get("event_flags") {
-            Some(&addr) => addr,
-            None => return false,
-        };
-
-        // TODO: Implement flag reading logic
-        // - Follow pointer chain from event_flags
-        // - Calculate bit position from flag_id
-        // - Read and check the bit
-
-        false
-    }
-}
-```
-
-## GamePlugin Trait
-
-For hit tracking (separate from autosplitter):
-
-```rust
-pub trait GamePlugin: Send + Sync {
-    fn game_name(&self) -> &str;
-    fn version(&self) -> &str;
-    fn initialize(&mut self, process_id: u32) -> Result<(), PluginError>;
-    fn poll_hits(&mut self) -> Result<Option<HitEvent>, PluginError>;
-    fn poll_boss_defeats(&mut self) -> Result<Option<BossDefeatEvent>, PluginError>;
-    fn get_bosses(&self) -> Vec<Boss>;
-    fn is_boss_defeated(&self, boss_id: &str) -> Result<bool, PluginError>;
-    fn get_stats(&self) -> HitStats;
-    fn reset(&mut self);
-    fn shutdown(&mut self) -> Result<(), PluginError>;
-}
-```
-
-## Error Types
-
-```rust
-pub enum PluginError {
-    ProcessAttachFailed(String),
-    MemoryReadFailed(String),
-    ProcessNotFound,
-    InvalidAddress(String),
-    NotInitialized,
-    Custom(String),
-}
-```
-
-## Best Practices
-
-1. **Use Default Patterns** - Provide sensible defaults in your FlagReader
-2. **Handle Failures Gracefully** - Return None/false instead of crashing
-3. **Log Useful Info** - Use log::info! for successful connections
-4. **Support Fallback Patterns** - Game updates may change patterns
-5. **Test Thoroughly** - Verify with actual game memory
+1. Create your plugin folder in `plugins/`
+2. Add your `plugin.toml`
+3. Launch NYA Core
+4. Select your game from the Games view
+5. Check the autosplitter status in the Autosplitter view
