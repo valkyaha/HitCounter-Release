@@ -1,0 +1,11 @@
+{
+  "version": "2.1.1",
+  "notes": "## New Features\n- Practice Mode with save management and separate statistics\n- Plugin browser with search and auto-update system\n- OBS component snapping with visual guides\n- Canvas lock/snap features\n- Catalan, Galician, and Lolcat translations\n\n## Improvements\n- Config persistence across app updates (now stored in %APPDATA%)\n- Persistent hotkey configuration\n- Migration for multirun presets and stats files\n- Improved OBS customization UI and window size\n- Element order UI in Counter tab\n\n## Bug Fixes\n- Fix OBS canvas visibility issues\n- Fix practice mode toggle and toast duration\n- Fix customization iframe blink\n- Fix badge overflow\n- Fix Linux keyboard freeze and hotkey detection",
+  "pub_date": "2025-12-23T21:52:05+01:00",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSaEtzM3ptK0pvVVJ5Q0k0dW5VL2xodlB5a0ZOUHlBUS9vRnlsaVE4RnBLWkFxck1TdllvYlF4LzMxb09JQXFxdGhnMndGeWxieURZay90d2pCZ0NZTGdQS0U0ZlpNcVFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY2NTIyODY3CWZpbGU6TllBIENvcmVfMi4xLjFfeDY0LXNldHVwLmV4ZQp6VmM2bWhyVklVVW16LzBDSitKM214VzRGcjNwaEVQZ21CRmhZNUdNeGRtSVBWT1lMZnhBN0F2OVpiQndKQlViejdad0xKdzFiS1Vkek1Kek8yaFdEZz09Cg==",
+      "url": "https://github.com/valkyaha/HitTracker-Release/releases/download/v2.1.1/NYA.Core_2.1.1_x64-setup.exe"
+    }
+  }
+}
