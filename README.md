@@ -92,7 +92,12 @@ The executable uses low-level keyboard hooks and memory reading which may trigge
 
 ## License
 
-MIT OR Apache-2.0
+- **NYA Core Application**: MIT OR Apache-2.0
+- **Plugins**: GPL-3.0 (due to derivative data from SoulSplitter)
+
+## Special Thanks
+
+- **[FrankvdStam](https://github.com/FrankvdStam)** - Creator of [SoulSplitter](https://github.com/FrankvdStam/SoulSplitter), whose comprehensive boss/bonfire/flag data made the autosplitter functionality possible
 
 ## Contributing
 
