@@ -1,0 +1,393 @@
+# =============================================================================
+# BOSSES - Main Game
+# =============================================================================
+
+[[bosses]]
+id = "last_giant"
+name = "The Last Giant"
+location = "Forest of Fallen Giants"
+required = true
+is_dlc = false
+flag_id = 124
+order = 1
+
+[[bosses]]
+id = "pursuer"
+name = "The Pursuer"
+location = "Forest of Fallen Giants"
+required = true
+is_dlc = false
+flag_id = 112
+order = 2
+
+[[bosses]]
+id = "dragonrider"
+name = "Dragonrider"
+location = "Heide's Tower of Flame"
+required = true
+is_dlc = false
+flag_id = 76
+order = 3
+
+[[bosses]]
+id = "old_dragonslayer"
+name = "Old Dragonslayer"
+location = "Cathedral of Blue"
+required = false
+is_dlc = false
+flag_id = 80
+order = 4
+
+[[bosses]]
+id = "flexile_sentry"
+name = "Flexile Sentry"
+location = "No-man's Wharf"
+required = true
+is_dlc = false
+flag_id = 84
+order = 5
+
+[[bosses]]
+id = "ruin_sentinels"
+name = "Ruin Sentinels"
+location = "Lost Bastille"
+required = true
+is_dlc = false
+flag_id = 88
+order = 6
+
+[[bosses]]
+id = "lost_sinner"
+name = "The Lost Sinner"
+location = "Sinner's Rise"
+required = true
+is_dlc = false
+flag_id = 92
+order = 7
+
+[[bosses]]
+id = "belfry_gargoyles"
+name = "Belfry Gargoyles"
+location = "Belfry Luna"
+required = false
+is_dlc = false
+flag_id = 168
+order = 8
+
+[[bosses]]
+id = "skeleton_lords"
+name = "Skeleton Lords"
+location = "Huntsman's Copse"
+required = true
+is_dlc = false
+flag_id = 56
+order = 9
+
+[[bosses]]
+id = "executioners_chariot"
+name = "Executioner's Chariot"
+location = "Undead Purgatory"
+required = false
+is_dlc = false
+flag_id = 52
+order = 10
+
+[[bosses]]
+id = "covetous_demon"
+name = "Covetous Demon"
+location = "Earthen Peak"
+required = true
+is_dlc = false
+flag_id = 60
+order = 11
+
+[[bosses]]
+id = "mytha"
+name = "Mytha, the Baneful Queen"
+location = "Earthen Peak"
+required = true
+is_dlc = false
+flag_id = 64
+order = 12
+
+[[bosses]]
+id = "smelter_demon"
+name = "Smelter Demon"
+location = "Iron Keep"
+required = false
+is_dlc = false
+flag_id = 96
+order = 13
+
+[[bosses]]
+id = "old_iron_king"
+name = "Old Iron King"
+location = "Iron Keep"
+required = true
+is_dlc = false
+flag_id = 48
+order = 14
+
+[[bosses]]
+id = "scorpioness_najka"
+name = "Scorpioness Najka"
+location = "Shaded Woods"
+required = true
+is_dlc = false
+flag_id = 68
+order = 15
+
+[[bosses]]
+id = "royal_rat_authority"
+name = "Royal Rat Authority"
+location = "Doors of Pharros"
+required = false
+is_dlc = false
+flag_id = 108
+order = 16
+
+[[bosses]]
+id = "prowling_magus"
+name = "Prowling Magus"
+location = "Brightstone Cove"
+required = true
+is_dlc = false
+flag_id = 164
+order = 17
+
+[[bosses]]
+id = "dukes_dear_freja"
+name = "The Duke's Dear Freja"
+location = "Brightstone Cove"
+required = true
+is_dlc = false
+flag_id = 44
+order = 18
+
+[[bosses]]
+id = "royal_rat_vanguard"
+name = "Royal Rat Vanguard"
+location = "Grave of Saints"
+required = false
+is_dlc = false
+flag_id = 100
+order = 19
+
+[[bosses]]
+id = "rotten"
+name = "The Rotten"
+location = "Black Gulch"
+required = true
+is_dlc = false
+flag_id = 104
+order = 20
+
+[[bosses]]
+id = "dragonriders"
+name = "Twin Dragonriders"
+location = "Drangleic Castle"
+required = true
+is_dlc = false
+flag_id = 160
+order = 21
+
+[[bosses]]
+id = "looking_glass_knight"
+name = "Looking Glass Knight"
+location = "King's Passage"
+required = true
+is_dlc = false
+flag_id = 72
+order = 22
+
+[[bosses]]
+id = "demon_of_song"
+name = "Demon of Song"
+location = "Shrine of Amana"
+required = true
+is_dlc = false
+flag_id = 40
+order = 23
+
+[[bosses]]
+id = "velstadt"
+name = "Velstadt, the Royal Aegis"
+location = "Undead Crypt"
+required = true
+is_dlc = false
+flag_id = 140
+order = 24
+
+[[bosses]]
+id = "vendrick"
+name = "Vendrick"
+location = "Undead Crypt"
+required = false
+is_dlc = false
+flag_id = 152
+order = 25
+
+[[bosses]]
+id = "guardian_dragon"
+name = "Guardian Dragon"
+location = "Aldia's Keep"
+required = true
+is_dlc = false
+flag_id = 120
+order = 26
+
+[[bosses]]
+id = "ancient_dragon"
+name = "Ancient Dragon"
+location = "Dragon Shrine"
+required = false
+is_dlc = false
+flag_id = 148
+order = 27
+
+[[bosses]]
+id = "giant_lord"
+name = "Giant Lord"
+location = "Memory of Jeigh"
+required = true
+is_dlc = false
+flag_id = 128
+order = 28
+
+[[bosses]]
+id = "throne_duo"
+name = "Throne Watcher & Defender"
+location = "Throne of Want"
+required = true
+is_dlc = false
+flag_id = 136
+order = 29
+
+[[bosses]]
+id = "nashandra"
+name = "Nashandra"
+location = "Throne of Want"
+required = true
+is_dlc = false
+flag_id = 132
+order = 30
+
+[[bosses]]
+id = "aldia"
+name = "Aldia, Scholar of the First Sin"
+location = "Throne of Want"
+required = false
+is_dlc = false
+flag_id = 280
+order = 31
+
+[[bosses]]
+id = "darklurker"
+name = "Darklurker"
+location = "Dark Chasm of Old"
+required = false
+is_dlc = false
+flag_id = 156
+order = 32
+
+# =============================================================================
+# CROWN OF THE SUNKEN KING DLC
+# =============================================================================
+
+[[bosses]]
+id = "elana"
+name = "Elana, the Squalid Queen"
+location = "Dragon's Sanctum"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Sunken King"
+flag_id = 200
+order = 33
+
+[[bosses]]
+id = "sinh"
+name = "Sinh, the Slumbering Dragon"
+location = "Dragon's Sanctum"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Sunken King"
+flag_id = 212
+order = 34
+
+[[bosses]]
+id = "afflicted_graverobber"
+name = "Afflicted Graverobber, Ancient Soldier Varg, Cerah the Old Explorer"
+location = "Cave of the Dead"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Sunken King"
+flag_id = 244
+order = 35
+
+# =============================================================================
+# CROWN OF THE OLD IRON KING DLC
+# =============================================================================
+
+[[bosses]]
+id = "blue_smelter"
+name = "Blue Smelter Demon"
+location = "Iron Passage"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Old Iron King"
+flag_id = 252
+order = 36
+
+[[bosses]]
+id = "fume_knight"
+name = "Fume Knight"
+location = "Brume Tower"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Old Iron King"
+flag_id = 204
+order = 37
+
+[[bosses]]
+id = "sir_alonne"
+name = "Sir Alonne"
+location = "Memory of the Old Iron King"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Old Iron King"
+flag_id = 248
+order = 38
+
+# =============================================================================
+# CROWN OF THE IVORY KING DLC
+# =============================================================================
+
+[[bosses]]
+id = "aava"
+name = "Aava, the King's Pet"
+location = "Frozen Eleum Loyce"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Ivory King"
+flag_id = 208
+order = 39
+
+[[bosses]]
+id = "burnt_ivory_king"
+name = "Burnt Ivory King"
+location = "Old Chaos"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Ivory King"
+flag_id = 260
+order = 40
+
+[[bosses]]
+id = "lud_zallen"
+name = "Lud & Zallen, the King's Pets"
+location = "Frigid Outskirts"
+required = true
+is_dlc = true
+dlc_name = "Crown of the Ivory King"
+flag_id = 264
+order = 41

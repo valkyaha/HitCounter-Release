@@ -1,0 +1,272 @@
+# =============================================================================
+# BOSSES - Main Game
+# =============================================================================
+
+# Main Game - Required
+[[bosses]]
+id = "cleric_beast"
+name = "Cleric Beast"
+location = "Central Yharnam"
+required = false
+is_dlc = false
+order = 1
+
+[[bosses]]
+id = "father_gascoigne"
+name = "Father Gascoigne"
+location = "Central Yharnam"
+required = true
+is_dlc = false
+order = 2
+aliases = ["Gascoigne", "Papa G"]
+
+[[bosses]]
+id = "blood_starved_beast"
+name = "Blood-starved Beast"
+location = "Old Yharnam"
+required = false
+is_dlc = false
+order = 3
+aliases = ["BSB"]
+
+[[bosses]]
+id = "vicar_amelia"
+name = "Vicar Amelia"
+location = "Cathedral Ward"
+required = true
+is_dlc = false
+order = 4
+aliases = ["Amelia"]
+
+[[bosses]]
+id = "witch_of_hemwick"
+name = "Witch of Hemwick"
+location = "Hemwick Charnel Lane"
+required = false
+is_dlc = false
+order = 5
+
+[[bosses]]
+id = "shadows_of_yharnam"
+name = "Shadow of Yharnam"
+location = "Forbidden Woods"
+required = true
+is_dlc = false
+order = 6
+aliases = ["Shadows"]
+
+[[bosses]]
+id = "rom"
+name = "Rom, the Vacuous Spider"
+location = "Byrgenwerth"
+required = true
+is_dlc = false
+order = 7
+aliases = ["Rom"]
+
+[[bosses]]
+id = "the_one_reborn"
+name = "The One Reborn"
+location = "Yahar'gul"
+required = true
+is_dlc = false
+order = 8
+
+[[bosses]]
+id = "darkbeast_paarl"
+name = "Darkbeast Paarl"
+location = "Yahar'gul"
+required = false
+is_dlc = false
+order = 9
+aliases = ["Paarl"]
+
+[[bosses]]
+id = "micolash"
+name = "Micolash, Host of the Nightmare"
+location = "Nightmare of Mensis"
+required = true
+is_dlc = false
+order = 10
+aliases = ["Micolash"]
+
+[[bosses]]
+id = "amygdala"
+name = "Amygdala"
+location = "Nightmare Frontier"
+required = false
+is_dlc = false
+order = 11
+
+[[bosses]]
+id = "martyr_logarius"
+name = "Martyr Logarius"
+location = "Cainhurst Castle"
+required = false
+is_dlc = false
+order = 12
+aliases = ["Logarius"]
+
+[[bosses]]
+id = "celestial_emissary"
+name = "Celestial Emissary"
+location = "Upper Cathedral Ward"
+required = false
+is_dlc = false
+order = 13
+
+[[bosses]]
+id = "ebrietas"
+name = "Ebrietas, Daughter of the Cosmos"
+location = "Upper Cathedral Ward"
+required = false
+is_dlc = false
+order = 14
+aliases = ["Ebrietas"]
+
+[[bosses]]
+id = "mergo"
+name = "Mergo's Wet Nurse"
+location = "Nightmare of Mensis"
+required = true
+is_dlc = false
+order = 15
+aliases = ["Wet Nurse", "Mergo"]
+
+[[bosses]]
+id = "gehrman"
+name = "Gehrman, the First Hunter"
+location = "Hunter's Dream"
+required = true
+is_dlc = false
+order = 16
+aliases = ["Gehrman"]
+
+[[bosses]]
+id = "moon_presence"
+name = "Moon Presence"
+location = "Hunter's Dream"
+required = false
+is_dlc = false
+order = 17
+
+# =============================================================================
+# CHALICE DUNGEON BOSSES
+# =============================================================================
+
+[[bosses]]
+id = "pthumerian_descendant"
+name = "Pthumerian Descendant"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 18
+
+[[bosses]]
+id = "pthumerian_elder"
+name = "Pthumerian Elder"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 19
+
+[[bosses]]
+id = "watchdog_of_the_old_lords"
+name = "Watchdog of the Old Lords"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 20
+
+[[bosses]]
+id = "keeper_of_the_old_lords"
+name = "Keeper of the Old Lords"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 21
+
+[[bosses]]
+id = "bloodletting_beast"
+name = "Bloodletting Beast"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 22
+
+[[bosses]]
+id = "abhorrent_beast"
+name = "Abhorrent Beast"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 23
+
+[[bosses]]
+id = "loran_darkbeast"
+name = "Loran Darkbeast"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 24
+
+[[bosses]]
+id = "yharnam_queen"
+name = "Yharnam, Pthumerian Queen"
+location = "Chalice Dungeons"
+required = false
+is_dlc = false
+order = 25
+
+# =============================================================================
+# THE OLD HUNTERS DLC
+# =============================================================================
+
+[[bosses]]
+id = "ludwig"
+name = "Ludwig, the Accursed"
+location = "Hunter's Nightmare"
+required = true
+is_dlc = true
+dlc_name = "The Old Hunters"
+order = 26
+aliases = ["Ludwig", "Holy Blade"]
+
+[[bosses]]
+id = "laurence"
+name = "Laurence, the First Vicar"
+location = "Hunter's Nightmare"
+required = true
+is_dlc = true
+dlc_name = "The Old Hunters"
+order = 27
+aliases = ["Laurence"]
+
+[[bosses]]
+id = "living_failures"
+name = "Living Failures"
+location = "Research Hall"
+required = true
+is_dlc = true
+dlc_name = "The Old Hunters"
+order = 28
+
+[[bosses]]
+id = "lady_maria"
+name = "Lady Maria of the Astral Clocktower"
+location = "Astral Clocktower"
+required = true
+is_dlc = true
+dlc_name = "The Old Hunters"
+order = 29
+aliases = ["Maria"]
+
+[[bosses]]
+id = "orphan_of_kos"
+name = "Orphan of Kos"
+location = "Fishing Hamlet"
+required = true
+is_dlc = true
+dlc_name = "The Old Hunters"
+order = 30
+aliases = ["OoK", "Orphan"]

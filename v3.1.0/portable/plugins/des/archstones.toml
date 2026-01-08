@@ -1,0 +1,163 @@
+# =============================================================================
+# ARCHSTONES (Warp Points)
+# =============================================================================
+
+# The Nexus
+[[archstones]]
+id = "nexus"
+name = "The Nexus"
+location = "The Nexus"
+flag_id = 0
+is_dlc = false
+
+# Boletarian Palace (World 1)
+[[archstones]]
+id = "boletarian_palace_1"
+name = "Boletarian Palace"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "phalanx_archstone"
+name = "Phalanx Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "tower_knight_archstone"
+name = "Tower Knight Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "penetrator_archstone"
+name = "Penetrator Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "false_king_archstone"
+name = "False King Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+# Stonefang Tunnel (World 2)
+[[archstones]]
+id = "stonefang_tunnel"
+name = "Stonefang Tunnel"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "armor_spider_archstone"
+name = "Armor Spider Archstone"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "flamelurker_archstone"
+name = "Flamelurker Archstone"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "dragon_god_archstone"
+name = "Dragon God Archstone"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+# Tower of Latria (World 3)
+[[archstones]]
+id = "tower_of_latria"
+name = "Tower of Latria"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "fools_idol_archstone"
+name = "Fool's Idol Archstone"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "maneater_archstone"
+name = "Maneater Archstone"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "old_monk_archstone"
+name = "Old Monk Archstone"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+# Shrine of Storms (World 4)
+[[archstones]]
+id = "shrine_of_storms"
+name = "Shrine of Storms"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "adjudicator_archstone"
+name = "Adjudicator Archstone"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "old_hero_archstone"
+name = "Old Hero Archstone"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "storm_king_archstone"
+name = "Storm King Archstone"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+# Valley of Defilement (World 5)
+[[archstones]]
+id = "valley_of_defilement"
+name = "Valley of Defilement"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "leechmonger_archstone"
+name = "Leechmonger Archstone"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "dirty_colossus_archstone"
+name = "Dirty Colossus Archstone"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "maiden_astraea_archstone"
+name = "Maiden Astraea Archstone"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false

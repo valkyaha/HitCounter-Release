@@ -1,0 +1,21 @@
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "RPCS3 (PS3 Emulator)"
+description = "Play Demon's Souls on PC with autosplitter support"
+author = "RPCS3 Team"
+version = "Latest"
+download_url = "https://rpcs3.net/download"
+category = "emulator"
+required = false
+
+[[tools]]
+name = "PS5 Remote Play"
+description = "Stream PS5 to PC for easier recording (Remake)"
+author = "Sony"
+version = "Latest"
+download_url = "https://www.playstation.com/en-us/remote-play/"
+category = "utility"
+required = false

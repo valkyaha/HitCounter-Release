@@ -1,0 +1,377 @@
+# =============================================================================
+# KNOWN FLAGS - Key Items, Great Runes, Story Progression
+# =============================================================================
+
+# Great Runes
+[[known_flags]]
+id = "great_rune_godrick"
+name = "Godrick's Great Rune"
+category = "great_runes"
+flag_id = 171
+
+[[known_flags]]
+id = "great_rune_rennala"
+name = "Great Rune of the Unborn"
+category = "great_runes"
+flag_id = 172
+
+[[known_flags]]
+id = "great_rune_radahn"
+name = "Radahn's Great Rune"
+category = "great_runes"
+flag_id = 173
+
+[[known_flags]]
+id = "great_rune_morgott"
+name = "Morgott's Great Rune"
+category = "great_runes"
+flag_id = 174
+
+[[known_flags]]
+id = "great_rune_rykard"
+name = "Rykard's Great Rune"
+category = "great_runes"
+flag_id = 175
+
+[[known_flags]]
+id = "great_rune_mohg"
+name = "Mohg's Great Rune"
+category = "great_runes"
+flag_id = 176
+
+[[known_flags]]
+id = "great_rune_malenia"
+name = "Malenia's Great Rune"
+category = "great_runes"
+flag_id = 177
+
+# Remembrances
+[[known_flags]]
+id = "remembrance_godrick"
+name = "Remembrance of the Grafted"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_rennala"
+name = "Remembrance of the Full Moon Queen"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_radahn"
+name = "Remembrance of the Starscourge"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_morgott"
+name = "Remembrance of the Omen King"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_rykard"
+name = "Remembrance of the Blasphemous"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_fire_giant"
+name = "Remembrance of the Fire Giant"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_mohg"
+name = "Remembrance of the Blood Lord"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_malenia"
+name = "Remembrance of the Rot Goddess"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_dragonlord"
+name = "Remembrance of the Dragonlord"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_maliketh"
+name = "Remembrance of the Black Blade"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_hoarah_loux"
+name = "Remembrance of Hoarah Loux"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_elden_beast"
+name = "Elden Remembrance"
+category = "remembrances"
+flag_id = 0
+
+# Key Items
+[[known_flags]]
+id = "academy_glintstone_key"
+name = "Academy Glintstone Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "discarded_palace_key"
+name = "Discarded Palace Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "haligtree_secret_medallion_left"
+name = "Haligtree Secret Medallion (Left)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "haligtree_secret_medallion_right"
+name = "Haligtree Secret Medallion (Right)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "dectus_medallion_left"
+name = "Dectus Medallion (Left)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "dectus_medallion_right"
+name = "Dectus Medallion (Right)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "pureblood_knights_medal"
+name = "Pureblood Knight's Medal"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "carian_inverted_statue"
+name = "Carian Inverted Statue"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "cursemark_of_death"
+name = "Cursemark of Death"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "fingerslayer_blade"
+name = "Fingerslayer Blade"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "dark_moon_ring"
+name = "Dark Moon Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "miniature_ranni"
+name = "Miniature Ranni"
+category = "key_items"
+flag_id = 0
+
+# Stonesword Keys
+[[known_flags]]
+id = "stonesword_key"
+name = "Stonesword Key Obtained"
+category = "keys"
+flag_id = 0
+
+# Covenants / NPC Questlines
+[[known_flags]]
+id = "varre_white_mask"
+name = "Varre's White Mask Obtained"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "ranni_quest_complete"
+name = "Ranni Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "fia_quest_complete"
+name = "Fia Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "millicent_quest_complete"
+name = "Millicent Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "alexander_quest_complete"
+name = "Alexander Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "blaidd_quest_complete"
+name = "Blaidd Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "nepheli_quest_complete"
+name = "Nepheli Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "sellen_quest_complete"
+name = "Sellen Quest Complete"
+category = "npc"
+flag_id = 0
+
+# Endings
+[[known_flags]]
+id = "ending_age_of_fracture"
+name = "Ending: Age of Fracture"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_age_of_duskborn"
+name = "Ending: Age of Duskborn"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_blessing_of_despair"
+name = "Ending: Blessing of Despair"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_age_of_order"
+name = "Ending: Age of Order"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_lord_of_frenzied_flame"
+name = "Ending: Lord of Frenzied Flame"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_age_of_stars"
+name = "Ending: Age of Stars"
+category = "endings"
+flag_id = 0
+
+# Story Progression
+[[known_flags]]
+id = "erdtree_burned"
+name = "Erdtree Set Ablaze"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "nokron_unlocked"
+name = "Nokron Unlocked (Radahn Defeated)"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "leyndell_ashen"
+name = "Leyndell Transformed to Ash"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "ranni_ending_setup"
+name = "Dark Moon Ring Given to Ranni"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "frenzied_flame_inherited"
+name = "Frenzied Flame Inherited"
+category = "story"
+flag_id = 0
+
+# DLC - Shadow of the Erdtree
+[[known_flags]]
+id = "remembrance_messmer"
+name = "Remembrance of the Impaler"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_promised_consort"
+name = "Remembrance of a God and a Lord"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_midra"
+name = "Remembrance of the Lord of Frenzied Flame"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_bayle"
+name = "Remembrance of the Dread"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_romina"
+name = "Remembrance of the Saint of the Bud"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_rellana"
+name = "Remembrance of the Twin Moon Knight"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_dancing_lion"
+name = "Remembrance of the Dancing Lion"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_gaius"
+name = "Remembrance of the Wild Boar Rider"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_metyr"
+name = "Remembrance of the Mother of Fingers"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_scadutree"
+name = "Remembrance of the Shadow Sunflower"
+category = "remembrances"
+flag_id = 0

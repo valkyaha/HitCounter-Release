@@ -1,0 +1,44 @@
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+description = "All main game bosses (32 bosses)"
+boss_ids = [
+    "last_giant", "pursuer", "dragonrider", "old_dragonslayer", "flexile_sentry",
+    "ruin_sentinels", "lost_sinner", "belfry_gargoyles", "skeleton_lords",
+    "executioners_chariot", "covetous_demon", "mytha", "smelter_demon", "old_iron_king",
+    "scorpioness_najka", "royal_rat_authority", "prowling_magus", "dukes_dear_freja",
+    "royal_rat_vanguard", "rotten", "dragonriders", "looking_glass_knight", "demon_of_song",
+    "velstadt", "vendrick", "guardian_dragon", "ancient_dragon", "giant_lord",
+    "throne_duo", "nashandra", "aldia", "darklurker"
+]
+
+[[presets]]
+id = "all-bosses-dlc"
+name = "All Bosses + DLC"
+description = "All bosses including DLC (41 bosses)"
+boss_ids = [
+    "last_giant", "pursuer", "dragonrider", "old_dragonslayer", "flexile_sentry",
+    "ruin_sentinels", "lost_sinner", "belfry_gargoyles", "skeleton_lords",
+    "executioners_chariot", "covetous_demon", "mytha", "smelter_demon", "old_iron_king",
+    "scorpioness_najka", "royal_rat_authority", "prowling_magus", "dukes_dear_freja",
+    "royal_rat_vanguard", "rotten", "dragonriders", "looking_glass_knight", "demon_of_song",
+    "velstadt", "vendrick", "guardian_dragon", "ancient_dragon", "giant_lord",
+    "throne_duo", "nashandra", "aldia", "darklurker",
+    "elana", "sinh", "afflicted_graverobber", "blue_smelter", "fume_knight", "sir_alonne",
+    "aava", "burnt_ivory_king", "lud_zallen"
+]
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Required bosses only"
+boss_ids = [
+    "last_giant", "pursuer", "dragonrider", "ruin_sentinels",
+    "scorpioness_najka", "prowling_magus", "rotten",
+    "dragonriders", "looking_glass_knight", "demon_of_song", "velstadt",
+    "guardian_dragon", "giant_lord", "throne_duo", "nashandra"
+]

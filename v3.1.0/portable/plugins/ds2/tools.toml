@@ -1,0 +1,30 @@
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "DS2 Save Organizer"
+description = "Manage and organize save files"
+author = "Community"
+version = "1.0.0"
+download_url = "https://github.com/search?q=dark+souls+2+save+organizer"
+category = "utility"
+required = false
+
+[[tools]]
+name = "Cheat Engine (Practice Tool)"
+description = "For practicing specific sections (use offline only)"
+author = "Cheat Engine Team"
+version = "Latest"
+download_url = "https://www.cheatengine.org/"
+category = "practice"
+required = false
+
+[[tools]]
+name = "SilkySouls 2"
+description = "Comprehensive practice tool with save states, stats editor, and debug features"
+author = "borgCode"
+version = "Latest"
+download_url = "https://github.com/borgCode/SilkySouls2/releases"
+category = "practice"
+required = false

@@ -1,0 +1,38 @@
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Main story missions"
+boss_ids = [
+    "illegal_entry", "destroy_artillery", "destroy_dam", "wall_assault",
+    "retrieve_combat_logs", "attack_watchpoint", "operation_wallclimber",
+    "retrieve_survey_data", "infiltrate_grid_86", "attack_fuel_depot",
+    "investigate_watcher", "ocean_crossing", "steal_survey_data",
+    "attack_mining_ship", "tunnel_sabotage", "destroy_special_forces",
+    "stop_corporate_craft", "destroy_ice_worm", "escort_survey_team",
+    "attack_old_spaceport", "underground_exploration1", "underground_exploration2",
+    "underground_exploration3", "reach_coral_convergence", "take_coral_convergence",
+    "ambush_vespers", "eliminate_v_iii", "unknown_territory", "intercept_redguns",
+    "eliminate_cinder_carla", "bring_down_xylem"
+]
+
+[[presets]]
+id = "all-endings"
+name = "All Endings"
+description = "Main story plus all three endings"
+boss_ids = [
+    "illegal_entry", "destroy_artillery", "destroy_dam", "wall_assault",
+    "retrieve_combat_logs", "attack_watchpoint", "operation_wallclimber",
+    "retrieve_survey_data", "infiltrate_grid_86", "attack_fuel_depot",
+    "investigate_watcher", "ocean_crossing", "steal_survey_data",
+    "attack_mining_ship", "tunnel_sabotage", "destroy_special_forces",
+    "stop_corporate_craft", "destroy_ice_worm", "escort_survey_team",
+    "attack_old_spaceport", "underground_exploration1", "underground_exploration2",
+    "underground_exploration3", "reach_coral_convergence", "take_coral_convergence",
+    "ambush_vespers", "eliminate_v_iii", "unknown_territory", "intercept_redguns",
+    "eliminate_cinder_carla", "bring_down_xylem",
+    "fires_raven", "liberator_carla", "alea_iacta_est"
+]

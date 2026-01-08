@@ -1,0 +1,1302 @@
+# =============================================================================
+# SITES OF GRACE
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# LIMGRAVE
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "the_first_step"
+name = "The First Step"
+location = "Limgrave"
+flag_id = 76100
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_elleh"
+name = "Church of Elleh"
+location = "Limgrave"
+flag_id = 76101
+is_dlc = false
+
+[[sites_of_grace]]
+id = "gatefront"
+name = "Gatefront"
+location = "Limgrave"
+flag_id = 76102
+is_dlc = false
+
+[[sites_of_grace]]
+id = "agheel_lake_south"
+name = "Agheel Lake South"
+location = "Limgrave"
+flag_id = 76103
+is_dlc = false
+
+[[sites_of_grace]]
+id = "agheel_lake_north"
+name = "Agheel Lake North"
+location = "Limgrave"
+flag_id = 76104
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_dragon_communion"
+name = "Church of Dragon Communion"
+location = "Limgrave"
+flag_id = 76105
+is_dlc = false
+
+[[sites_of_grace]]
+id = "seaside_ruins"
+name = "Seaside Ruins"
+location = "Limgrave"
+flag_id = 76106
+is_dlc = false
+
+[[sites_of_grace]]
+id = "mistwood_outskirts"
+name = "Mistwood Outskirts"
+location = "Limgrave"
+flag_id = 76107
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fort_haight_west"
+name = "Fort Haight West"
+location = "Limgrave"
+flag_id = 76108
+is_dlc = false
+
+[[sites_of_grace]]
+id = "third_church_of_marika"
+name = "Third Church of Marika"
+location = "Limgrave"
+flag_id = 76109
+is_dlc = false
+
+[[sites_of_grace]]
+id = "artists_shack"
+name = "Artist's Shack"
+location = "Limgrave"
+flag_id = 76110
+is_dlc = false
+
+[[sites_of_grace]]
+id = "waypoint_ruins_cellar"
+name = "Waypoint Ruins Cellar"
+location = "Limgrave"
+flag_id = 76111
+is_dlc = false
+
+# Weeping Peninsula
+[[sites_of_grace]]
+id = "castle_morne_rampart"
+name = "Castle Morne Rampart"
+location = "Weeping Peninsula"
+flag_id = 76150
+is_dlc = false
+
+[[sites_of_grace]]
+id = "beside_the_crater_pocked_glade"
+name = "Beside the Crater-Pocked Glade"
+location = "Weeping Peninsula"
+flag_id = 76151
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_pilgrimage"
+name = "Church of Pilgrimage"
+location = "Weeping Peninsula"
+flag_id = 76152
+is_dlc = false
+
+[[sites_of_grace]]
+id = "castle_morne_lift"
+name = "Castle Morne Lift"
+location = "Weeping Peninsula"
+flag_id = 76153
+is_dlc = false
+
+[[sites_of_grace]]
+id = "behind_castle_morne"
+name = "Behind the Castle"
+location = "Weeping Peninsula"
+flag_id = 76154
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fourth_church_of_marika"
+name = "Fourth Church of Marika"
+location = "Weeping Peninsula"
+flag_id = 76155
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# STORMVEIL CASTLE
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "stormhill_shack"
+name = "Stormhill Shack"
+location = "Stormhill"
+flag_id = 76200
+is_dlc = false
+
+[[sites_of_grace]]
+id = "stormveil_main_gate"
+name = "Stormveil Main Gate"
+location = "Stormveil Castle"
+flag_id = 76201
+is_dlc = false
+
+[[sites_of_grace]]
+id = "gateside_chamber"
+name = "Gateside Chamber"
+location = "Stormveil Castle"
+flag_id = 76202
+is_dlc = false
+
+[[sites_of_grace]]
+id = "stormveil_cliffside"
+name = "Stormveil Cliffside"
+location = "Stormveil Castle"
+flag_id = 76203
+is_dlc = false
+
+[[sites_of_grace]]
+id = "rampart_tower"
+name = "Rampart Tower"
+location = "Stormveil Castle"
+flag_id = 76204
+is_dlc = false
+
+[[sites_of_grace]]
+id = "liftside_chamber"
+name = "Liftside Chamber"
+location = "Stormveil Castle"
+flag_id = 76205
+is_dlc = false
+
+[[sites_of_grace]]
+id = "secluded_cell"
+name = "Secluded Cell"
+location = "Stormveil Castle"
+flag_id = 76206
+is_dlc = false
+
+[[sites_of_grace]]
+id = "godrick_the_grafted"
+name = "Godrick the Grafted"
+location = "Stormveil Castle"
+flag_id = 76207
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LIURNIA OF THE LAKES
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "lake_facing_cliffs"
+name = "Lake-Facing Cliffs"
+location = "Liurnia"
+flag_id = 76300
+is_dlc = false
+
+[[sites_of_grace]]
+id = "liurnia_lake_shore"
+name = "Liurnia Lake Shore"
+location = "Liurnia"
+flag_id = 76301
+is_dlc = false
+
+[[sites_of_grace]]
+id = "laskyar_ruins"
+name = "Laskyar Ruins"
+location = "Liurnia"
+flag_id = 76302
+is_dlc = false
+
+[[sites_of_grace]]
+id = "scenic_isle"
+name = "Scenic Isle"
+location = "Liurnia"
+flag_id = 76303
+is_dlc = false
+
+[[sites_of_grace]]
+id = "academy_gate_town"
+name = "Academy Gate Town"
+location = "Liurnia"
+flag_id = 76304
+is_dlc = false
+
+[[sites_of_grace]]
+id = "south_raya_lucaria_gate"
+name = "South Raya Lucaria Gate"
+location = "Liurnia"
+flag_id = 76305
+is_dlc = false
+
+[[sites_of_grace]]
+id = "main_academy_gate"
+name = "Main Academy Gate"
+location = "Liurnia"
+flag_id = 76306
+is_dlc = false
+
+[[sites_of_grace]]
+id = "liurnia_highway_south"
+name = "Liurnia Highway South"
+location = "Liurnia"
+flag_id = 76307
+is_dlc = false
+
+[[sites_of_grace]]
+id = "gate_town_north"
+name = "Gate Town North"
+location = "Liurnia"
+flag_id = 76308
+is_dlc = false
+
+[[sites_of_grace]]
+id = "east_gate_bridge_trestle"
+name = "East Gate Bridge Trestle"
+location = "Liurnia"
+flag_id = 76309
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_irith"
+name = "Church of Irith"
+location = "Liurnia"
+flag_id = 76310
+is_dlc = false
+
+[[sites_of_grace]]
+id = "caria_manor_main_gate"
+name = "Main Caria Manor Gate"
+location = "Liurnia"
+flag_id = 76311
+is_dlc = false
+
+[[sites_of_grace]]
+id = "manor_upper_level"
+name = "Manor Upper Level"
+location = "Liurnia"
+flag_id = 76312
+is_dlc = false
+
+[[sites_of_grace]]
+id = "manor_lower_level"
+name = "Manor Lower Level"
+location = "Liurnia"
+flag_id = 76313
+is_dlc = false
+
+[[sites_of_grace]]
+id = "royal_moongazing_grounds"
+name = "Royal Moongazing Grounds"
+location = "Liurnia"
+flag_id = 76314
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ranni_tower"
+name = "Ranni's Chamber"
+location = "Liurnia"
+flag_id = 76315
+is_dlc = false
+
+# Academy of Raya Lucaria
+[[sites_of_grace]]
+id = "church_of_the_cuckoo"
+name = "Church of the Cuckoo"
+location = "Academy of Raya Lucaria"
+flag_id = 76350
+is_dlc = false
+
+[[sites_of_grace]]
+id = "schoolhouse_classroom"
+name = "Schoolhouse Classroom"
+location = "Academy of Raya Lucaria"
+flag_id = 76351
+is_dlc = false
+
+[[sites_of_grace]]
+id = "debate_parlor"
+name = "Debate Parlor"
+location = "Academy of Raya Lucaria"
+flag_id = 76352
+is_dlc = false
+
+[[sites_of_grace]]
+id = "raya_lucaria_grand_library"
+name = "Raya Lucaria Grand Library"
+location = "Academy of Raya Lucaria"
+flag_id = 76353
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# ALTUS PLATEAU
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "erdtree_gazing_hill"
+name = "Erdtree-Gazing Hill"
+location = "Altus Plateau"
+flag_id = 76400
+is_dlc = false
+
+[[sites_of_grace]]
+id = "altus_highway_junction"
+name = "Altus Highway Junction"
+location = "Altus Plateau"
+flag_id = 76401
+is_dlc = false
+
+[[sites_of_grace]]
+id = "forest_spanning_greatbridge"
+name = "Forest-Spanning Greatbridge"
+location = "Altus Plateau"
+flag_id = 76402
+is_dlc = false
+
+[[sites_of_grace]]
+id = "outer_wall_phantom_tree"
+name = "Outer Wall Phantom Tree"
+location = "Altus Plateau"
+flag_id = 76403
+is_dlc = false
+
+[[sites_of_grace]]
+id = "outer_wall_battleground"
+name = "Outer Wall Battleground"
+location = "Altus Plateau"
+flag_id = 76404
+is_dlc = false
+
+[[sites_of_grace]]
+id = "capital_rampart"
+name = "Capital Rampart"
+location = "Altus Plateau"
+flag_id = 76405
+is_dlc = false
+
+# Mt. Gelmir
+[[sites_of_grace]]
+id = "bridge_of_iniquity"
+name = "Bridge of Iniquity"
+location = "Mt. Gelmir"
+flag_id = 76450
+is_dlc = false
+
+[[sites_of_grace]]
+id = "first_mt_gelmir_campsite"
+name = "First Mt. Gelmir Campsite"
+location = "Mt. Gelmir"
+flag_id = 76451
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ninth_mt_gelmir_campsite"
+name = "Ninth Mt. Gelmir Campsite"
+location = "Mt. Gelmir"
+flag_id = 76452
+is_dlc = false
+
+[[sites_of_grace]]
+id = "volcano_manor"
+name = "Volcano Manor"
+location = "Volcano Manor"
+flag_id = 76453
+is_dlc = false
+
+[[sites_of_grace]]
+id = "temple_of_eiglay"
+name = "Temple of Eiglay"
+location = "Volcano Manor"
+flag_id = 76454
+is_dlc = false
+
+[[sites_of_grace]]
+id = "audience_pathway"
+name = "Audience Pathway"
+location = "Volcano Manor"
+flag_id = 76455
+is_dlc = false
+
+[[sites_of_grace]]
+id = "rykard_lord_of_blasphemy"
+name = "Rykard, Lord of Blasphemy"
+location = "Volcano Manor"
+flag_id = 76456
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEYNDELL, ROYAL CAPITAL
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "east_capital_rampart"
+name = "East Capital Rampart"
+location = "Leyndell"
+flag_id = 76500
+is_dlc = false
+
+[[sites_of_grace]]
+id = "lower_capital_church"
+name = "Lower Capital Church"
+location = "Leyndell"
+flag_id = 76501
+is_dlc = false
+
+[[sites_of_grace]]
+id = "avenue_balcony"
+name = "Avenue Balcony"
+location = "Leyndell"
+flag_id = 76502
+is_dlc = false
+
+[[sites_of_grace]]
+id = "west_capital_rampart"
+name = "West Capital Rampart"
+location = "Leyndell"
+flag_id = 76503
+is_dlc = false
+
+[[sites_of_grace]]
+id = "queens_bedchamber"
+name = "Queen's Bedchamber"
+location = "Leyndell"
+flag_id = 76504
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fortified_manor_first_floor"
+name = "Fortified Manor, First Floor"
+location = "Leyndell"
+flag_id = 76505
+is_dlc = false
+
+[[sites_of_grace]]
+id = "divine_bridge"
+name = "Divine Bridge"
+location = "Leyndell"
+flag_id = 76506
+is_dlc = false
+
+[[sites_of_grace]]
+id = "elden_throne"
+name = "Elden Throne"
+location = "Leyndell"
+flag_id = 76507
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAELID
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "rotview_balcony"
+name = "Rotview Balcony"
+location = "Caelid"
+flag_id = 76600
+is_dlc = false
+
+[[sites_of_grace]]
+id = "caelid_highway_south"
+name = "Caelid Highway South"
+location = "Caelid"
+flag_id = 76601
+is_dlc = false
+
+[[sites_of_grace]]
+id = "caelem_ruins"
+name = "Caelem Ruins"
+location = "Caelid"
+flag_id = 76602
+is_dlc = false
+
+[[sites_of_grace]]
+id = "smoldering_wall"
+name = "Smoldering Wall"
+location = "Caelid"
+flag_id = 76603
+is_dlc = false
+
+[[sites_of_grace]]
+id = "deep_siofra_well"
+name = "Deep Siofra Well"
+location = "Caelid"
+flag_id = 76604
+is_dlc = false
+
+[[sites_of_grace]]
+id = "southern_aeonia_swamp_bank"
+name = "Southern Aeonia Swamp Bank"
+location = "Caelid"
+flag_id = 76605
+is_dlc = false
+
+[[sites_of_grace]]
+id = "sellia_under_stair"
+name = "Sellia Under-Stair"
+location = "Caelid"
+flag_id = 76606
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_the_plague"
+name = "Church of the Plague"
+location = "Caelid"
+flag_id = 76607
+is_dlc = false
+
+[[sites_of_grace]]
+id = "redmane_castle_plaza"
+name = "Redmane Castle Plaza"
+location = "Caelid"
+flag_id = 76608
+is_dlc = false
+
+[[sites_of_grace]]
+id = "chamber_outside_the_plaza"
+name = "Chamber Outside the Plaza"
+location = "Caelid"
+flag_id = 76609
+is_dlc = false
+
+[[sites_of_grace]]
+id = "starscourge_radahn"
+name = "Starscourge Radahn"
+location = "Caelid"
+flag_id = 76610
+is_dlc = false
+
+# Dragonbarrow
+[[sites_of_grace]]
+id = "dragonbarrow_west"
+name = "Dragonbarrow West"
+location = "Dragonbarrow"
+flag_id = 76650
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragonbarrow_fork"
+name = "Dragonbarrow Fork"
+location = "Dragonbarrow"
+flag_id = 76651
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fort_faroth"
+name = "Fort Faroth"
+location = "Dragonbarrow"
+flag_id = 76652
+is_dlc = false
+
+[[sites_of_grace]]
+id = "bestial_sanctum"
+name = "Bestial Sanctum"
+location = "Dragonbarrow"
+flag_id = 76653
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# MOUNTAINTOPS OF THE GIANTS
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "zamor_ruins"
+name = "Zamor Ruins"
+location = "Mountaintops"
+flag_id = 76700
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ancient_snow_valley_ruins"
+name = "Ancient Snow Valley Ruins"
+location = "Mountaintops"
+flag_id = 76701
+is_dlc = false
+
+[[sites_of_grace]]
+id = "freezing_lake"
+name = "Freezing Lake"
+location = "Mountaintops"
+flag_id = 76702
+is_dlc = false
+
+[[sites_of_grace]]
+id = "first_church_of_marika"
+name = "First Church of Marika"
+location = "Mountaintops"
+flag_id = 76703
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fire_giant"
+name = "Fire Giant"
+location = "Mountaintops"
+flag_id = 76704
+is_dlc = false
+
+[[sites_of_grace]]
+id = "foot_of_the_forge"
+name = "Foot of the Forge"
+location = "Mountaintops"
+flag_id = 76705
+is_dlc = false
+
+[[sites_of_grace]]
+id = "giants_gravepost"
+name = "Giant's Gravepost"
+location = "Mountaintops"
+flag_id = 76706
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_repose"
+name = "Church of Repose"
+location = "Mountaintops"
+flag_id = 76707
+is_dlc = false
+
+[[sites_of_grace]]
+id = "castle_sol_main_gate"
+name = "Castle Sol Main Gate"
+location = "Mountaintops"
+flag_id = 76708
+is_dlc = false
+
+[[sites_of_grace]]
+id = "castle_sol_rooftop"
+name = "Castle Sol Rooftop"
+location = "Mountaintops"
+flag_id = 76709
+is_dlc = false
+
+# Consecrated Snowfield
+[[sites_of_grace]]
+id = "consecrated_snowfield"
+name = "Consecrated Snowfield"
+location = "Consecrated Snowfield"
+flag_id = 76750
+is_dlc = false
+
+[[sites_of_grace]]
+id = "inner_consecrated_snowfield"
+name = "Inner Consecrated Snowfield"
+location = "Consecrated Snowfield"
+flag_id = 76751
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ordina_liturgical_town"
+name = "Ordina, Liturgical Town"
+location = "Consecrated Snowfield"
+flag_id = 76752
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CRUMBLING FARUM AZULA
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "crumbling_beast_grave"
+name = "Crumbling Beast Grave"
+location = "Crumbling Farum Azula"
+flag_id = 76800
+is_dlc = false
+
+[[sites_of_grace]]
+id = "crumbling_beast_grave_depths"
+name = "Crumbling Beast Grave Depths"
+location = "Crumbling Farum Azula"
+flag_id = 76801
+is_dlc = false
+
+[[sites_of_grace]]
+id = "tempest_facing_balcony"
+name = "Tempest-Facing Balcony"
+location = "Crumbling Farum Azula"
+flag_id = 76802
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple"
+name = "Dragon Temple"
+location = "Crumbling Farum Azula"
+flag_id = 76803
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple_lift"
+name = "Dragon Temple Lift"
+location = "Crumbling Farum Azula"
+flag_id = 76804
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple_transept"
+name = "Dragon Temple Transept"
+location = "Crumbling Farum Azula"
+flag_id = 76805
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple_altar"
+name = "Dragon Temple Altar"
+location = "Crumbling Farum Azula"
+flag_id = 76806
+is_dlc = false
+
+[[sites_of_grace]]
+id = "beside_great_bridge"
+name = "Beside the Great Bridge"
+location = "Crumbling Farum Azula"
+flag_id = 76807
+is_dlc = false
+
+[[sites_of_grace]]
+id = "maliketh_black_blade"
+name = "Maliketh, the Black Blade"
+location = "Crumbling Farum Azula"
+flag_id = 76808
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# MIQUELLA'S HALIGTREE
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "haligtree_canopy"
+name = "Haligtree Canopy"
+location = "Miquella's Haligtree"
+flag_id = 76850
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_town"
+name = "Haligtree Town"
+location = "Miquella's Haligtree"
+flag_id = 76851
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_town_plaza"
+name = "Haligtree Town Plaza"
+location = "Miquella's Haligtree"
+flag_id = 76852
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_promenade"
+name = "Haligtree Promenade"
+location = "Miquella's Haligtree"
+flag_id = 76853
+is_dlc = false
+
+[[sites_of_grace]]
+id = "elphael_inner_wall"
+name = "Elphael Inner Wall"
+location = "Miquella's Haligtree"
+flag_id = 76854
+is_dlc = false
+
+[[sites_of_grace]]
+id = "drainage_channel"
+name = "Drainage Channel"
+location = "Miquella's Haligtree"
+flag_id = 76855
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_roots"
+name = "Haligtree Roots"
+location = "Miquella's Haligtree"
+flag_id = 76856
+is_dlc = false
+
+[[sites_of_grace]]
+id = "malenia_goddess_of_rot"
+name = "Malenia, Goddess of Rot"
+location = "Miquella's Haligtree"
+flag_id = 76857
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - SIOFRA & AINSEL
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "siofra_river_well_depths"
+name = "Siofra River Well Depths"
+location = "Siofra River"
+flag_id = 76900
+is_dlc = false
+
+[[sites_of_grace]]
+id = "siofra_river_bank"
+name = "Siofra River Bank"
+location = "Siofra River"
+flag_id = 76901
+is_dlc = false
+
+[[sites_of_grace]]
+id = "worshippers_woods"
+name = "Worshippers' Woods"
+location = "Siofra River"
+flag_id = 76902
+is_dlc = false
+
+[[sites_of_grace]]
+id = "below_the_well"
+name = "Below the Well"
+location = "Siofra River"
+flag_id = 76903
+is_dlc = false
+
+[[sites_of_grace]]
+id = "nokron_eternal_city"
+name = "Nokron, Eternal City"
+location = "Nokron"
+flag_id = 76904
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ancestral_woods"
+name = "Ancestral Woods"
+location = "Nokron"
+flag_id = 76905
+is_dlc = false
+
+[[sites_of_grace]]
+id = "night_sacred_ground"
+name = "Night's Sacred Ground"
+location = "Nokron"
+flag_id = 76906
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ainsel_river_well_depths"
+name = "Ainsel River Well Depths"
+location = "Ainsel River"
+flag_id = 76907
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ainsel_river_sluice_gate"
+name = "Ainsel River Sluice Gate"
+location = "Ainsel River"
+flag_id = 76908
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ainsel_river_main"
+name = "Ainsel River Main"
+location = "Ainsel River"
+flag_id = 76909
+is_dlc = false
+
+[[sites_of_grace]]
+id = "nokstella_eternal_city"
+name = "Nokstella, Eternal City"
+location = "Ainsel River"
+flag_id = 76910
+is_dlc = false
+
+[[sites_of_grace]]
+id = "lake_of_rot_shoreside"
+name = "Lake of Rot Shoreside"
+location = "Lake of Rot"
+flag_id = 76911
+is_dlc = false
+
+[[sites_of_grace]]
+id = "grand_cloister"
+name = "Grand Cloister"
+location = "Lake of Rot"
+flag_id = 76912
+is_dlc = false
+
+# Deeproot Depths
+[[sites_of_grace]]
+id = "root_facing_cliffs"
+name = "Root-Facing Cliffs"
+location = "Deeproot Depths"
+flag_id = 76950
+is_dlc = false
+
+[[sites_of_grace]]
+id = "great_waterfall_crest"
+name = "Great Waterfall Crest"
+location = "Deeproot Depths"
+flag_id = 76951
+is_dlc = false
+
+[[sites_of_grace]]
+id = "deeproot_depths"
+name = "Deeproot Depths"
+location = "Deeproot Depths"
+flag_id = 76952
+is_dlc = false
+
+[[sites_of_grace]]
+id = "across_the_roots"
+name = "Across the Roots"
+location = "Deeproot Depths"
+flag_id = 76953
+is_dlc = false
+
+[[sites_of_grace]]
+id = "prince_of_deaths_throne"
+name = "Prince of Death's Throne"
+location = "Deeproot Depths"
+flag_id = 76954
+is_dlc = false
+
+# Mohgwyn Palace
+[[sites_of_grace]]
+id = "palace_approach_ledge_road"
+name = "Palace Approach Ledge-Road"
+location = "Mohgwyn Palace"
+flag_id = 76960
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dynasty_mausoleum_entrance"
+name = "Dynasty Mausoleum Entrance"
+location = "Mohgwyn Palace"
+flag_id = 76961
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dynasty_mausoleum_midpoint"
+name = "Dynasty Mausoleum Midpoint"
+location = "Mohgwyn Palace"
+flag_id = 76962
+is_dlc = false
+
+[[sites_of_grace]]
+id = "cocoon_of_the_empyrean"
+name = "Cocoon of the Empyrean"
+location = "Mohgwyn Palace"
+flag_id = 76963
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# DLC - SHADOW OF THE ERDTREE
+# -----------------------------------------------------------------------------
+
+# Gravesite Plain
+[[sites_of_grace]]
+id = "gravesite_plain"
+name = "Gravesite Plain"
+location = "Gravesite Plain"
+flag_id = 77000
+is_dlc = true
+
+[[sites_of_grace]]
+id = "scorched_ruins"
+name = "Scorched Ruins"
+location = "Gravesite Plain"
+flag_id = 77001
+is_dlc = true
+
+[[sites_of_grace]]
+id = "ellac_river_cave"
+name = "Ellac River Cave"
+location = "Gravesite Plain"
+flag_id = 77002
+is_dlc = true
+
+[[sites_of_grace]]
+id = "castle_front"
+name = "Castle Front"
+location = "Gravesite Plain"
+flag_id = 77003
+is_dlc = true
+
+[[sites_of_grace]]
+id = "pillar_path_cross"
+name = "Pillar Path Cross"
+location = "Gravesite Plain"
+flag_id = 77004
+is_dlc = true
+
+[[sites_of_grace]]
+id = "pillar_path_waypoint"
+name = "Pillar Path Waypoint"
+location = "Gravesite Plain"
+flag_id = 77005
+is_dlc = true
+
+[[sites_of_grace]]
+id = "cliffroad_terminus"
+name = "Cliffroad Terminus"
+location = "Gravesite Plain"
+flag_id = 77006
+is_dlc = true
+
+# Belurat
+[[sites_of_grace]]
+id = "belurat_tower_settlement"
+name = "Belurat, Tower Settlement"
+location = "Belurat"
+flag_id = 77050
+is_dlc = true
+
+[[sites_of_grace]]
+id = "stagefront"
+name = "Stagefront"
+location = "Belurat"
+flag_id = 77051
+is_dlc = true
+
+[[sites_of_grace]]
+id = "small_private_altar"
+name = "Small Private Altar"
+location = "Belurat"
+flag_id = 77052
+is_dlc = true
+
+[[sites_of_grace]]
+id = "theatre_of_the_divine_beast"
+name = "Theatre of the Divine Beast"
+location = "Belurat"
+flag_id = 77053
+is_dlc = true
+
+# Castle Ensis
+[[sites_of_grace]]
+id = "castle_ensis_checkpoint"
+name = "Castle Ensis Checkpoint"
+location = "Castle Ensis"
+flag_id = 77100
+is_dlc = true
+
+[[sites_of_grace]]
+id = "ensis_moongazing_grounds"
+name = "Ensis Moongazing Grounds"
+location = "Castle Ensis"
+flag_id = 77101
+is_dlc = true
+
+# Scadu Altus
+[[sites_of_grace]]
+id = "highroad_cross"
+name = "Highroad Cross"
+location = "Scadu Altus"
+flag_id = 77150
+is_dlc = true
+
+[[sites_of_grace]]
+id = "moorth_ruins"
+name = "Moorth Ruins"
+location = "Scadu Altus"
+flag_id = 77151
+is_dlc = true
+
+[[sites_of_grace]]
+id = "bonny_village"
+name = "Bonny Village"
+location = "Scadu Altus"
+flag_id = 77152
+is_dlc = true
+
+[[sites_of_grace]]
+id = "church_district_entrance"
+name = "Church District Entrance"
+location = "Scadu Altus"
+flag_id = 77153
+is_dlc = true
+
+# Shadow Keep
+[[sites_of_grace]]
+id = "shadow_keep_main_gate"
+name = "Shadow Keep, Main Gate"
+location = "Shadow Keep"
+flag_id = 77200
+is_dlc = true
+
+[[sites_of_grace]]
+id = "main_gate_plaza"
+name = "Main Gate Plaza"
+location = "Shadow Keep"
+flag_id = 77201
+is_dlc = true
+
+[[sites_of_grace]]
+id = "storehouse_first_floor"
+name = "Storehouse, First Floor"
+location = "Shadow Keep"
+flag_id = 77202
+is_dlc = true
+
+[[sites_of_grace]]
+id = "dark_chamber_entrance"
+name = "Dark Chamber Entrance"
+location = "Shadow Keep"
+flag_id = 77203
+is_dlc = true
+
+[[sites_of_grace]]
+id = "messmers_dark_chamber"
+name = "Messmer's Dark Chamber"
+location = "Shadow Keep"
+flag_id = 77204
+is_dlc = true
+
+# Scaduview / Rauh
+[[sites_of_grace]]
+id = "scaduview"
+name = "Scaduview"
+location = "Scaduview"
+flag_id = 77250
+is_dlc = true
+
+[[sites_of_grace]]
+id = "scadutree_base"
+name = "Scadutree Base"
+location = "Scaduview"
+flag_id = 77251
+is_dlc = true
+
+[[sites_of_grace]]
+id = "temple_town_ruins"
+name = "Temple Town Ruins"
+location = "Ancient Ruins of Rauh"
+flag_id = 77252
+is_dlc = true
+
+[[sites_of_grace]]
+id = "church_of_the_bud"
+name = "Church of the Bud"
+location = "Ancient Ruins of Rauh"
+flag_id = 77253
+is_dlc = true
+
+[[sites_of_grace]]
+id = "church_of_the_bud_main_entrance"
+name = "Church of the Bud, Main Entrance"
+location = "Ancient Ruins of Rauh"
+flag_id = 77254
+is_dlc = true
+
+# Abyssal Woods
+[[sites_of_grace]]
+id = "abyssal_woods"
+name = "Abyssal Woods"
+location = "Abyssal Woods"
+flag_id = 77300
+is_dlc = true
+
+[[sites_of_grace]]
+id = "forsaken_graveyard"
+name = "Forsaken Graveyard"
+location = "Abyssal Woods"
+flag_id = 77301
+is_dlc = true
+
+[[sites_of_grace]]
+id = "midras_manse"
+name = "Midra's Manse"
+location = "Abyssal Woods"
+flag_id = 77302
+is_dlc = true
+
+[[sites_of_grace]]
+id = "discussion_chamber"
+name = "Discussion Chamber"
+location = "Abyssal Woods"
+flag_id = 77303
+is_dlc = true
+
+[[sites_of_grace]]
+id = "second_floor_chamber"
+name = "Second Floor Chamber"
+location = "Abyssal Woods"
+flag_id = 77304
+is_dlc = true
+
+# Jagged Peak
+[[sites_of_grace]]
+id = "dragons_pit"
+name = "Dragon's Pit"
+location = "Jagged Peak"
+flag_id = 77350
+is_dlc = true
+
+[[sites_of_grace]]
+id = "dragons_pit_terminus"
+name = "Dragon's Pit Terminus"
+location = "Jagged Peak"
+flag_id = 77351
+is_dlc = true
+
+[[sites_of_grace]]
+id = "foot_of_jagged_peak"
+name = "Foot of the Jagged Peak"
+location = "Jagged Peak"
+flag_id = 77352
+is_dlc = true
+
+[[sites_of_grace]]
+id = "jagged_peak_mountainside"
+name = "Jagged Peak Mountainside"
+location = "Jagged Peak"
+flag_id = 77353
+is_dlc = true
+
+[[sites_of_grace]]
+id = "jagged_peak_summit"
+name = "Jagged Peak Summit"
+location = "Jagged Peak"
+flag_id = 77354
+is_dlc = true
+
+# Enir-Ilim
+[[sites_of_grace]]
+id = "cleansing_chamber_anteroom"
+name = "Cleansing Chamber Anteroom"
+location = "Enir-Ilim"
+flag_id = 77400
+is_dlc = true
+
+[[sites_of_grace]]
+id = "spiral_rise"
+name = "Spiral Rise"
+location = "Enir-Ilim"
+flag_id = 77401
+is_dlc = true
+
+[[sites_of_grace]]
+id = "enir_ilim"
+name = "Enir-Ilim"
+location = "Enir-Ilim"
+flag_id = 77402
+is_dlc = true
+
+[[sites_of_grace]]
+id = "first_rise"
+name = "First Rise"
+location = "Enir-Ilim"
+flag_id = 77403
+is_dlc = true
+
+[[sites_of_grace]]
+id = "divine_gate_front_staircase"
+name = "Divine Gate Front Staircase"
+location = "Enir-Ilim"
+flag_id = 77404
+is_dlc = true
+
+[[sites_of_grace]]
+id = "radahn_consort_of_miquella"
+name = "Radahn, Consort of Miquella"
+location = "Enir-Ilim"
+flag_id = 77405
+is_dlc = true

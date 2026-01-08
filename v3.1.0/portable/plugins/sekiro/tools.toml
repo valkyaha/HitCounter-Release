@@ -1,0 +1,30 @@
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "Sekiro Save Manager"
+description = "Backup and manage save files"
+author = "Community"
+version = "1.0.0"
+download_url = "https://github.com/Atvaark/Sekiro.SaveManager/releases"
+category = "utility"
+required = false
+
+[[tools]]
+name = "Sekiro FPS Unlocker"
+description = "Unlock framerate beyond 60 FPS"
+author = "uberhalit"
+version = "Latest"
+download_url = "https://github.com/uberhalit/Sekiro FpsUnlockAndMore/releases"
+category = "mod"
+required = false
+
+[[tools]]
+name = "Sekiro Practice Tool"
+description = "Practice specific bosses and sections"
+author = "Zullie"
+version = "Latest"
+download_url = "https://github.com/veeenu/sekiro-practice-tool/releases"
+category = "practice"
+required = false

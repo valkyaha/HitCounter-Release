@@ -1,0 +1,180 @@
+# =============================================================================
+# AUTOSPLITTER CONFIGURATION
+# =============================================================================
+
+[autosplitter]
+enabled = true
+algorithm = "binary_tree"
+
+# Binary tree algorithm configuration (Elden Ring style)
+# Based on SoulSplitter by FrankvdStam
+[autosplitter.tree_config]
+primary_pattern = "virtual_memory_flag"
+pointer_chain = []  # Direct access after RIP resolution
+divisor_offset = 28         # 0x1c
+tree_root_offset = 56       # 0x38
+multiplier_offset = 32      # 0x20
+base_addr_offset = 40       # 0x28
+
+# Memory patterns for finding game data structures
+# Based on SoulSplitter by FrankvdStam
+# https://github.com/FrankvdStam/SoulSplitter
+
+[[autosplitter.patterns]]
+name = "virtual_memory_flag"
+pattern = "44 89 7C 24 28 4C 8B 25 ? ? ? ? 4D 85 E4"
+rip_offset = 8
+instruction_len = 12
+pointer_offsets = [5]  # Special offset for tree-based flags
+
+[[autosplitter.patterns]]
+name = "fd4_time"
+pattern = "48 8B 05 ? ? ? ? 4C 8B 40 08 4D 85 C0 74 0D 45 0F B6 80 BE 00 00 00 E9 13 00 00 00"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "world_chr_man"
+pattern = "48 8B 35 ? ? ? ? 48 85 F6 ? ? BB 01 00 00 00 89 5C 24 20 48 8B B6"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "menu_man_imp"
+pattern = "48 8B 0D ? ? ? ? 48 8B 53 08 48 8B 92 D8 00 00 00 48 83 C4 20 5B"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "game_data_man"
+pattern = "48 8B 05 ? ? ? ? 48 8D 4D C0 41 B8 10 00 00 00 48 8B 10 48 83 C2 1C"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# IGT from FD4Time
+igt = { base = "fd4_time", offsets = [0, 0xA0] }
+
+# Player instance from WorldChrMan
+player_ins = { base = "world_chr_man", offsets = [0, 0x1E508] }
+
+# NG+ level from GameDataMan
+ng_level = { base = "game_data_man", offsets = [0, 0x120] }
+
+# Player game data from GameDataMan
+player_game_data = { base = "game_data_man", offsets = [0, 0x8] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# Player instance offset (version dependent)
+player_ins_offset = 0x1E508
+
+# Screen state offset from PlayerIns
+screen_state_offset = 0x730
+
+# Position offset from PlayerIns
+position_offset = 0x6D4
+
+# Map ID offset from PlayerIns
+map_id_offset = 0x6D0
+
+# IGT offset from IGT pointer
+igt_offset = 0xA0
+
+# Blackscreen check at MenuManImp + 0x18
+# Bits: 0 set, 8 clear, 16 set
+blackscreen_offset = 0x18
+
+# Event flag tree constants
+[autosplitter.memory_layout.event_flag_tree]
+divisor_offset = 0x1C
+root_offset = 0x38
+first_sub_element = 0x8
+left_child = 0x0
+right_child = 0x10
+leaf_check_offset = 0x19
+category_offset = 0x20
+mystery_value_offset = 0x28
+element_value_offset = 0x30
+base_address_offset = 0x28
+
+# Screen states
+[autosplitter.memory_layout.screen_states]
+unknown = -1
+loading = 0
+logo = 1
+main_menu = 2
+in_game = 4
+
+# =============================================================================
+# LIVESPLIT-STYLE SCRIPT CONFIGURATION
+# =============================================================================
+
+[script]
+version = "1.0"
+name = "Elden Ring Script"
+description = "LiveSplit-style autosplitter script for Elden Ring"
+
+# Memory state definitions
+[script.state.virtualMemoryFlag]
+type = "ptr"
+pattern = "44 89 7c 24 28 4c 8b 25 ?? ?? ?? ?? 4d 85 e4"
+pattern_offset = 8
+pattern_length = 12
+
+[script.state.gameDataMan]
+type = "ptr"
+pattern = "48 8b 05 ?? ?? ?? ?? 48 85 c0 74 05 48 8b 40 58 c3 c3"
+pattern_offset = 3
+pattern_length = 7
+
+[script.state.inGame]
+type = "bool"
+base_watcher = "gameDataMan"
+offsets = [0x0]
+
+[script.state.playerHP]
+type = "i32"
+base_watcher = "gameDataMan"
+offsets = [0x8, 0x0, 0x190, 0x0, 0x138]
+
+[script.state.playerMaxHP]
+type = "i32"
+base_watcher = "gameDataMan"
+offsets = [0x8, 0x0, 0x190, 0x0, 0x13C]
+
+[script.state.igt]
+type = "i32"
+base_watcher = "gameDataMan"
+offsets = [0xA0]
+
+[script.state.isLoading]
+type = "u8"
+pattern = "89 44 24 40 48 8b 0d ?? ?? ?? ?? 48 85 c9 74"
+pattern_offset = 7
+pattern_length = 11
+offsets = [0x0, 0xE8]
+
+[script.hooks]
+start = "settings.autostart && current.inGame && !old.inGame && current.igt < 5000"
+reset = "settings.autoreset && !current.inGame && old.inGame"
+isLoading = "current.isLoading != 0"
+gameTime = "current.igt / 1000.0"
+split = "settings.splitOnDeath && current.playerHP == 0 && old.playerHP > 0"
+
+[script.settings]
+autostart = { default = true, label = "Auto-start timer", description = "Start timer when entering a new game" }
+autoreset = { default = false, label = "Auto-reset on menu", description = "Reset timer when returning to main menu" }
+splitOnDeath = { default = false, label = "Split on death", description = "Trigger split when player dies" }
+loadRemoval = { default = true, label = "Load removal", description = "Pause timer during loading screens" }

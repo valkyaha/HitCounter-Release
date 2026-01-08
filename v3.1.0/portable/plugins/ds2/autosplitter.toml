@@ -1,0 +1,151 @@
+# =============================================================================
+# AUTOSPLITTER CONFIGURATION
+# =============================================================================
+
+[autosplitter]
+enabled = true
+algorithm = "kill_counter"
+
+# Kill counter algorithm configuration (DS2 style)
+# Based on SoulSplitter by FrankvdStam
+[autosplitter.kill_counter_config]
+primary_pattern = "game_manager_imp"
+# Pointer chain: GameManagerImp -> 0x70 -> 0x28 -> 0x20 -> 0x8 + offset
+chain_offsets = [112, 40, 32, 8]  # 0x70, 0x28, 0x20, 0x8
+
+# Memory patterns for finding game data structures
+# Based on SoulSplitter by FrankvdStam
+# https://github.com/FrankvdStam/SoulSplitter
+
+[[autosplitter.patterns]]
+name = "game_manager_imp"
+pattern = "48 8B 35 ? ? ? ? 48 8B E9 48 85 F6"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "load_state"
+pattern = "48 89 05 ? ? ? ? B0 01 48 83 C4 28"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = []  # No dereference - raw address
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# Boss kill counters from GameManagerImp
+boss_counters = { base = "game_manager_imp", offsets = [0, 0x70, 0x28, 0x20, 0x8] }
+
+# Event flag manager from GameManagerImp
+event_flag_manager = { base = "game_manager_imp", offsets = [0, 0x70, 0x20] }
+
+# Player position from GameManagerImp
+position = { base = "game_manager_imp", offsets = [0, 0xD0, 0x100] }
+
+# Player attributes from GameManagerImp
+attributes = { base = "game_manager_imp", offsets = [0, 0xD0, 0x490] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# Loading check at LoadState + 0x11C == 1
+loading_offset = 0x11C
+
+# Position offsets from Position pointer
+position_x = 0x88
+position_y = 0x80
+position_z = 0x84
+
+# Soul level offset (i32)
+soul_level_offset = 0xD0
+
+# Attribute offsets from Attributes pointer (i16 values)
+[autosplitter.memory_layout.attributes]
+vigor = 0x0
+endurance = 0x2
+vitality = 0x4
+attunement = 0x6
+strength = 0x8
+dexterity = 0xA
+adaptability = 0xC
+intelligence = 0xE
+faith = 0x10
+
+# Boss kill counter offsets from BossCounters pointer
+# Each boss has a u32 kill count at these offsets
+[autosplitter.memory_layout.boss_offsets]
+last_giant = 0x0
+pursuer = 0x4
+dragonrider = 0x20
+old_dragonslayer = 0x24
+flexile_sentry = 0x28
+ruin_sentinels = 0x2C
+lost_sinner = 0x18
+belfry_gargoyles = 0x30
+covetous_demon = 0x58
+mytha = 0x54
+smelter_demon = 0x50
+old_iron_king = 0x1C
+scorpioness_najka = 0x3C
+royal_rat_authority = 0x40
+prowling_magus = 0x38
+dukes_dear_freja = 0x14
+royal_rat_vanguard = 0x34
+skeleton_lords = 0x44
+executioners_chariot = 0x48
+vendrick = 0x74
+darklurker = 0x70
+dragonslayer_armour = 0x60
+giant_lord = 0x68
+guardian = 0x6C
+looking_glass_knight = 0x5C
+demon_of_song = 0x64
+velstadt = 0x78
+twin_dragonriders = 0x8
+nashendra = 0xC
+aldia = 0x10
+# DLC bosses
+elana = 0x80
+sinh = 0x84
+afflicted_graverobber = 0x88
+fume_knight = 0x7C
+sir_alonne = 0x8C
+blue_smelter_demon = 0x90
+aava = 0x94
+burnt_ivory_king = 0x9C
+lud_and_zallen = 0xA0
+
+# =============================================================================
+# LIVESPLIT-STYLE SCRIPT CONFIGURATION
+# =============================================================================
+
+[script]
+version = "1.0"
+name = "Dark Souls II Script"
+description = "LiveSplit-style autosplitter script for Dark Souls II: Scholar of the First Sin"
+
+[script.state.gameManagerImp]
+type = "ptr"
+pattern = "48 8b 35 ?? ?? ?? ?? 48 8b e9 48 85 f6"
+pattern_offset = 3
+pattern_length = 7
+
+[script.state.inGame]
+type = "bool"
+base_watcher = "gameManagerImp"
+offsets = [0x0]
+
+[script.hooks]
+start = "settings.autostart && current.inGame && !old.inGame"
+reset = "settings.autoreset && !current.inGame && old.inGame"
+split = "settings.splitOnDeath && current.playerHP == 0 && old.playerHP > 0"
+
+[script.settings]
+autostart = { default = true, label = "Auto-start timer", description = "Start timer when entering a new game" }
+autoreset = { default = false, label = "Auto-reset on menu", description = "Reset timer when returning to main menu" }
+splitOnDeath = { default = false, label = "Split on death", description = "Trigger split when player dies" }

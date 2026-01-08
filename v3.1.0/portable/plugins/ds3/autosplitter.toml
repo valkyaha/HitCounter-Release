@@ -1,0 +1,129 @@
+[autosplitter]
+enabled = true
+algorithm = "category_decomposition"
+
+# Category decomposition algorithm configuration (DS3 style)
+# Based on SoulSplitter by FrankvdStam
+[autosplitter.category_config]
+primary_pattern = "sprj_event_flag_man"
+secondary_pattern = "field_area"
+base_offset = 536           # 0x218
+entry_size = 24             # 0x18
+category_count = 6
+category_multiplier = 168   # 0xa8
+# DS3 uses two-step pointer chain: FieldArea -> 0x0 -> 0x10
+field_area_base_offset = 0
+world_info_offset = 16      # 0x10
+world_info_struct_size = 56 # 0x38
+world_block_struct_size = 112  # 0x70
+
+# Memory patterns for finding game data structures (from SoulSplitter)
+[[autosplitter.patterns]]
+name = "sprj_event_flag_man"
+pattern = "48 c7 05 ? ? ? ? 00 00 00 00 48 8b 7c 24 38 c7 46 54 ff ff ff ff 48 83 c4 20 5e c3"
+rip_offset = 3
+instruction_len = 11
+
+[[autosplitter.patterns]]
+name = "field_area"
+pattern = "4C 8B 3D ? ? ? ? 8B 45 87 83 F8 FF 74 69 48 8D 4D 8F 48 89 4D 9F 89 45 8F 48 8D 55 8F 49 8B 4F 10"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = []  # No dereference - raw address
+
+[[autosplitter.patterns]]
+name = "new_menu_system"
+pattern = "48 8B 0D ? ? ? ? 48 8B 7C 24 20 48 8B 5C 24 30 48 85 C9"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "game_data_man"
+pattern = "48 8B 0D ? ? ? ? 4C 8D 44 24 40 45 33 C9 48 8B D3 40 88"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "player_ins"
+pattern = "48 8B 0D ? ? ? ? 45 33 C0 48 8D 55 E7 E8 ? ? ? ? 0F 2F"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "loading"
+pattern = "C6 05 ? ? ? ? ? E8 ? ? ? ? 84 C0 0F 94 C0 E9"
+rip_offset = 2
+instruction_len = 7
+pointer_offsets = []  # No dereference - raw address
+
+[[autosplitter.patterns]]
+name = "sprj_fade_imp"
+pattern = "48 8B 0D ? ? ? ? 4C 8D 4C 24 38 4C 8D 44 24 48 33 D2"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# Player game data from GameDataMan
+player_game_data = { base = "game_data_man", offsets = [0, 0x10] }
+
+# Player physics/position from PlayerIns
+sprj_chr_physics_module = { base = "player_ins", offsets = [0, 0x80, 0x40, 0x28] }
+
+# Blackscreen from SprjFadeImp
+blackscreen = { base = "sprj_fade_imp", offsets = [0, 0x8] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# In-game time at GameDataMan + 0xA4 (or 0x9C for older versions)
+igt_offset = 0xA4
+igt_offset_old = 0x9C
+
+# Loading state - read at (loading_addr - 1)
+loading_read_offset = -1
+
+# Blackscreen check at blackscreen_addr + 0x2EC
+blackscreen_offset = 0x2EC
+
+# Event flag calculation offsets
+event_flag_base_offset = 0x218
+event_flag_stride = 0x18
+block_stride = 0x70
+block_category_stride = 0xA8
+
+# Attribute offsets from PlayerGameData
+[autosplitter.memory_layout.attributes]
+vigor = 0x44
+attunement = 0x48
+endurance = 0x4C
+vitality = 0x6C
+strength = 0x50
+dexterity = 0x54
+intelligence = 0x58
+faith = 0x5C
+luck = 0x60
+soul_level = 0x68
+
+# =============================================================================
+# VERSION VARIANTS - Game version specific offsets
+# =============================================================================
+
+[[autosplitter.versions]]
+version = "default"
+description = "Dark Souls III (latest)"
+igt_offset = 0xA4
+
+[[autosplitter.versions]]
+version = "older"
+description = "Dark Souls III (older versions)"
+igt_offset = 0x9C

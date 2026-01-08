@@ -1,0 +1,52 @@
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+description = "All main game bosses (25 bosses)"
+boss_ids = [
+    "cleric_beast", "father_gascoigne", "blood_starved_beast", "vicar_amelia",
+    "witch_of_hemwick", "shadows_of_yharnam", "rom", "the_one_reborn",
+    "darkbeast_paarl", "micolash", "amygdala", "martyr_logarius",
+    "celestial_emissary", "ebrietas", "mergo", "gehrman", "moon_presence",
+    "pthumerian_descendant", "pthumerian_elder", "watchdog_of_the_old_lords",
+    "keeper_of_the_old_lords", "bloodletting_beast", "abhorrent_beast",
+    "loran_darkbeast", "yharnam_queen"
+]
+
+[[presets]]
+id = "all-bosses-dlc"
+name = "All Bosses + DLC"
+description = "All bosses including The Old Hunters (30 bosses)"
+boss_ids = [
+    "cleric_beast", "father_gascoigne", "blood_starved_beast", "vicar_amelia",
+    "witch_of_hemwick", "shadows_of_yharnam", "rom", "the_one_reborn",
+    "darkbeast_paarl", "micolash", "amygdala", "martyr_logarius",
+    "celestial_emissary", "ebrietas", "mergo", "gehrman", "moon_presence",
+    "pthumerian_descendant", "pthumerian_elder", "watchdog_of_the_old_lords",
+    "keeper_of_the_old_lords", "bloodletting_beast", "abhorrent_beast",
+    "loran_darkbeast", "yharnam_queen",
+    "ludwig", "laurence", "living_failures", "lady_maria", "orphan_of_kos"
+]
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Required story bosses only (8 bosses)"
+boss_ids = [
+    "father_gascoigne", "vicar_amelia", "shadows_of_yharnam", "rom",
+    "the_one_reborn", "micolash", "mergo", "gehrman"
+]
+
+[[presets]]
+id = "all-story"
+name = "All Story Bosses"
+description = "All main story bosses (17 bosses)"
+boss_ids = [
+    "cleric_beast", "father_gascoigne", "blood_starved_beast", "vicar_amelia",
+    "witch_of_hemwick", "shadows_of_yharnam", "rom", "the_one_reborn",
+    "darkbeast_paarl", "micolash", "amygdala", "martyr_logarius",
+    "celestial_emissary", "ebrietas", "mergo", "gehrman", "moon_presence"
+]

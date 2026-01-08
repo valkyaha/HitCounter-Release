@@ -1,0 +1,685 @@
+[plugin]
+id = "des"
+name = "Demon's Souls"
+short_name = "DeS"
+version = "1.1.0"
+author = "NYA Core"
+description = "Demon's Souls boss tracking (PS3/PS5 - manual splits only)"
+update_url = "https://raw.githubusercontent.com/valkyaha/NYA-Core-Assets/main/plugins/des/plugin.toml"
+
+# Save file location - Console game, configure manually in Settings > Plugin > Save Location
+# For RPCS3 emulator: typically ~/.config/rpcs3/dev_hdd0/home/00000001/savedata/
+# save_location_windows = ""
+# save_location_linux = "~/.config/rpcs3/dev_hdd0/home/00000001/savedata"
+# save_type = "folder"
+
+# No process detection - console game
+[process]
+names = []
+
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "RPCS3 (PS3 Emulator)"
+description = "Play Demon's Souls on PC with autosplitter support"
+author = "RPCS3 Team"
+version = "Latest"
+download_url = "https://rpcs3.net/download"
+category = "emulator"
+required = false
+
+[[tools]]
+name = "PS5 Remote Play"
+description = "Stream PS5 to PC for easier recording (Remake)"
+author = "Sony"
+version = "Latest"
+download_url = "https://www.playstation.com/en-us/remote-play/"
+category = "utility"
+required = false
+
+# No autosplitter for console games
+[autosplitter]
+enabled = false
+
+# Tutorial
+[[bosses]]
+id = "vanguard"
+name = "Vanguard"
+location = "Tutorial"
+required = true
+is_dlc = false
+order = 1
+
+# Boletarian Palace (World 1)
+[[bosses]]
+id = "phalanx"
+name = "Phalanx"
+location = "Boletarian Palace"
+required = true
+is_dlc = false
+order = 2
+
+[[bosses]]
+id = "tower_knight"
+name = "Tower Knight"
+location = "Boletarian Palace"
+required = true
+is_dlc = false
+order = 3
+
+[[bosses]]
+id = "penetrator"
+name = "Penetrator"
+location = "Boletarian Palace"
+required = true
+is_dlc = false
+order = 4
+
+[[bosses]]
+id = "old_king_allant"
+name = "Old King Allant"
+location = "Boletarian Palace"
+required = true
+is_dlc = false
+order = 5
+aliases = ["False King", "False Allant"]
+
+# Stonefang Tunnel (World 2)
+[[bosses]]
+id = "armor_spider"
+name = "Armor Spider"
+location = "Stonefang Tunnel"
+required = true
+is_dlc = false
+order = 6
+
+[[bosses]]
+id = "flamelurker"
+name = "Flamelurker"
+location = "Stonefang Tunnel"
+required = true
+is_dlc = false
+order = 7
+
+[[bosses]]
+id = "dragon_god"
+name = "Dragon God"
+location = "Stonefang Tunnel"
+required = true
+is_dlc = false
+order = 8
+
+# Tower of Latria (World 3)
+[[bosses]]
+id = "fools_idol"
+name = "Fool's Idol"
+location = "Tower of Latria"
+required = true
+is_dlc = false
+order = 9
+
+[[bosses]]
+id = "maneater"
+name = "Maneater"
+location = "Tower of Latria"
+required = true
+is_dlc = false
+order = 10
+
+[[bosses]]
+id = "old_monk"
+name = "Old Monk"
+location = "Tower of Latria"
+required = true
+is_dlc = false
+order = 11
+
+# Shrine of Storms (World 4)
+[[bosses]]
+id = "adjudicator"
+name = "Adjudicator"
+location = "Shrine of Storms"
+required = true
+is_dlc = false
+order = 12
+
+[[bosses]]
+id = "old_hero"
+name = "Old Hero"
+location = "Shrine of Storms"
+required = true
+is_dlc = false
+order = 13
+
+[[bosses]]
+id = "storm_king"
+name = "Storm King"
+location = "Shrine of Storms"
+required = true
+is_dlc = false
+order = 14
+
+# Valley of Defilement (World 5)
+[[bosses]]
+id = "leechmonger"
+name = "Leechmonger"
+location = "Valley of Defilement"
+required = true
+is_dlc = false
+order = 15
+
+[[bosses]]
+id = "dirty_colossus"
+name = "Dirty Colossus"
+location = "Valley of Defilement"
+required = true
+is_dlc = false
+order = 16
+
+[[bosses]]
+id = "maiden_astraea"
+name = "Maiden Astraea"
+location = "Valley of Defilement"
+required = true
+is_dlc = false
+order = 17
+
+# Final Boss
+[[bosses]]
+id = "king_allant"
+name = "King Allant"
+location = "End of the World"
+required = true
+is_dlc = false
+order = 18
+aliases = ["True Allant", "Slug Allant"]
+
+# Presets
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+description = "All bosses (18 bosses)"
+boss_ids = [
+    "vanguard", "phalanx", "tower_knight", "penetrator", "old_king_allant",
+    "armor_spider", "flamelurker", "dragon_god",
+    "fools_idol", "maneater", "old_monk",
+    "adjudicator", "old_hero", "storm_king",
+    "leechmonger", "dirty_colossus", "maiden_astraea",
+    "king_allant"
+]
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Speedrun route (18 bosses)"
+boss_ids = [
+    "vanguard", "phalanx", "tower_knight", "penetrator", "old_king_allant",
+    "armor_spider", "flamelurker", "dragon_god",
+    "fools_idol", "maneater", "old_monk",
+    "adjudicator", "old_hero", "storm_king",
+    "leechmonger", "dirty_colossus", "maiden_astraea",
+    "king_allant"
+]
+
+# =============================================================================
+# ARCHSTONES (Warp Points)
+# =============================================================================
+
+# The Nexus
+[[archstones]]
+id = "nexus"
+name = "The Nexus"
+location = "The Nexus"
+flag_id = 0
+is_dlc = false
+
+# Boletarian Palace (World 1)
+[[archstones]]
+id = "boletarian_palace_1"
+name = "Boletarian Palace"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "phalanx_archstone"
+name = "Phalanx Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "tower_knight_archstone"
+name = "Tower Knight Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "penetrator_archstone"
+name = "Penetrator Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "false_king_archstone"
+name = "False King Archstone"
+location = "Boletarian Palace"
+flag_id = 0
+is_dlc = false
+
+# Stonefang Tunnel (World 2)
+[[archstones]]
+id = "stonefang_tunnel"
+name = "Stonefang Tunnel"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "armor_spider_archstone"
+name = "Armor Spider Archstone"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "flamelurker_archstone"
+name = "Flamelurker Archstone"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "dragon_god_archstone"
+name = "Dragon God Archstone"
+location = "Stonefang Tunnel"
+flag_id = 0
+is_dlc = false
+
+# Tower of Latria (World 3)
+[[archstones]]
+id = "tower_of_latria"
+name = "Tower of Latria"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "fools_idol_archstone"
+name = "Fool's Idol Archstone"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "maneater_archstone"
+name = "Maneater Archstone"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "old_monk_archstone"
+name = "Old Monk Archstone"
+location = "Tower of Latria"
+flag_id = 0
+is_dlc = false
+
+# Shrine of Storms (World 4)
+[[archstones]]
+id = "shrine_of_storms"
+name = "Shrine of Storms"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "adjudicator_archstone"
+name = "Adjudicator Archstone"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "old_hero_archstone"
+name = "Old Hero Archstone"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "storm_king_archstone"
+name = "Storm King Archstone"
+location = "Shrine of Storms"
+flag_id = 0
+is_dlc = false
+
+# Valley of Defilement (World 5)
+[[archstones]]
+id = "valley_of_defilement"
+name = "Valley of Defilement"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "leechmonger_archstone"
+name = "Leechmonger Archstone"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "dirty_colossus_archstone"
+name = "Dirty Colossus Archstone"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+[[archstones]]
+id = "maiden_astraea_archstone"
+name = "Maiden Astraea Archstone"
+location = "Valley of Defilement"
+flag_id = 0
+is_dlc = false
+
+# =============================================================================
+# KNOWN FLAGS - Demon Souls, Key Items, NPCs
+# =============================================================================
+
+# Demon Souls (Boss Souls)
+[[known_flags]]
+id = "phalanx_soul"
+name = "Phalanx Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "tower_knight_soul"
+name = "Tower Knight's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "penetrator_soul"
+name = "Penetrator's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "false_king_soul"
+name = "False King's Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "armor_spider_soul"
+name = "Hard Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "flamelurker_soul"
+name = "Red Hot Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "dragon_god_soul"
+name = "Dragon Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "fools_idol_soul"
+name = "Doll Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "maneater_soul"
+name = "Mixed Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "old_monk_soul"
+name = "Yellow Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "adjudicator_soul"
+name = "Swollen Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "old_hero_soul"
+name = "Hero Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "storm_king_soul"
+name = "Storm Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "leechmonger_soul"
+name = "Writhing Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "dirty_colossus_soul"
+name = "Eroded Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+[[known_flags]]
+id = "maiden_astraea_soul"
+name = "Pureblood Demon's Soul"
+category = "demon_souls"
+flag_id = 0
+
+# Key Items
+[[known_flags]]
+id = "sodden_ring"
+name = "Sodden Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "thief_ring"
+name = "Thief's Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "cling_ring"
+name = "Cling Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "graverobber_ring"
+name = "Graverobber's Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "providential_ring"
+name = "Providential Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "ring_of_avarice"
+name = "Ring of Avarice"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "jade_hair_ornament"
+name = "Jade Hair Ornament"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "iron_key_ring"
+name = "Iron Key Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "official_second_floor_key"
+name = "Official's Second Floor Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "bloody_iron_key"
+name = "Bloody Iron Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "prison_of_hope_cell_key"
+name = "Prison of Hope Cell Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "prison_of_hope_special_key"
+name = "Prison of Hope Special Key"
+category = "key_items"
+flag_id = 0
+
+# World Tendency Events
+[[known_flags]]
+id = "pure_white_1"
+name = "Pure White World 1"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_black_1"
+name = "Pure Black World 1"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_white_2"
+name = "Pure White World 2"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_black_2"
+name = "Pure Black World 2"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_white_3"
+name = "Pure White World 3"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_black_3"
+name = "Pure Black World 3"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_white_4"
+name = "Pure White World 4"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_black_4"
+name = "Pure Black World 4"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_white_5"
+name = "Pure White World 5"
+category = "world_tendency"
+flag_id = 0
+
+[[known_flags]]
+id = "pure_black_5"
+name = "Pure Black World 5"
+category = "world_tendency"
+flag_id = 0
+
+# NPCs Rescued/Met
+[[known_flags]]
+id = "yuria_rescued"
+name = "Yuria the Witch Rescued"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "biorr_rescued"
+name = "Biorr Rescued"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "rydell_rescued"
+name = "Rydell Rescued"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "sage_freke_rescued"
+name = "Sage Freke Rescued"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "saint_urbain_rescued"
+name = "Saint Urbain Rescued"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "ostrava_rescued_1"
+name = "Ostrava Rescued (1-1)"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "ostrava_rescued_2"
+name = "Ostrava Rescued (1-2)"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "ostrava_rescued_3"
+name = "Ostrava Rescued (1-3)"
+category = "npc"
+flag_id = 0
+
+# Endings
+[[known_flags]]
+id = "ending_good"
+name = "Ending: The Slayer of Demons"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_bad"
+name = "Ending: The Demon's Servant"
+category = "endings"
+flag_id = 0

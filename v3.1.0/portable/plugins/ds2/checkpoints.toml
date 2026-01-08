@@ -1,0 +1,525 @@
+# =============================================================================
+# BONFIRES
+# =============================================================================
+
+# Things Betwixt
+[[bonfires]]
+id = "fire_keepers_dwelling"
+name = "Fire Keepers' Dwelling"
+location = "Things Betwixt"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "things_betwixt"
+name = "The Far Fire"
+location = "Things Betwixt"
+flag_id = 0
+is_dlc = false
+
+# Majula
+[[bonfires]]
+id = "majula"
+name = "Majula"
+location = "Majula"
+flag_id = 0
+is_dlc = false
+
+# Forest of Fallen Giants
+[[bonfires]]
+id = "crestfallens_retreat"
+name = "Crestfallen's Retreat"
+location = "Forest of Fallen Giants"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "cardinal_tower"
+name = "Cardinal Tower"
+location = "Forest of Fallen Giants"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "soldiers_rest"
+name = "Soldiers' Rest"
+location = "Forest of Fallen Giants"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "the_place_unbeknownst"
+name = "The Place Unbeknownst"
+location = "Forest of Fallen Giants"
+flag_id = 0
+is_dlc = false
+
+# Heide's Tower of Flame
+[[bonfires]]
+id = "heides_ruin"
+name = "Heide's Ruin"
+location = "Heide's Tower of Flame"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "tower_of_flame"
+name = "Tower of Flame"
+location = "Heide's Tower of Flame"
+flag_id = 0
+is_dlc = false
+
+# No-man's Wharf
+[[bonfires]]
+id = "unseen_path_to_heide"
+name = "Unseen Path to Heide"
+location = "No-man's Wharf"
+flag_id = 0
+is_dlc = false
+
+# Lost Bastille
+[[bonfires]]
+id = "servants_quarters"
+name = "Servants' Quarters"
+location = "Lost Bastille"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "mcduffs_workshop"
+name = "McDuff's Workshop"
+location = "Lost Bastille"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "straid_cell"
+name = "Straid's Cell"
+location = "Lost Bastille"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "tower_apart"
+name = "Tower Apart"
+location = "Lost Bastille"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "sinners_rise"
+name = "Sinner's Rise"
+location = "Sinner's Rise"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "saltfort"
+name = "Saltfort"
+location = "Sinner's Rise"
+flag_id = 0
+is_dlc = false
+
+# Huntsman's Copse
+[[bonfires]]
+id = "undead_refuge"
+name = "Undead Refuge"
+location = "Huntsman's Copse"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "bridge_approach"
+name = "Bridge Approach"
+location = "Huntsman's Copse"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "undead_lockaway"
+name = "Undead Lockaway"
+location = "Huntsman's Copse"
+flag_id = 0
+is_dlc = false
+
+# Earthen Peak
+[[bonfires]]
+id = "lower_earthen_peak"
+name = "Lower Earthen Peak"
+location = "Earthen Peak"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "central_earthen_peak"
+name = "Central Earthen Peak"
+location = "Earthen Peak"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "upper_earthen_peak"
+name = "Upper Earthen Peak"
+location = "Earthen Peak"
+flag_id = 0
+is_dlc = false
+
+# Iron Keep
+[[bonfires]]
+id = "threshold_bridge"
+name = "Threshold Bridge"
+location = "Iron Keep"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "ironhearth_hall"
+name = "Ironhearth Hall"
+location = "Iron Keep"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "eygil_idol"
+name = "Eygil's Idol"
+location = "Iron Keep"
+flag_id = 0
+is_dlc = false
+
+# Shaded Woods
+[[bonfires]]
+id = "ruined_fork_road"
+name = "Ruined Fork Road"
+location = "Shaded Woods"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "shaded_ruins"
+name = "Shaded Ruins"
+location = "Shaded Woods"
+flag_id = 0
+is_dlc = false
+
+# Doors of Pharros
+[[bonfires]]
+id = "gyrm_greatshield"
+name = "Gyrm's Respite"
+location = "Doors of Pharros"
+flag_id = 0
+is_dlc = false
+
+# Brightstone Cove Tseldora
+[[bonfires]]
+id = "royal_army_campsite"
+name = "Royal Army Campsite"
+location = "Brightstone Cove Tseldora"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "chapel_threshold"
+name = "Chapel Threshold"
+location = "Brightstone Cove Tseldora"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "lower_brightstone_cove"
+name = "Lower Brightstone Cove"
+location = "Brightstone Cove Tseldora"
+flag_id = 0
+is_dlc = false
+
+# The Pit / Black Gulch
+[[bonfires]]
+id = "grave_entrance"
+name = "Grave Entrance"
+location = "Grave of Saints"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "upper_gutter"
+name = "Upper Gutter"
+location = "The Gutter"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "central_gutter"
+name = "Central Gutter"
+location = "The Gutter"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "black_gulch_mouth"
+name = "Black Gulch Mouth"
+location = "Black Gulch"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "hidden_chamber"
+name = "Hidden Chamber"
+location = "Black Gulch"
+flag_id = 0
+is_dlc = false
+
+# Drangleic Castle
+[[bonfires]]
+id = "kings_gate"
+name = "King's Gate"
+location = "Drangleic Castle"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "central_castle"
+name = "Central Castle Drangleic"
+location = "Drangleic Castle"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "forgotten_chamber"
+name = "Forgotten Chamber"
+location = "Drangleic Castle"
+flag_id = 0
+is_dlc = false
+
+# Shrine of Amana
+[[bonfires]]
+id = "tower_of_prayer"
+name = "Tower of Prayer"
+location = "Shrine of Amana"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "crumbled_ruins"
+name = "Crumbled Ruins"
+location = "Shrine of Amana"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "rhoys_resting_place"
+name = "Rhoy's Resting Place"
+location = "Shrine of Amana"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "rise_of_the_dead"
+name = "Rise of the Dead"
+location = "Shrine of Amana"
+flag_id = 0
+is_dlc = false
+
+# Undead Crypt
+[[bonfires]]
+id = "undead_crypt_entrance"
+name = "Undead Crypt Entrance"
+location = "Undead Crypt"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "undead_ditch"
+name = "Undead Ditch"
+location = "Undead Crypt"
+flag_id = 0
+is_dlc = false
+
+# Aldia's Keep
+[[bonfires]]
+id = "foregarden"
+name = "Foregarden"
+location = "Aldia's Keep"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "ritual_site"
+name = "Ritual Site"
+location = "Aldia's Keep"
+flag_id = 0
+is_dlc = false
+
+# Dragon Aerie / Dragon Shrine
+[[bonfires]]
+id = "dragon_aerie"
+name = "Dragon Aerie"
+location = "Dragon Aerie"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "shrine_entrance"
+name = "Shrine Entrance"
+location = "Dragon Shrine"
+flag_id = 0
+is_dlc = false
+
+[[bonfires]]
+id = "sanctum_walk"
+name = "Sanctum Walk"
+location = "Dragon Shrine"
+flag_id = 0
+is_dlc = false
+
+# Memories
+[[bonfires]]
+id = "place_unbeknownst"
+name = "The Place Unbeknownst"
+location = "Memory of Jeigh"
+flag_id = 0
+is_dlc = false
+
+# Throne of Want
+[[bonfires]]
+id = "throne_of_want"
+name = "King's Gate"
+location = "Throne of Want"
+flag_id = 0
+is_dlc = false
+
+# =============================================================================
+# DLC - CROWN OF THE SUNKEN KING
+# =============================================================================
+
+[[bonfires]]
+id = "sanctum_walk_sunken"
+name = "Sanctum Walk"
+location = "Shulva, Sanctum City"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "priestly_chamber"
+name = "Priestly Chamber"
+location = "Shulva, Sanctum City"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "hidden_sanctum_chamber"
+name = "Hidden Sanctum Chamber"
+location = "Shulva, Sanctum City"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "lair_of_the_imperfect"
+name = "Lair of the Imperfect"
+location = "Shulva, Sanctum City"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "sanctum_interior"
+name = "Sanctum Interior"
+location = "Dragon's Sanctum"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "sanctum_nadir"
+name = "Sanctum Nadir"
+location = "Dragon's Sanctum"
+flag_id = 0
+is_dlc = true
+
+# =============================================================================
+# DLC - CROWN OF THE OLD IRON KING
+# =============================================================================
+
+[[bonfires]]
+id = "throne_floor"
+name = "Throne Floor"
+location = "Brume Tower"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "smelter_throne"
+name = "Smelter Throne"
+location = "Brume Tower"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "iron_hallway_entrance"
+name = "Iron Hallway Entrance"
+location = "Brume Tower"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "ironhearth_hall_brume"
+name = "Ironhearth Hall"
+location = "Brume Tower"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "uppermost_floor"
+name = "Uppermost Floor"
+location = "Brume Tower"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "foyers"
+name = "Foyer"
+location = "Brume Tower"
+flag_id = 0
+is_dlc = true
+
+# =============================================================================
+# DLC - CROWN OF THE IVORY KING
+# =============================================================================
+
+[[bonfires]]
+id = "outer_wall"
+name = "Outer Wall"
+location = "Frozen Eleum Loyce"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "abandoned_dwelling"
+name = "Abandoned Dwelling"
+location = "Frozen Eleum Loyce"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "expulsion_chamber"
+name = "Expulsion Chamber"
+location = "Frozen Eleum Loyce"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "inner_wall"
+name = "Inner Wall"
+location = "Frozen Eleum Loyce"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "lower_garrison"
+name = "Lower Garrison"
+location = "Frozen Eleum Loyce"
+flag_id = 0
+is_dlc = true
+
+[[bonfires]]
+id = "grand_cathedral"
+name = "Grand Cathedral"
+location = "Frozen Eleum Loyce"
+flag_id = 0
+is_dlc = true

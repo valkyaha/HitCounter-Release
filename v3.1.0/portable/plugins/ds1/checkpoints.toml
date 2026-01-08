@@ -1,0 +1,261 @@
+# =============================================================================
+# BONFIRES - All 44 bonfires from SoulSplitter
+# =============================================================================
+
+[[bonfires]]
+id = "undead_asylum_courtyard"
+name = "Undead Asylum - Courtyard"
+location = "Undead Asylum"
+flag_id = 1811960
+
+[[bonfires]]
+id = "undead_asylum_interior"
+name = "Undead Asylum - Interior"
+location = "Undead Asylum"
+flag_id = 1811961
+
+[[bonfires]]
+id = "firelink_shrine"
+name = "Firelink Shrine"
+location = "Firelink Shrine"
+flag_id = 1021960
+
+[[bonfires]]
+id = "firelink_altar"
+name = "Firelink Altar - Lordvessel"
+location = "Firelink Altar"
+flag_id = 1801960
+
+[[bonfires]]
+id = "undead_burg"
+name = "Undead Burg"
+location = "Undead Burg"
+flag_id = 1011962
+
+[[bonfires]]
+id = "undead_burg_sunlight"
+name = "Undead Burg - Sunlight Altar"
+location = "Undead Burg"
+flag_id = 1011961
+
+[[bonfires]]
+id = "undead_parish"
+name = "Undead Parish"
+location = "Undead Parish"
+flag_id = 1011964
+
+[[bonfires]]
+id = "darkroot_garden"
+name = "Darkroot Garden"
+location = "Darkroot Garden"
+flag_id = 1201961
+
+[[bonfires]]
+id = "darkroot_basin"
+name = "Darkroot Basin"
+location = "Darkroot Basin"
+flag_id = 1601961
+
+[[bonfires]]
+id = "depths"
+name = "Depths"
+location = "Depths"
+flag_id = 1001960
+
+[[bonfires]]
+id = "blighttown_catwalk"
+name = "Blighttown Catwalk"
+location = "Blighttown"
+flag_id = 1401962
+
+[[bonfires]]
+id = "blighttown_swamp"
+name = "Blighttown Swamp"
+location = "Blighttown"
+flag_id = 1401961
+
+[[bonfires]]
+id = "daughter_of_chaos"
+name = "Daughter of Chaos"
+location = "Quelaag's Domain"
+flag_id = 1401960
+
+[[bonfires]]
+id = "great_hollow"
+name = "The Great Hollow"
+location = "The Great Hollow"
+flag_id = 1321962
+
+[[bonfires]]
+id = "ash_lake"
+name = "Ash Lake"
+location = "Ash Lake"
+flag_id = 1321961
+
+[[bonfires]]
+id = "ash_lake_dragon"
+name = "Ash Lake - Stone Dragon"
+location = "Ash Lake"
+flag_id = 1321960
+
+[[bonfires]]
+id = "demon_ruins_entrance"
+name = "Demon Ruins - Entrance"
+location = "Demon Ruins"
+flag_id = 1411961
+
+[[bonfires]]
+id = "demon_ruins_staircase"
+name = "Demon Ruins - Staircase"
+location = "Demon Ruins"
+flag_id = 1411962
+
+[[bonfires]]
+id = "demon_ruins_catacombs"
+name = "Demon Ruins - Catacombs"
+location = "Demon Ruins"
+flag_id = 1411963
+
+[[bonfires]]
+id = "lost_izalith_lava"
+name = "Lost Izalith - Lava Pits"
+location = "Lost Izalith"
+flag_id = 1411964
+
+[[bonfires]]
+id = "lost_izalith_2"
+name = "Lost Izalith 2 (illusory wall)"
+location = "Lost Izalith"
+flag_id = 1411960
+
+[[bonfires]]
+id = "lost_izalith_heart"
+name = "Lost Izalith - Heart of Chaos"
+location = "Lost Izalith"
+flag_id = 1411950
+
+[[bonfires]]
+id = "sens_fortress"
+name = "Sen's Fortress"
+location = "Sen's Fortress"
+flag_id = 1501961
+
+[[bonfires]]
+id = "anor_londo"
+name = "Anor Londo"
+location = "Anor Londo"
+flag_id = 1511960
+
+[[bonfires]]
+id = "anor_londo_darkmoon"
+name = "Anor Londo - Darkmoon Tomb"
+location = "Anor Londo"
+flag_id = 1511962
+
+[[bonfires]]
+id = "anor_londo_residence"
+name = "Anor Londo - Residence"
+location = "Anor Londo"
+flag_id = 1511961
+
+[[bonfires]]
+id = "anor_londo_princess"
+name = "Anor Londo - Chamber of the Princess"
+location = "Anor Londo"
+flag_id = 1511950
+
+[[bonfires]]
+id = "painted_world"
+name = "Painted World of Ariamis"
+location = "Painted World of Ariamis"
+flag_id = 1101960
+
+[[bonfires]]
+id = "dukes_archives_1"
+name = "Duke's Archives 1 (entrance)"
+location = "Duke's Archives"
+flag_id = 1701962
+
+[[bonfires]]
+id = "dukes_archives_2"
+name = "Duke's Archives 2 (prison cell)"
+location = "Duke's Archives"
+flag_id = 1701961
+
+[[bonfires]]
+id = "dukes_archives_3"
+name = "Duke's Archives 3 (balcony)"
+location = "Duke's Archives"
+flag_id = 1701960
+
+[[bonfires]]
+id = "crystal_cave"
+name = "Crystal Cave"
+location = "Crystal Cave"
+flag_id = 1701950
+
+[[bonfires]]
+id = "catacombs_1"
+name = "Catacombs 1 (necromancer)"
+location = "Catacombs"
+flag_id = 1301960
+
+[[bonfires]]
+id = "catacombs_2"
+name = "Catacombs 2 (illusory wall)"
+location = "Catacombs"
+flag_id = 1301961
+
+[[bonfires]]
+id = "tomb_giants_patches"
+name = "Tomb of the Giants - Patches"
+location = "Tomb of the Giants"
+flag_id = 1311961
+
+[[bonfires]]
+id = "tomb_giants_2"
+name = "Tomb of the Giants 2"
+location = "Tomb of the Giants"
+flag_id = 1311960
+
+[[bonfires]]
+id = "tomb_giants_altar"
+name = "Tomb of the Giants - Altar of the Gravelord"
+location = "Tomb of the Giants"
+flag_id = 1311950
+
+[[bonfires]]
+id = "the_abyss"
+name = "The Abyss"
+location = "The Abyss"
+flag_id = 1601950
+
+[[bonfires]]
+id = "oolacile_sanctuary_garden"
+name = "Oolacile - Sanctuary Garden"
+location = "Oolacile"
+flag_id = 1211963
+
+[[bonfires]]
+id = "oolacile_sanctuary"
+name = "Oolacile - Sanctuary"
+location = "Oolacile"
+flag_id = 1211961
+
+[[bonfires]]
+id = "oolacile_township"
+name = "Oolacile - Township"
+location = "Oolacile"
+flag_id = 1211962
+
+[[bonfires]]
+id = "oolacile_dungeon"
+name = "Oolacile - Township Dungeon"
+location = "Oolacile"
+flag_id = 1211964
+
+[[bonfires]]
+id = "chasm_of_abyss"
+name = "Chasm of the Abyss"
+location = "Chasm of the Abyss"
+flag_id = 1211950

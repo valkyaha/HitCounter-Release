@@ -1,0 +1,341 @@
+# =============================================================================
+# IDOLS - All 47 Sculptor's Idols from SoulSplitter
+# =============================================================================
+
+# Ashina Outskirts
+[[idols]]
+id = "dilapidated_temple"
+name = "Dilapidated Temple"
+location = "Ashina Outskirts"
+flag_id = 11100000
+
+[[idols]]
+id = "ashina_outskirts"
+name = "Ashina Outskirts"
+location = "Ashina Outskirts"
+flag_id = 11100006
+
+[[idols]]
+id = "outskirts_wall_gate"
+name = "Outskirts Wall - Gate Path"
+location = "Ashina Outskirts"
+flag_id = 11100001
+
+[[idols]]
+id = "outskirts_wall_stairway"
+name = "Outskirts Wall - Stairway"
+location = "Ashina Outskirts"
+flag_id = 11100002
+
+[[idols]]
+id = "underbridge_valley"
+name = "Underbridge Valley"
+location = "Ashina Outskirts"
+flag_id = 11100003
+
+[[idols]]
+id = "ashina_castle_fortress"
+name = "Ashina Castle Fortress"
+location = "Ashina Outskirts"
+flag_id = 11100004
+
+[[idols]]
+id = "ashina_castle_gate"
+name = "Ashina Castle Gate"
+location = "Ashina Outskirts"
+flag_id = 11100005
+
+[[idols]]
+id = "flames_of_hatred"
+name = "Flames of Hatred"
+location = "Ashina Outskirts"
+flag_id = 11100007
+
+# Hirata Estate
+[[idols]]
+id = "dragonspring"
+name = "Dragonspring - Hirata Estate"
+location = "Hirata Estate"
+flag_id = 11000000
+
+[[idols]]
+id = "estate_path"
+name = "Estate Path"
+location = "Hirata Estate"
+flag_id = 11000001
+
+[[idols]]
+id = "bamboo_thicket"
+name = "Bamboo Thicket Slope"
+location = "Hirata Estate"
+flag_id = 11000002
+
+[[idols]]
+id = "hirata_main_hall"
+name = "Hirata Estate - Main Hall"
+location = "Hirata Estate"
+flag_id = 11000003
+
+[[idols]]
+id = "hirata_audience"
+name = "Hirata Audience Chamber"
+location = "Hirata Estate"
+flag_id = 11000005
+
+[[idols]]
+id = "hirata_hidden_temple"
+name = "Hirata Estate - Hidden Temple"
+location = "Hirata Estate"
+flag_id = 11000004
+
+# Ashina Castle
+[[idols]]
+id = "ashina_castle"
+name = "Ashina Castle"
+location = "Ashina Castle"
+flag_id = 11110000
+
+[[idols]]
+id = "upper_tower_antechamber"
+name = "Upper Tower - Antechamber"
+location = "Ashina Castle"
+flag_id = 11110001
+
+[[idols]]
+id = "upper_tower_dojo"
+name = "Upper Tower - Ashina Dojo"
+location = "Ashina Castle"
+flag_id = 11110007
+
+[[idols]]
+id = "castle_tower_lookout"
+name = "Castle Tower Lookout"
+location = "Ashina Castle"
+flag_id = 11110002
+
+[[idols]]
+id = "upper_tower_kuros_room"
+name = "Upper Tower - Kuro's Room"
+location = "Ashina Castle"
+flag_id = 11110003
+
+[[idols]]
+id = "old_grave"
+name = "Old Grave"
+location = "Ashina Castle"
+flag_id = 11110006
+
+[[idols]]
+id = "great_serpent_shrine"
+name = "Great Serpent Shrine"
+location = "Ashina Castle"
+flag_id = 11110004
+
+[[idols]]
+id = "abandoned_dungeon_entrance"
+name = "Abandoned Dungeon Entrance"
+location = "Ashina Castle"
+flag_id = 11110005
+
+[[idols]]
+id = "ashina_reservoir"
+name = "Ashina Reservoir"
+location = "Ashina Castle"
+flag_id = 11120001
+
+[[idols]]
+id = "near_secret_passage"
+name = "Near Secret Passage"
+location = "Ashina Castle"
+flag_id = 11120000
+
+# Abandoned Dungeon
+[[idols]]
+id = "underground_waterway"
+name = "Underground Waterway"
+location = "Abandoned Dungeon"
+flag_id = 11300000
+
+[[idols]]
+id = "bottomless_hole"
+name = "Bottomless Hole"
+location = "Abandoned Dungeon"
+flag_id = 11300001
+
+# Senpou Temple
+[[idols]]
+id = "senpou_temple"
+name = "Senpou Temple, Mt. Kongo"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000000
+
+[[idols]]
+id = "shugendo"
+name = "Shugendo"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000001
+
+[[idols]]
+id = "temple_grounds"
+name = "Temple Grounds"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000002
+
+[[idols]]
+id = "main_hall"
+name = "Main Hall"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000003
+
+[[idols]]
+id = "inner_sanctum"
+name = "Inner Sanctum"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000004
+
+[[idols]]
+id = "sunken_valley_cavern"
+name = "Sunken Valley Cavern"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000005
+
+[[idols]]
+id = "bell_demons_temple"
+name = "Bell Demon's Temple"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000006
+
+# Sunken Valley
+[[idols]]
+id = "under_shrine_valley"
+name = "Under-Shrine Valley"
+location = "Sunken Valley"
+flag_id = 11700007
+
+[[idols]]
+id = "sunken_valley"
+name = "Sunken Valley"
+location = "Sunken Valley"
+flag_id = 11700000
+
+[[idols]]
+id = "gun_fort"
+name = "Gun Fort"
+location = "Sunken Valley"
+flag_id = 11700001
+
+[[idols]]
+id = "riven_cave"
+name = "Riven Cave"
+location = "Sunken Valley"
+flag_id = 11700002
+
+[[idols]]
+id = "bodhisattva_valley"
+name = "Bodhisattva Valley"
+location = "Sunken Valley"
+flag_id = 11700008
+
+[[idols]]
+id = "guardian_ape_watering_hole"
+name = "Guardian Ape's Watering Hole"
+location = "Sunken Valley"
+flag_id = 11700003
+
+# Ashina Depths
+[[idols]]
+id = "ashina_depths"
+name = "Ashina Depths"
+location = "Ashina Depths"
+flag_id = 11700005
+
+[[idols]]
+id = "poison_pool"
+name = "Poison Pool"
+location = "Ashina Depths"
+flag_id = 11700004
+
+[[idols]]
+id = "guardian_ape_burrow"
+name = "Guardian Ape's Burrow"
+location = "Ashina Depths"
+flag_id = 11700006
+
+[[idols]]
+id = "hidden_forest"
+name = "Hidden Forest"
+location = "Ashina Depths"
+flag_id = 11500000
+
+[[idols]]
+id = "mibu_village"
+name = "Mibu Village"
+location = "Ashina Depths"
+flag_id = 11500001
+
+[[idols]]
+id = "water_mill"
+name = "Water Mill"
+location = "Ashina Depths"
+flag_id = 11500002
+
+[[idols]]
+id = "wedding_cave_door"
+name = "Wedding Cave Door"
+location = "Ashina Depths"
+flag_id = 11500003
+
+# Fountainhead Palace
+[[idols]]
+id = "fountainhead_palace"
+name = "Fountainhead Palace"
+location = "Fountainhead Palace"
+flag_id = 12500000
+
+[[idols]]
+id = "vermilion_bridge"
+name = "Vermilion Bridge"
+location = "Fountainhead Palace"
+flag_id = 12500001
+
+[[idols]]
+id = "mibu_manor"
+name = "Mibu Manor"
+location = "Fountainhead Palace"
+flag_id = 12500006
+
+[[idols]]
+id = "flower_viewing_stage"
+name = "Flower Viewing Stage"
+location = "Fountainhead Palace"
+flag_id = 12500002
+
+[[idols]]
+id = "great_sakura"
+name = "Great Sakura"
+location = "Fountainhead Palace"
+flag_id = 12500003
+
+[[idols]]
+id = "palace_grounds"
+name = "Palace Grounds"
+location = "Fountainhead Palace"
+flag_id = 12500004
+
+[[idols]]
+id = "feeding_grounds"
+name = "Feeding Grounds"
+location = "Fountainhead Palace"
+flag_id = 12500007
+
+[[idols]]
+id = "near_pot_noble"
+name = "Near Pot Noble"
+location = "Fountainhead Palace"
+flag_id = 12500008
+
+[[idols]]
+id = "sanctuary"
+name = "Sanctuary"
+location = "Fountainhead Palace"
+flag_id = 12500005

@@ -1,0 +1,39 @@
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "DS3 Connection Manager"
+description = "Tool to manage online/offline mode and backups"
+author = "TechtonicaDS3"
+version = "1.0.1"
+download_url = "https://github.com/TechtonicaDS3/DS3ConnectionManager/releases/latest/download/DS3ConnectionManager.zip"
+category = "utility"
+required = false
+
+[[tools]]
+name = "Honest Merchant"
+description = "Practice tool for item and stats management"
+author = "Dawid_P"
+version = "2.0.0"
+download_url = "https://github.com/UnboundNova/HonestMerchant/releases/latest/download/HonestMerchant.zip"
+category = "practice"
+required = false
+
+[[tools]]
+name = "SoulSplitter"
+description = "LiveSplit auto-splitter (alternative to built-in)"
+author = "FrankvdStam"
+version = "3.0.0"
+download_url = "https://github.com/FrankvdStam/SoulSplitter/releases/latest/download/SoulSplitter.zip"
+category = "speedrun"
+required = false
+
+[[tools]]
+name = "SilkySouls 3"
+description = "Comprehensive practice tool with save states, stats editor, and debug features"
+author = "borgCode"
+version = "Latest"
+download_url = "https://github.com/borgCode/SilkySouls3/releases"
+category = "practice"
+required = false

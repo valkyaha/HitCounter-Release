@@ -1,0 +1,267 @@
+# =============================================================================
+# MAIN GAME BOSSES
+# =============================================================================
+
+[[bosses]]
+id = "iudex_gundyr"
+name = "Iudex Gundyr"
+location = "Cemetery of Ash"
+required = true
+is_dlc = false
+flag_id = 14000800
+order = 1
+aliases = ["Gundyr", "Tutorial Boss"]
+
+[[bosses]]
+id = "vordt"
+name = "Vordt of the Boreal Valley"
+location = "High Wall of Lothric"
+required = true
+is_dlc = false
+flag_id = 13000800
+order = 2
+aliases = ["Vordt", "Ice Dog"]
+
+[[bosses]]
+id = "curse_rotted_greatwood"
+name = "Curse-Rotted Greatwood"
+location = "Undead Settlement"
+required = false
+is_dlc = false
+flag_id = 13100800
+order = 3
+aliases = ["Greatwood", "Tree", "Ballsack Tree"]
+
+[[bosses]]
+id = "crystal_sage"
+name = "Crystal Sage"
+location = "Road of Sacrifices"
+required = true
+is_dlc = false
+flag_id = 13300850
+order = 4
+aliases = ["Sage", "Crystal"]
+
+[[bosses]]
+id = "deacons"
+name = "Deacons of the Deep"
+location = "Cathedral of the Deep"
+required = true
+is_dlc = false
+flag_id = 13500800
+order = 5
+aliases = ["Deacons"]
+
+[[bosses]]
+id = "abyss_watchers"
+name = "Abyss Watchers"
+location = "Farron Keep"
+required = true
+is_dlc = false
+flag_id = 13300800
+order = 6
+aliases = ["Watchers", "Abyss"]
+
+[[bosses]]
+id = "high_lord_wolnir"
+name = "High Lord Wolnir"
+location = "Catacombs of Carthus"
+required = true
+is_dlc = false
+flag_id = 13800800
+order = 7
+aliases = ["Wolnir", "Skeleton"]
+
+[[bosses]]
+id = "old_demon_king"
+name = "Old Demon King"
+location = "Smouldering Lake"
+required = false
+is_dlc = false
+flag_id = 13800830
+order = 8
+aliases = ["ODK", "Demon King"]
+
+[[bosses]]
+id = "pontiff"
+name = "Pontiff Sulyvahn"
+location = "Irithyll of the Boreal Valley"
+required = true
+is_dlc = false
+flag_id = 13700850
+order = 9
+aliases = ["Pontiff", "Sully", "Sulyvahn"]
+
+[[bosses]]
+id = "yhorm"
+name = "Yhorm the Giant"
+location = "Profaned Capital"
+required = true
+is_dlc = false
+flag_id = 13900800
+order = 10
+aliases = ["Yhorm"]
+
+[[bosses]]
+id = "aldrich"
+name = "Aldrich, Devourer of Gods"
+location = "Anor Londo"
+required = true
+is_dlc = false
+flag_id = 13700800
+order = 11
+aliases = ["Aldrich", "Gwyndolin Eater"]
+
+[[bosses]]
+id = "dancer"
+name = "Dancer of the Boreal Valley"
+location = "High Wall of Lothric"
+required = true
+is_dlc = false
+flag_id = 13000890
+order = 12
+aliases = ["Dancer"]
+
+[[bosses]]
+id = "oceiros"
+name = "Oceiros, the Consumed King"
+location = "Consumed King's Garden"
+required = false
+is_dlc = false
+flag_id = 13000830
+order = 13
+aliases = ["Oceiros", "Baby Killer"]
+
+[[bosses]]
+id = "champion_gundyr"
+name = "Champion Gundyr"
+location = "Untended Graves"
+required = false
+is_dlc = false
+flag_id = 14000830
+order = 14
+aliases = ["Champ Gundyr", "Champion"]
+
+[[bosses]]
+id = "dragonslayer_armour"
+name = "Dragonslayer Armour"
+location = "Lothric Castle"
+required = true
+is_dlc = false
+flag_id = 13010800
+order = 15
+aliases = ["DSA", "Armour", "Armor"]
+
+[[bosses]]
+id = "twin_princes"
+name = "Twin Princes"
+location = "Grand Archives"
+required = true
+is_dlc = false
+flag_id = 13410830
+order = 16
+aliases = ["Princes", "Lorian", "Lothric"]
+
+[[bosses]]
+id = "ancient_wyvern"
+name = "Ancient Wyvern"
+location = "Archdragon Peak"
+required = false
+is_dlc = false
+flag_id = 13200800
+order = 17
+aliases = ["Wyvern", "Plunge Boss"]
+
+[[bosses]]
+id = "nameless_king"
+name = "Nameless King"
+location = "Archdragon Peak"
+required = false
+is_dlc = false
+flag_id = 13200850
+order = 18
+aliases = ["NK", "Nameless"]
+
+[[bosses]]
+id = "soul_of_cinder"
+name = "Soul of Cinder"
+location = "Kiln of the First Flame"
+required = true
+is_dlc = false
+flag_id = 14100800
+order = 19
+aliases = ["SoC", "Cinder", "Final Boss"]
+
+# =============================================================================
+# ASHES OF ARIANDEL DLC
+# =============================================================================
+
+[[bosses]]
+id = "champion_gravetender"
+name = "Champion's Gravetender & Gravetender Greatwolf"
+location = "Painted World of Ariandel"
+required = true
+is_dlc = true
+dlc_name = "Ashes of Ariandel"
+flag_id = 14500860
+order = 20
+aliases = ["Gravetender", "Wolf"]
+
+[[bosses]]
+id = "sister_friede"
+name = "Sister Friede"
+location = "Painted World of Ariandel"
+required = true
+is_dlc = true
+dlc_name = "Ashes of Ariandel"
+flag_id = 14500800
+order = 21
+aliases = ["Friede", "Blackflame Friede"]
+
+# =============================================================================
+# THE RINGED CITY DLC
+# =============================================================================
+
+[[bosses]]
+id = "demon_prince"
+name = "Demon in Pain & Demon from Below / Demon Prince"
+location = "The Dreg Heap"
+required = true
+is_dlc = true
+dlc_name = "The Ringed City"
+flag_id = 15000800
+order = 22
+aliases = ["Demon Prince", "Demons"]
+
+[[bosses]]
+id = "halflight"
+name = "Halflight, Spear of the Church"
+location = "The Ringed City"
+required = true
+is_dlc = true
+dlc_name = "The Ringed City"
+flag_id = 15100800
+order = 23
+aliases = ["Halflight", "Spear"]
+
+[[bosses]]
+id = "darkeater_midir"
+name = "Darkeater Midir"
+location = "The Ringed City"
+required = true
+is_dlc = true
+dlc_name = "The Ringed City"
+flag_id = 15100850
+order = 24
+aliases = ["Midir"]
+
+[[bosses]]
+id = "slave_knight_gael"
+name = "Slave Knight Gael"
+location = "The Ringed City"
+required = true
+is_dlc = true
+dlc_name = "The Ringed City"
+flag_id = 15110800
+order = 25
+aliases = ["Gael", "Uncle Gael"]

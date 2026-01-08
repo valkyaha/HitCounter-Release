@@ -1,0 +1,7 @@
+# =============================================================================
+# AUTOSPLITTER CONFIGURATION
+# =============================================================================
+
+# No autosplitter for console games
+[autosplitter]
+enabled = false

@@ -1,0 +1,1150 @@
+[plugin]
+id = "ds1"
+name = "Dark Souls: Remastered / PTDE"
+short_name = "DS1"
+version = "1.2.0"
+author = "NYA Core"
+description = "Dark Souls Remastered and Prepare to Die Edition autosplitter with full boss tracking"
+update_url = "https://raw.githubusercontent.com/valkyaha/NYA-Core-Assets/main/plugins/ds1/plugin.toml"
+
+# Save file location for practice mode backup/restore
+# Remastered uses NBGI subfolder, PTDE uses Documents/NBGI
+save_location_windows = "%APPDATA%/NBGI/DARK SOULS REMASTERED"
+save_location_linux = "~/.local/share/Steam/userdata"
+save_type = "folder"
+
+[process]
+# Supports both Remastered (64-bit) and PTDE (32-bit)
+names = ["DARK SOULS REMASTERED.exe", "DarkSoulsRemastered.exe", "darksouls.exe", "DARKSOULS.exe"]
+
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "DS1 Connection Manager"
+description = "Manage online/offline mode for practice"
+author = "Community"
+version = "1.0.0"
+download_url = "https://github.com/search?q=dark+souls+connection+manager"
+category = "utility"
+required = false
+
+[[tools]]
+name = "PvP Watchdog"
+description = "Anti-cheat and connection manager for DS1"
+author = "LukeYui"
+version = "1.4.2"
+download_url = "https://www.nexusmods.com/darksouls/mods/849"
+category = "utility"
+required = false
+
+[[tools]]
+name = "DSFix (PTDE only)"
+description = "Essential mod for Prepare to Die Edition"
+author = "Durante"
+version = "2.4"
+download_url = "https://www.nexusmods.com/darksouls/mods/19"
+category = "mod"
+required = false
+
+[[tools]]
+name = "SilkySouls 1"
+description = "Comprehensive practice tool with save states, stats editor, and debug features"
+author = "borgCode"
+version = "Latest"
+download_url = "https://github.com/borgCode/SilkySouls1/releases"
+category = "practice"
+required = false
+
+[autosplitter]
+enabled = true
+algorithm = "offset_table"
+
+# Offset table algorithm configuration (DS1 style)
+# Based on SoulSplitter by FrankvdStam
+[autosplitter.offset_table_config]
+primary_pattern = "event_flags"
+
+# Group offsets (from SoulSplitter)
+[autosplitter.offset_table_config.group_offsets]
+"0" = 0
+"1" = 1280       # 0x00500
+"5" = 24320      # 0x05F00
+"6" = 47360      # 0x0B900
+"7" = 70400      # 0x11300
+
+# Area indices (from SoulSplitter)
+[autosplitter.offset_table_config.area_indices]
+"000" = 0
+"100" = 1
+"101" = 2
+"102" = 3
+"110" = 4
+"120" = 5
+"121" = 6
+"130" = 7
+"131" = 8
+"132" = 9
+"140" = 10
+"141" = 11
+"150" = 12
+"151" = 13
+"160" = 14
+"170" = 15
+"180" = 16
+"181" = 17
+"200" = 18
+"210" = 19
+
+# Memory patterns for finding game data structures
+# Based on SoulSplitter by FrankvdStam
+# https://github.com/FrankvdStam/SoulSplitter
+
+[[autosplitter.patterns]]
+name = "event_flags"
+pattern = "48 8B 0D ? ? ? ? 99 33 C2 45 33 C0 2B C2 8D 50 F6"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0, 0, 0]  # Two dereferences needed
+
+[[autosplitter.patterns]]
+name = "game_data_man"
+pattern = "48 8B 05 ? ? ? ? 48 8B 50 10 48 89 54 24 60"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "game_man"
+pattern = "48 8B 05 ? ? ? ? C6 40 18 00"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "world_chr_man"
+pattern = "48 8B 0D ? ? ? ? 0F 28 F1 48 85 C9 74 ? 48 89 7C"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "menu_man"
+pattern = "48 8B 15 ? ? ? ? 89 82 7C 08 00 00"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "bonfire_db"
+pattern = "48 83 3D ? ? ? ? 00 48 8B F1"
+rip_offset = 3
+instruction_len = 8  # Different from others - 8 byte instruction
+pointer_offsets = [0]
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# Player data from GameDataMan
+player_game_data = { base = "game_data_man", offsets = [0, 0x10] }
+
+# Player instance from WorldChrMan
+player_ins = { base = "world_chr_man", offsets = [0, 0x68] }  # 0x68 default, 0x48 for v1.0.1
+player_pos = { base = "world_chr_man", offsets = [0, 0x68, 0x28] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# In-game time at GameDataMan + 0xA4
+igt_offset = 0xA4
+
+# NG+ count at GameDataMan + 0x78
+ng_count_offset = 0x78
+
+# Current save slot at GameDataMan + offset (version dependent)
+current_save_slot_offset = 0xAA0  # 0xA90 for v1.0.1
+
+# Warp requested check at GameMan + 0x19
+warp_requested_offset = 0x19
+
+# Credits check offsets from MenuMan
+credits_offset_80 = 0x80
+credits_offset_c8 = 0xC8
+credits_offset_d4 = 0xD4
+
+# Player health at PlayerIns + 0x3E8
+player_health_offset = 0x3E8
+
+# Position offsets from PlayerPos
+position_x = 0x10
+position_y = 0x14
+position_z = 0x18
+
+# Attribute offsets from PlayerGameData + 0x8
+[autosplitter.memory_layout.attributes]
+vitality = 0x0
+attunement = 0x4
+endurance = 0x8
+strength = 0xC
+dexterity = 0x10
+resistance = 0x14
+intelligence = 0x18
+faith = 0x1C
+humanity = 0x24
+soul_level = 0x28
+
+# =============================================================================
+# VERSION VARIANTS - Game version specific offsets
+# =============================================================================
+
+[[autosplitter.versions]]
+version = "default"
+description = "Dark Souls Remastered (latest)"
+player_ctrl_offset = 0x68
+current_save_slot_offset = 0xAA0
+
+[[autosplitter.versions]]
+version = "v1.0.1"
+description = "Dark Souls Remastered v1.0.1"
+player_ctrl_offset = 0x48
+current_save_slot_offset = 0xA90
+
+# =============================================================================
+# EVENT FLAG CALCULATION CONSTANTS
+# =============================================================================
+
+[autosplitter.event_flag_config]
+# These are used to calculate the memory offset for a given flag ID
+# Offset = group_offset + (area_index * 0x500) + (section * 128) + ((number - (number % 32)) / 8)
+# Mask = 0x80000000 >> (number % 32)
+area_multiplier = 0x500
+section_multiplier = 128
+
+# =============================================================================
+# LIVESPLIT-STYLE SCRIPT CONFIGURATION
+# =============================================================================
+
+[script]
+version = "1.0"
+name = "Dark Souls Remastered Script"
+description = "LiveSplit-style autosplitter script for Dark Souls Remastered"
+
+[script.state.eventFlags]
+type = "ptr"
+pattern = "48 8B 0D ?? ?? ?? ?? 99 33 C2 45 33 C0 2B C2 8D 50 F6"
+pattern_offset = 3
+pattern_length = 7
+
+[script.state.inGame]
+type = "bool"
+base_watcher = "eventFlags"
+offsets = [0x0]
+
+[script.hooks]
+start = "settings.autostart && current.inGame && !old.inGame"
+reset = "settings.autoreset && !current.inGame && old.inGame"
+split = "settings.splitOnDeath && current.playerHP == 0 && old.playerHP > 0"
+
+[script.settings]
+autostart = { default = true, label = "Auto-start timer", description = "Start timer when entering a new game" }
+autoreset = { default = false, label = "Auto-reset on menu", description = "Reset timer when returning to main menu" }
+splitOnDeath = { default = false, label = "Split on death", description = "Trigger split when player dies" }
+
+# =============================================================================
+# BOSSES
+# =============================================================================
+
+[[bosses]]
+id = "asylum_demon"
+name = "Asylum Demon"
+location = "Northern Undead Asylum"
+required = true
+is_dlc = false
+flag_id = 16
+order = 1
+aliases = ["Asylum"]
+
+[[bosses]]
+id = "taurus_demon"
+name = "Taurus Demon"
+location = "Undead Burg"
+required = true
+is_dlc = false
+flag_id = 11010901
+order = 2
+aliases = ["Taurus", "Bull"]
+
+[[bosses]]
+id = "bell_gargoyles"
+name = "Bell Gargoyles"
+location = "Undead Parish"
+required = true
+is_dlc = false
+flag_id = 3
+order = 3
+aliases = ["Gargoyles", "Gargs"]
+
+[[bosses]]
+id = "quelaag"
+name = "Chaos Witch Quelaag"
+location = "Blighttown"
+required = true
+is_dlc = false
+flag_id = 9
+order = 4
+aliases = ["Quelaag", "Spider"]
+
+[[bosses]]
+id = "iron_golem"
+name = "Iron Golem"
+location = "Sen's Fortress"
+required = true
+is_dlc = false
+flag_id = 11
+order = 5
+aliases = ["Golem"]
+
+[[bosses]]
+id = "ornstein_smough"
+name = "Ornstein & Smough"
+location = "Anor Londo"
+required = true
+is_dlc = false
+flag_id = 12
+order = 6
+aliases = ["O&S", "OnS", "Orny and Smough", "Pikachu and Snorlax"]
+
+[[bosses]]
+id = "sif"
+name = "Great Grey Wolf Sif"
+location = "Darkroot Garden"
+required = true
+is_dlc = false
+flag_id = 5
+order = 7
+aliases = ["Sif", "Doggo", "Good Boy"]
+
+[[bosses]]
+id = "four_kings"
+name = "Four Kings"
+location = "The Abyss"
+required = true
+is_dlc = false
+flag_id = 13
+order = 8
+aliases = ["4K", "Kings"]
+
+[[bosses]]
+id = "seath"
+name = "Seath the Scaleless"
+location = "Crystal Cave"
+required = true
+is_dlc = false
+flag_id = 14
+order = 9
+aliases = ["Seath"]
+
+[[bosses]]
+id = "nito"
+name = "Gravelord Nito"
+location = "Tomb of the Giants"
+required = true
+is_dlc = false
+flag_id = 7
+order = 10
+aliases = ["Nito"]
+
+[[bosses]]
+id = "bed_of_chaos"
+name = "Bed of Chaos"
+location = "Lost Izalith"
+required = true
+is_dlc = false
+flag_id = 10
+order = 11
+aliases = ["BoC", "Bed", "Worst Boss"]
+
+[[bosses]]
+id = "gwyn"
+name = "Gwyn, Lord of Cinder"
+location = "Kiln of the First Flame"
+required = true
+is_dlc = false
+flag_id = 15
+order = 12
+aliases = ["Gwyn", "Final Boss"]
+
+[[bosses]]
+id = "capra_demon"
+name = "Capra Demon"
+location = "Lower Undead Burg"
+required = false
+is_dlc = false
+flag_id = 11010902
+order = 13
+aliases = ["Capra", "Goat"]
+
+[[bosses]]
+id = "gaping_dragon"
+name = "Gaping Dragon"
+location = "Depths"
+required = false
+is_dlc = false
+flag_id = 2
+order = 14
+aliases = ["Gaping", "Vagina Dragon"]
+
+[[bosses]]
+id = "moonlight_butterfly"
+name = "Moonlight Butterfly"
+location = "Darkroot Garden"
+required = false
+is_dlc = false
+flag_id = 11200900
+order = 15
+aliases = ["Butterfly", "MLB"]
+
+[[bosses]]
+id = "stray_demon"
+name = "Stray Demon"
+location = "Northern Undead Asylum"
+required = false
+is_dlc = false
+flag_id = 11810900
+order = 16
+aliases = ["Stray"]
+
+[[bosses]]
+id = "demon_firesage"
+name = "Demon Firesage"
+location = "Lost Izalith"
+required = false
+is_dlc = false
+flag_id = 11410410
+order = 17
+aliases = ["Firesage"]
+
+[[bosses]]
+id = "centipede_demon"
+name = "Centipede Demon"
+location = "Lost Izalith"
+required = false
+is_dlc = false
+flag_id = 11410901
+order = 18
+aliases = ["Centipede"]
+
+[[bosses]]
+id = "crossbreed_priscilla"
+name = "Crossbreed Priscilla"
+location = "Painted World"
+required = false
+is_dlc = false
+flag_id = 4
+order = 19
+aliases = ["Priscilla", "Fluffy Tail"]
+
+[[bosses]]
+id = "dark_sun_gwyndolin"
+name = "Dark Sun Gwyndolin"
+location = "Anor Londo"
+required = false
+is_dlc = false
+flag_id = 11510900
+order = 20
+aliases = ["Gwyndolin", "Trap"]
+
+[[bosses]]
+id = "ceaseless_discharge"
+name = "Ceaseless Discharge"
+location = "Demon Ruins"
+required = false
+is_dlc = false
+flag_id = 11410900
+order = 21
+aliases = ["Ceaseless", "CD"]
+
+[[bosses]]
+id = "pinwheel"
+name = "Pinwheel"
+location = "Catacombs"
+required = false
+is_dlc = false
+flag_id = 6
+order = 22
+aliases = ["Easiest Boss"]
+
+# Artorias of the Abyss DLC
+[[bosses]]
+id = "sanctuary_guardian"
+name = "Sanctuary Guardian"
+location = "Royal Wood"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210000
+order = 23
+aliases = ["Sanctuary", "Manticore"]
+
+[[bosses]]
+id = "artorias"
+name = "Knight Artorias"
+location = "Royal Wood"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210001
+order = 24
+aliases = ["Artorias", "Arty"]
+
+[[bosses]]
+id = "manus"
+name = "Manus, Father of the Abyss"
+location = "Chasm of the Abyss"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210002
+order = 25
+aliases = ["Manus", "Big Hand"]
+
+[[bosses]]
+id = "kalameet"
+name = "Black Dragon Kalameet"
+location = "Royal Wood"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210004
+order = 26
+aliases = ["Kalameet"]
+
+# =============================================================================
+# BONFIRES - All 44 bonfires from SoulSplitter
+# =============================================================================
+
+[[bonfires]]
+id = "undead_asylum_courtyard"
+name = "Undead Asylum - Courtyard"
+location = "Undead Asylum"
+flag_id = 1811960
+
+[[bonfires]]
+id = "undead_asylum_interior"
+name = "Undead Asylum - Interior"
+location = "Undead Asylum"
+flag_id = 1811961
+
+[[bonfires]]
+id = "firelink_shrine"
+name = "Firelink Shrine"
+location = "Firelink Shrine"
+flag_id = 1021960
+
+[[bonfires]]
+id = "firelink_altar"
+name = "Firelink Altar - Lordvessel"
+location = "Firelink Altar"
+flag_id = 1801960
+
+[[bonfires]]
+id = "undead_burg"
+name = "Undead Burg"
+location = "Undead Burg"
+flag_id = 1011962
+
+[[bonfires]]
+id = "undead_burg_sunlight"
+name = "Undead Burg - Sunlight Altar"
+location = "Undead Burg"
+flag_id = 1011961
+
+[[bonfires]]
+id = "undead_parish"
+name = "Undead Parish"
+location = "Undead Parish"
+flag_id = 1011964
+
+[[bonfires]]
+id = "darkroot_garden"
+name = "Darkroot Garden"
+location = "Darkroot Garden"
+flag_id = 1201961
+
+[[bonfires]]
+id = "darkroot_basin"
+name = "Darkroot Basin"
+location = "Darkroot Basin"
+flag_id = 1601961
+
+[[bonfires]]
+id = "depths"
+name = "Depths"
+location = "Depths"
+flag_id = 1001960
+
+[[bonfires]]
+id = "blighttown_catwalk"
+name = "Blighttown Catwalk"
+location = "Blighttown"
+flag_id = 1401962
+
+[[bonfires]]
+id = "blighttown_swamp"
+name = "Blighttown Swamp"
+location = "Blighttown"
+flag_id = 1401961
+
+[[bonfires]]
+id = "daughter_of_chaos"
+name = "Daughter of Chaos"
+location = "Quelaag's Domain"
+flag_id = 1401960
+
+[[bonfires]]
+id = "great_hollow"
+name = "The Great Hollow"
+location = "The Great Hollow"
+flag_id = 1321962
+
+[[bonfires]]
+id = "ash_lake"
+name = "Ash Lake"
+location = "Ash Lake"
+flag_id = 1321961
+
+[[bonfires]]
+id = "ash_lake_dragon"
+name = "Ash Lake - Stone Dragon"
+location = "Ash Lake"
+flag_id = 1321960
+
+[[bonfires]]
+id = "demon_ruins_entrance"
+name = "Demon Ruins - Entrance"
+location = "Demon Ruins"
+flag_id = 1411961
+
+[[bonfires]]
+id = "demon_ruins_staircase"
+name = "Demon Ruins - Staircase"
+location = "Demon Ruins"
+flag_id = 1411962
+
+[[bonfires]]
+id = "demon_ruins_catacombs"
+name = "Demon Ruins - Catacombs"
+location = "Demon Ruins"
+flag_id = 1411963
+
+[[bonfires]]
+id = "lost_izalith_lava"
+name = "Lost Izalith - Lava Pits"
+location = "Lost Izalith"
+flag_id = 1411964
+
+[[bonfires]]
+id = "lost_izalith_2"
+name = "Lost Izalith 2 (illusory wall)"
+location = "Lost Izalith"
+flag_id = 1411960
+
+[[bonfires]]
+id = "lost_izalith_heart"
+name = "Lost Izalith - Heart of Chaos"
+location = "Lost Izalith"
+flag_id = 1411950
+
+[[bonfires]]
+id = "sens_fortress"
+name = "Sen's Fortress"
+location = "Sen's Fortress"
+flag_id = 1501961
+
+[[bonfires]]
+id = "anor_londo"
+name = "Anor Londo"
+location = "Anor Londo"
+flag_id = 1511960
+
+[[bonfires]]
+id = "anor_londo_darkmoon"
+name = "Anor Londo - Darkmoon Tomb"
+location = "Anor Londo"
+flag_id = 1511962
+
+[[bonfires]]
+id = "anor_londo_residence"
+name = "Anor Londo - Residence"
+location = "Anor Londo"
+flag_id = 1511961
+
+[[bonfires]]
+id = "anor_londo_princess"
+name = "Anor Londo - Chamber of the Princess"
+location = "Anor Londo"
+flag_id = 1511950
+
+[[bonfires]]
+id = "painted_world"
+name = "Painted World of Ariamis"
+location = "Painted World of Ariamis"
+flag_id = 1101960
+
+[[bonfires]]
+id = "dukes_archives_1"
+name = "Duke's Archives 1 (entrance)"
+location = "Duke's Archives"
+flag_id = 1701962
+
+[[bonfires]]
+id = "dukes_archives_2"
+name = "Duke's Archives 2 (prison cell)"
+location = "Duke's Archives"
+flag_id = 1701961
+
+[[bonfires]]
+id = "dukes_archives_3"
+name = "Duke's Archives 3 (balcony)"
+location = "Duke's Archives"
+flag_id = 1701960
+
+[[bonfires]]
+id = "crystal_cave"
+name = "Crystal Cave"
+location = "Crystal Cave"
+flag_id = 1701950
+
+[[bonfires]]
+id = "catacombs_1"
+name = "Catacombs 1 (necromancer)"
+location = "Catacombs"
+flag_id = 1301960
+
+[[bonfires]]
+id = "catacombs_2"
+name = "Catacombs 2 (illusory wall)"
+location = "Catacombs"
+flag_id = 1301961
+
+[[bonfires]]
+id = "tomb_giants_patches"
+name = "Tomb of the Giants - Patches"
+location = "Tomb of the Giants"
+flag_id = 1311961
+
+[[bonfires]]
+id = "tomb_giants_2"
+name = "Tomb of the Giants 2"
+location = "Tomb of the Giants"
+flag_id = 1311960
+
+[[bonfires]]
+id = "tomb_giants_altar"
+name = "Tomb of the Giants - Altar of the Gravelord"
+location = "Tomb of the Giants"
+flag_id = 1311950
+
+[[bonfires]]
+id = "the_abyss"
+name = "The Abyss"
+location = "The Abyss"
+flag_id = 1601950
+
+[[bonfires]]
+id = "oolacile_sanctuary_garden"
+name = "Oolacile - Sanctuary Garden"
+location = "Oolacile"
+flag_id = 1211963
+
+[[bonfires]]
+id = "oolacile_sanctuary"
+name = "Oolacile - Sanctuary"
+location = "Oolacile"
+flag_id = 1211961
+
+[[bonfires]]
+id = "oolacile_township"
+name = "Oolacile - Township"
+location = "Oolacile"
+flag_id = 1211962
+
+[[bonfires]]
+id = "oolacile_dungeon"
+name = "Oolacile - Township Dungeon"
+location = "Oolacile"
+flag_id = 1211964
+
+[[bonfires]]
+id = "chasm_of_abyss"
+name = "Chasm of the Abyss"
+location = "Chasm of the Abyss"
+flag_id = 1211950
+
+# =============================================================================
+# KNOWN FLAGS - Events, doors, NPCs, covenants from SoulSplitter
+# =============================================================================
+
+# Bells of Awakening
+[[known_flags]]
+id = "bell_undead_parish"
+name = "Bell of Awakening, Undead Parish"
+category = "bells"
+flag_id = 11010700
+
+[[known_flags]]
+id = "bell_blighttown"
+name = "Bell of Awakening, Blighttown"
+category = "bells"
+flag_id = 11400200
+
+# Lordvessel
+[[known_flags]]
+id = "lordvessel_dark_anor_londo"
+name = "Lordvessel, Dark Anor Londo"
+category = "lordvessel"
+flag_id = 11510400
+
+[[known_flags]]
+id = "lordvessel_gwynevere_alive"
+name = "Lordvessel (Gwynevere Still Alive)"
+category = "lordvessel"
+flag_id = 11510592
+
+[[known_flags]]
+id = "lordvessel_received"
+name = "Lordvessel Received"
+category = "lordvessel"
+flag_id = 50000090
+
+# Doors
+[[known_flags]]
+id = "door_gwynevere"
+name = "Anor Londo, Door to Gwynevere"
+category = "doors"
+flag_id = 11510110
+
+[[known_flags]]
+id = "door_artorias_crest"
+name = "Darkroot Garden, Crest of Artorias Door"
+category = "doors"
+flag_id = 61200500
+
+[[known_flags]]
+id = "door_sif"
+name = "Darkroot Garden, Sif Door"
+category = "doors"
+flag_id = 61200501
+
+[[known_flags]]
+id = "door_lost_izalith_shortcut"
+name = "Demon Ruins, Shortcut Door to Lost Izalith"
+category = "doors"
+flag_id = 11410340
+
+[[known_flags]]
+id = "door_cell"
+name = "Northern Undead Asylum, Cell Door"
+category = "doors"
+flag_id = 11810103
+
+[[known_flags]]
+id = "door_asylum_demon"
+name = "Northern Undead Asylum, Asylum Demon Door"
+category = "doors"
+flag_id = 11810112
+
+[[known_flags]]
+id = "door_pilgrim"
+name = "Northern Undead Asylum, Big Pilgrim Door"
+category = "doors"
+flag_id = 11810110
+
+# Elevators & Levers
+[[known_flags]]
+id = "elevator_anor_londo"
+name = "Anor Londo, Elevator Active"
+category = "elevators"
+flag_id = 11510220
+
+[[known_flags]]
+id = "lever_catacombs"
+name = "Catacombs, Entrance Lever"
+category = "levers"
+flag_id = 11300900
+
+[[known_flags]]
+id = "lever_dukes_first"
+name = "Duke's Archives, First Lever"
+category = "levers"
+flag_id = 11705091
+
+[[known_flags]]
+id = "lever_dukes_second"
+name = "Duke's Archives, Second Lever"
+category = "levers"
+flag_id = 11705090
+
+[[known_flags]]
+id = "seal_new_londo"
+name = "New Londo Ruins, Seal Opened"
+category = "levers"
+flag_id = 11600200
+
+# NPCs
+[[known_flags]]
+id = "npc_andre_talk"
+name = "NPC, Andre, First Talk"
+category = "npc"
+flag_id = 71010000
+
+[[known_flags]]
+id = "npc_giant_blacksmith_talk"
+name = "NPC, Blacksmith Giant, First Talk"
+category = "npc"
+flag_id = 71510000
+
+[[known_flags]]
+id = "npc_crestfallen_talk"
+name = "NPC, Crestfallen Merchant, First Talk"
+category = "npc"
+flag_id = 71500001
+
+[[known_flags]]
+id = "npc_dusk_rescued"
+name = "NPC, Dusk, Rescued From Golem"
+category = "npc"
+flag_id = 1121
+
+[[known_flags]]
+id = "npc_dusk_summon"
+name = "NPC, Dusk, Available for Summon"
+category = "npc"
+flag_id = 1122
+
+[[known_flags]]
+id = "npc_dusk_dead"
+name = "NPC, Dusk, Dead"
+category = "npc"
+flag_id = 1125
+
+[[known_flags]]
+id = "npc_lautrec_dead"
+name = "NPC, Lautrec, Dead"
+category = "npc"
+flag_id = 1575
+
+[[known_flags]]
+id = "npc_oswald_dead"
+name = "NPC, Oswald, Dead"
+category = "npc"
+flag_id = 1702
+
+[[known_flags]]
+id = "npc_siegmeyer_dead"
+name = "NPC, Siegmeyer, Dead"
+category = "npc"
+flag_id = 1513
+
+[[known_flags]]
+id = "npc_shiva_bodyguard_dead"
+name = "NPC, Shiva Bodyguard, Dead"
+category = "npc"
+flag_id = 1764
+
+# Covenants
+[[known_flags]]
+id = "covenant_way_of_white"
+name = "Covenant Joined, Way of White"
+category = "covenants"
+flag_id = 851
+
+[[known_flags]]
+id = "covenant_princess_guard"
+name = "Covenant Joined, Princess Guard"
+category = "covenants"
+flag_id = 852
+
+[[known_flags]]
+id = "covenant_sunlight"
+name = "Covenant Joined, Warrior of Sunlight"
+category = "covenants"
+flag_id = 853
+
+[[known_flags]]
+id = "covenant_darkwraith"
+name = "Covenant Joined, Darkwraith"
+category = "covenants"
+flag_id = 854
+
+[[known_flags]]
+id = "covenant_dragon"
+name = "Covenant Joined, Path of the Dragon"
+category = "covenants"
+flag_id = 855
+
+[[known_flags]]
+id = "covenant_gravelord"
+name = "Covenant Joined, Gravelord Servant"
+category = "covenants"
+flag_id = 856
+
+[[known_flags]]
+id = "covenant_forest_hunter"
+name = "Covenant Joined, Forest Hunter"
+category = "covenants"
+flag_id = 857
+
+[[known_flags]]
+id = "covenant_darkmoon"
+name = "Covenant Joined, Darkmoon Blade"
+category = "covenants"
+flag_id = 858
+
+[[known_flags]]
+id = "covenant_chaos_servant"
+name = "Covenant Joined, Chaos Servant"
+category = "covenants"
+flag_id = 859
+
+# Fog Gates (non-boss)
+[[known_flags]]
+id = "fog_anor_londo_rafters"
+name = "Anor Londo, Fog Gate Rafters"
+category = "fog_gates"
+flag_id = 11510090
+
+[[known_flags]]
+id = "fog_anor_londo_archers"
+name = "Anor Londo, Fog Gate Archers"
+category = "fog_gates"
+flag_id = 11510091
+
+[[known_flags]]
+id = "fog_dukes_archives"
+name = "Duke's Archives, Fog Gate"
+category = "fog_gates"
+flag_id = 11700083
+
+[[known_flags]]
+id = "fog_undead_asylum"
+name = "Northern Undead Asylum, Fog Gate"
+category = "fog_gates"
+flag_id = 11810090
+
+[[known_flags]]
+id = "fog_sens_1"
+name = "Sen's Fortress, Fog Gate 1"
+category = "fog_gates"
+flag_id = 11500090
+
+[[known_flags]]
+id = "fog_sens_2"
+name = "Sen's Fortress, Fog Gate 2"
+category = "fog_gates"
+flag_id = 11500091
+
+# Boss Fight Events
+[[known_flags]]
+id = "cutscene_ons"
+name = "Cutscene Skipped, Ornstein and Smough"
+category = "boss_events"
+flag_id = 11515394
+
+[[known_flags]]
+id = "cutscene_centipede"
+name = "Cutscene Skipped, Centipede Demon"
+category = "boss_events"
+flag_id = 11415382
+
+[[known_flags]]
+id = "cutscene_quelaag"
+name = "Cutscene Skipped, Chaos Witch Quelaag"
+category = "boss_events"
+flag_id = 11405394
+
+[[known_flags]]
+id = "cutscene_seath"
+name = "Cutscene Skipped, Seath"
+category = "boss_events"
+flag_id = 11705394
+
+[[known_flags]]
+id = "arena_boc"
+name = "Boss Arena Entered, Bed of Chaos"
+category = "boss_events"
+flag_id = 11415390
+
+[[known_flags]]
+id = "arena_nito"
+name = "Boss Arena Entered, Gravelord Nito"
+category = "boss_events"
+flag_id = 11315390
+
+[[known_flags]]
+id = "arena_gwyn"
+name = "Boss Arena Entered, Gwyn"
+category = "boss_events"
+flag_id = 11805394
+
+[[known_flags]]
+id = "arena_iron_golem"
+name = "Boss Arena Entered, Iron Golem"
+category = "boss_events"
+flag_id = 11505394
+
+# Other
+[[known_flags]]
+id = "warp_anor_londo"
+name = "Cutscene Skipped, Warp to Anor Londo"
+category = "other"
+flag_id = 11500210
+
+[[known_flags]]
+id = "kalameet_goughless"
+name = "Goughless Kalameet Death Animation"
+category = "other"
+flag_id = 11210063
+
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+description = "All main game bosses (22 bosses)"
+boss_ids = [
+    "asylum_demon", "taurus_demon", "bell_gargoyles", "quelaag", "iron_golem",
+    "ornstein_smough", "sif", "four_kings", "seath", "nito", "bed_of_chaos", "gwyn",
+    "capra_demon", "gaping_dragon", "moonlight_butterfly", "stray_demon",
+    "demon_firesage", "centipede_demon", "crossbreed_priscilla", "dark_sun_gwyndolin",
+    "ceaseless_discharge", "pinwheel"
+]
+
+[[presets]]
+id = "all-bosses-dlc"
+name = "All Bosses + DLC"
+description = "All bosses including DLC (26 bosses)"
+boss_ids = [
+    "asylum_demon", "taurus_demon", "bell_gargoyles", "quelaag", "iron_golem",
+    "ornstein_smough", "sif", "four_kings", "seath", "nito", "bed_of_chaos", "gwyn",
+    "capra_demon", "gaping_dragon", "moonlight_butterfly", "stray_demon",
+    "demon_firesage", "centipede_demon", "crossbreed_priscilla", "dark_sun_gwyndolin",
+    "ceaseless_discharge", "pinwheel",
+    "sanctuary_guardian", "artorias", "manus", "kalameet"
+]
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Required bosses only (12 bosses)"
+boss_ids = [
+    "asylum_demon", "bell_gargoyles", "quelaag", "iron_golem",
+    "ornstein_smough", "sif", "four_kings", "seath", "nito", "bed_of_chaos", "gwyn"
+]

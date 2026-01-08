@@ -1,0 +1,3826 @@
+[plugin]
+id = "eldenring"
+name = "Elden Ring"
+short_name = "ER"
+version = "1.2.0"
+author = "NYA Core"
+description = "Elden Ring autosplitter with full boss tracking including Shadow of the Erdtree DLC"
+update_url = "https://raw.githubusercontent.com/valkyaha/NYA-Core-Assets/main/plugins/eldenring/plugin.toml"
+
+# Save file location for practice mode backup/restore
+save_location_windows = "%APPDATA%/EldenRing"
+save_location_linux = "~/.local/share/Steam/userdata"
+save_type = "folder"
+
+[process]
+names = ["eldenring.exe"]
+
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "Elden Ring Save Manager"
+description = "Backup and manage your save files easily"
+author = "Ariescyn"
+version = "1.2.0"
+download_url = "https://github.com/Ariescyn/elden-ring-save-manager/releases/latest/download/EldenRingSaveManager.zip"
+category = "utility"
+required = false
+
+[[tools]]
+name = "Item and Enemy Randomizer"
+description = "Randomize items and enemies for additional challenge"
+author = "thefifthmatt"
+version = "2.1.0"
+download_url = "https://www.nexusmods.com/eldenring/mods/428"
+category = "mod"
+required = false
+
+[autosplitter]
+enabled = true
+algorithm = "binary_tree"
+
+# Binary tree algorithm configuration (Elden Ring style)
+# Based on SoulSplitter by FrankvdStam
+[autosplitter.tree_config]
+primary_pattern = "virtual_memory_flag"
+pointer_chain = []  # Direct access after RIP resolution
+divisor_offset = 28         # 0x1c
+tree_root_offset = 56       # 0x38
+multiplier_offset = 32      # 0x20
+base_addr_offset = 40       # 0x28
+
+# Memory patterns for finding game data structures
+# Based on SoulSplitter by FrankvdStam
+# https://github.com/FrankvdStam/SoulSplitter
+
+[[autosplitter.patterns]]
+name = "virtual_memory_flag"
+pattern = "44 89 7C 24 28 4C 8B 25 ? ? ? ? 4D 85 E4"
+rip_offset = 8
+instruction_len = 12
+pointer_offsets = [5]  # Special offset for tree-based flags
+
+[[autosplitter.patterns]]
+name = "fd4_time"
+pattern = "48 8B 05 ? ? ? ? 4C 8B 40 08 4D 85 C0 74 0D 45 0F B6 80 BE 00 00 00 E9 13 00 00 00"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "world_chr_man"
+pattern = "48 8B 35 ? ? ? ? 48 85 F6 ? ? BB 01 00 00 00 89 5C 24 20 48 8B B6"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "menu_man_imp"
+pattern = "48 8B 0D ? ? ? ? 48 8B 53 08 48 8B 92 D8 00 00 00 48 83 C4 20 5B"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "game_data_man"
+pattern = "48 8B 05 ? ? ? ? 48 8D 4D C0 41 B8 10 00 00 00 48 8B 10 48 83 C2 1C"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# IGT from FD4Time
+igt = { base = "fd4_time", offsets = [0, 0xA0] }
+
+# Player instance from WorldChrMan
+player_ins = { base = "world_chr_man", offsets = [0, 0x1E508] }
+
+# NG+ level from GameDataMan
+ng_level = { base = "game_data_man", offsets = [0, 0x120] }
+
+# Player game data from GameDataMan
+player_game_data = { base = "game_data_man", offsets = [0, 0x8] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# Player instance offset (version dependent)
+player_ins_offset = 0x1E508
+
+# Screen state offset from PlayerIns
+screen_state_offset = 0x730
+
+# Position offset from PlayerIns
+position_offset = 0x6D4
+
+# Map ID offset from PlayerIns
+map_id_offset = 0x6D0
+
+# IGT offset from IGT pointer
+igt_offset = 0xA0
+
+# Blackscreen check at MenuManImp + 0x18
+# Bits: 0 set, 8 clear, 16 set
+blackscreen_offset = 0x18
+
+# Event flag tree constants
+[autosplitter.memory_layout.event_flag_tree]
+divisor_offset = 0x1C
+root_offset = 0x38
+first_sub_element = 0x8
+left_child = 0x0
+right_child = 0x10
+leaf_check_offset = 0x19
+category_offset = 0x20
+mystery_value_offset = 0x28
+element_value_offset = 0x30
+base_address_offset = 0x28
+
+# Screen states
+[autosplitter.memory_layout.screen_states]
+unknown = -1
+loading = 0
+logo = 1
+main_menu = 2
+in_game = 4
+
+# =============================================================================
+# LIVESPLIT-STYLE SCRIPT CONFIGURATION
+# =============================================================================
+
+[script]
+version = "1.0"
+name = "Elden Ring Script"
+description = "LiveSplit-style autosplitter script for Elden Ring"
+
+# Memory state definitions
+[script.state.virtualMemoryFlag]
+type = "ptr"
+pattern = "44 89 7c 24 28 4c 8b 25 ?? ?? ?? ?? 4d 85 e4"
+pattern_offset = 8
+pattern_length = 12
+
+[script.state.gameDataMan]
+type = "ptr"
+pattern = "48 8b 05 ?? ?? ?? ?? 48 85 c0 74 05 48 8b 40 58 c3 c3"
+pattern_offset = 3
+pattern_length = 7
+
+[script.state.inGame]
+type = "bool"
+base_watcher = "gameDataMan"
+offsets = [0x0]
+
+[script.state.playerHP]
+type = "i32"
+base_watcher = "gameDataMan"
+offsets = [0x8, 0x0, 0x190, 0x0, 0x138]
+
+[script.state.playerMaxHP]
+type = "i32"
+base_watcher = "gameDataMan"
+offsets = [0x8, 0x0, 0x190, 0x0, 0x13C]
+
+[script.state.igt]
+type = "i32"
+base_watcher = "gameDataMan"
+offsets = [0xA0]
+
+[script.state.isLoading]
+type = "u8"
+pattern = "89 44 24 40 48 8b 0d ?? ?? ?? ?? 48 85 c9 74"
+pattern_offset = 7
+pattern_length = 11
+offsets = [0x0, 0xE8]
+
+[script.hooks]
+start = "settings.autostart && current.inGame && !old.inGame && current.igt < 5000"
+reset = "settings.autoreset && !current.inGame && old.inGame"
+isLoading = "current.isLoading != 0"
+gameTime = "current.igt / 1000.0"
+split = "settings.splitOnDeath && current.playerHP == 0 && old.playerHP > 0"
+
+[script.settings]
+autostart = { default = true, label = "Auto-start timer", description = "Start timer when entering a new game" }
+autoreset = { default = false, label = "Auto-reset on menu", description = "Reset timer when returning to main menu" }
+splitOnDeath = { default = false, label = "Split on death", description = "Trigger split when player dies" }
+loadRemoval = { default = true, label = "Load removal", description = "Pause timer during loading screens" }
+
+# =============================================================================
+# ALL BOSSES (183 Total from SoulSplitter)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# LEGACY DUNGEONS - STORMVEIL CASTLE
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "godrick"
+name = "Godrick the Grafted"
+location = "Stormveil Castle"
+flag_id = 10000800
+is_dlc = false
+
+[[bosses]]
+id = "margit"
+name = "Margit, the Fell Omen"
+location = "Stormveil Castle"
+flag_id = 10000850
+is_dlc = false
+
+[[bosses]]
+id = "grafted_scion"
+name = "Grafted Scion"
+location = "Chapel of Anticipation"
+flag_id = 10010800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEGACY DUNGEONS - LEYNDELL
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "morgott"
+name = "Morgott, the Omen King"
+location = "Leyndell"
+flag_id = 11000800
+is_dlc = false
+
+[[bosses]]
+id = "godfrey_shade"
+name = "Godfrey, First Elden Lord (Golden Shade)"
+location = "Leyndell"
+flag_id = 11000850
+is_dlc = false
+
+[[bosses]]
+id = "hoarah_loux"
+name = "Hoarah Loux"
+location = "Leyndell"
+flag_id = 11050800
+is_dlc = false
+
+[[bosses]]
+id = "gideon"
+name = "Sir Gideon Ofnir, the All-Knowing"
+location = "Leyndell"
+flag_id = 11050850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - AINSEL RIVER / LAKE OF ROT
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "dragonkin_nokstella"
+name = "Dragonkin Soldier of Nokstella"
+location = "Ainsel River"
+flag_id = 12010800
+is_dlc = false
+
+[[bosses]]
+id = "dragonkin_lake_of_rot"
+name = "Dragonkin Soldier"
+location = "Lake of Rot"
+flag_id = 12010850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - SIOFRA RIVER
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "valiant_gargoyles"
+name = "Valiant Gargoyles"
+location = "Siofra River"
+flag_id = 12020800
+is_dlc = false
+
+[[bosses]]
+id = "dragonkin_siofra"
+name = "Dragonkin Soldier"
+location = "Siofra River"
+flag_id = 12020830
+is_dlc = false
+
+[[bosses]]
+id = "mimic_tear"
+name = "Mimic Tear"
+location = "Siofra River"
+flag_id = 12020850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - DEEPROOT DEPTHS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "crucible_knight_sirulia"
+name = "Crucible Knight Sirulia"
+location = "Deeproot Depths"
+flag_id = 12030390
+is_dlc = false
+
+[[bosses]]
+id = "fias_champion"
+name = "Fia's Champion"
+location = "Deeproot Depths"
+flag_id = 12030800
+is_dlc = false
+
+[[bosses]]
+id = "fortissax"
+name = "Lichdragon Fortissax"
+location = "Deeproot Depths"
+flag_id = 12030850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - LAKE OF ROT / MOHGWYN PALACE
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "astel"
+name = "Astel, Naturalborn of the Void"
+location = "Lake of Rot"
+flag_id = 12040800
+is_dlc = false
+
+[[bosses]]
+id = "mohg"
+name = "Mohg, Lord of Blood"
+location = "Mohgwyn Palace"
+flag_id = 12050800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - SIOFRA RIVER / NOKRON
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ancestor_spirit"
+name = "Ancestor Spirit"
+location = "Siofra River"
+flag_id = 12080800
+is_dlc = false
+
+[[bosses]]
+id = "regal_ancestor"
+name = "Regal Ancestor Spirit"
+location = "Nokron, Eternal City"
+flag_id = 12090800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEGACY DUNGEONS - CRUMBLING FARUM AZULA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "maliketh"
+name = "Maliketh, The Black Blade"
+location = "Crumbling Farum Azula"
+flag_id = 13000800
+is_dlc = false
+
+[[bosses]]
+id = "dragonlord"
+name = "Dragonlord Placidusax"
+location = "Crumbling Farum Azula"
+flag_id = 13000830
+is_dlc = false
+
+[[bosses]]
+id = "godskin_duo"
+name = "Godskin Duo"
+location = "Crumbling Farum Azula"
+flag_id = 13000850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEGACY DUNGEONS - ACADEMY OF RAYA LUCARIA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "rennala"
+name = "Rennala, Queen of the Full Moon"
+location = "Academy of Raya Lucaria"
+flag_id = 14000800
+is_dlc = false
+
+[[bosses]]
+id = "red_wolf"
+name = "Red Wolf of Radagon"
+location = "Academy of Raya Lucaria"
+flag_id = 14000850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEGACY DUNGEONS - MIQUELLA'S HALIGTREE
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "malenia"
+name = "Malenia, Blade of Miquella"
+location = "Miquella's Haligtree"
+flag_id = 15000800
+is_dlc = false
+
+[[bosses]]
+id = "loretta_haligtree"
+name = "Loretta, Knight of the Haligtree"
+location = "Miquella's Haligtree"
+flag_id = 15000850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEGACY DUNGEONS - VOLCANO MANOR
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "rykard"
+name = "Rykard, Lord of Blasphemy"
+location = "Volcano Manor"
+flag_id = 16000800
+is_dlc = false
+
+[[bosses]]
+id = "godskin_noble_volcano"
+name = "Godskin Noble"
+location = "Volcano Manor"
+flag_id = 16000850
+is_dlc = false
+
+[[bosses]]
+id = "abductor_virgins"
+name = "Abductor Virgins"
+location = "Volcano Manor"
+flag_id = 16000860
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# STRANDED GRAVEYARD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ulcerated_tree_spirit_graveyard"
+name = "Ulcerated Tree Spirit"
+location = "Stranded Graveyard"
+flag_id = 18000800
+is_dlc = false
+
+[[bosses]]
+id = "soldier_of_godrick"
+name = "Soldier of Godrick"
+location = "Stranded Graveyard"
+flag_id = 18000850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# ELDEN THRONE
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "elden_beast"
+name = "Elden Beast"
+location = "Elden Throne"
+flag_id = 19000800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# SUBTERRANEAN SHUNNING-GROUNDS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "mohg_omen"
+name = "Mohg, The Omen"
+location = "Subterranean Shunning-Grounds"
+flag_id = 35000800
+is_dlc = false
+
+[[bosses]]
+id = "esgar"
+name = "Esgar, Priest of Blood"
+location = "Subterranean Shunning-Grounds"
+flag_id = 35000850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# RUIN-STREWN PRECIPICE
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "magma_wyrm_makar"
+name = "Magma Wyrm Makar"
+location = "Ruin-Strewn Precipice"
+flag_id = 39200800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CATACOMBS - LIMGRAVE / WEEPING PENINSULA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "cemetery_shade_tombsward"
+name = "Cemetery Shade"
+location = "Tombsward Catacombs"
+flag_id = 30000800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_watchdog_impaler"
+name = "Erdtree Burial Watchdog"
+location = "Impaler's Catacombs"
+flag_id = 30010800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_watchdog_stormfoot"
+name = "Erdtree Burial Watchdog"
+location = "Stormfoot Catacombs"
+flag_id = 30020800
+is_dlc = false
+
+[[bosses]]
+id = "black_knife_deathtouched"
+name = "Black Knife Assassin"
+location = "Deathtouched Catacombs"
+flag_id = 30110800
+is_dlc = false
+
+[[bosses]]
+id = "grave_warden_murkwater"
+name = "Grave Warden Duelist"
+location = "Murkwater Catacombs"
+flag_id = 30040800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CATACOMBS - LIURNIA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "cemetery_shade_black_knife"
+name = "Cemetery Shade"
+location = "Black Knife Catacombs"
+flag_id = 30050800
+is_dlc = false
+
+[[bosses]]
+id = "black_knife_catacombs"
+name = "Black Knife Assassin"
+location = "Black Knife Catacombs"
+flag_id = 30050850
+is_dlc = false
+
+[[bosses]]
+id = "spirit_caller_snail_roads_end"
+name = "Spirit-Caller Snail"
+location = "Road's End Catacombs"
+flag_id = 30030800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_watchdog_cliffbottom"
+name = "Erdtree Burial Watchdog"
+location = "Cliffbottom Catacombs"
+flag_id = 30060800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# HERO'S GRAVES - ALTUS / MT. GELMIR
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ancient_hero_sainted"
+name = "Ancient Hero of Zamor"
+location = "Sainted Hero's Grave"
+flag_id = 30080800
+is_dlc = false
+
+[[bosses]]
+id = "red_wolf_champion"
+name = "Red Wolf of the Champion"
+location = "Gelmir Hero's Grave"
+flag_id = 30090800
+is_dlc = false
+
+[[bosses]]
+id = "crucible_knight_ordovis"
+name = "Crucible Knight Ordovis"
+location = "Auriza Hero's Grave"
+flag_id = 30100800
+is_dlc = false
+
+[[bosses]]
+id = "misbegotten_warrior_unsightly"
+name = "Misbegotten Warrior"
+location = "Unsightly Catacombs"
+flag_id = 30120800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_watchdog_wyndham"
+name = "Erdtree Burial Watchdog"
+location = "Wyndham Catacombs"
+flag_id = 30070800
+is_dlc = false
+
+[[bosses]]
+id = "grave_warden_auriza"
+name = "Grave Warden Duelist"
+location = "Auriza Side Tomb"
+flag_id = 30130800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CATACOMBS - CAELID
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "erdtree_watchdog_minor_caelid"
+name = "Erdtree Burial Watchdog"
+location = "Minor Erdtree Catacombs"
+flag_id = 30140800
+is_dlc = false
+
+[[bosses]]
+id = "cemetery_shade_caelid"
+name = "Cemetery Shade"
+location = "Caelid Catacombs"
+flag_id = 30150800
+is_dlc = false
+
+[[bosses]]
+id = "putrid_tree_spirit_war_dead"
+name = "Putrid Tree Spirit"
+location = "War-Dead Catacombs"
+flag_id = 30160800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CATACOMBS - MOUNTAINTOPS / SNOWFIELD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ancient_hero_giant_conquering"
+name = "Ancient Hero of Zamor"
+location = "Giant-Conquering Hero's Grave"
+flag_id = 30170800
+is_dlc = false
+
+[[bosses]]
+id = "ulcerated_tree_spirit_giants_mountaintop"
+name = "Ulcerated Tree Spirit"
+location = "Giants' Mountaintop Catacombs"
+flag_id = 30180800
+is_dlc = false
+
+[[bosses]]
+id = "putrid_grave_warden_snowfield"
+name = "Putrid Grave Warden Duelist"
+location = "Consecrated Snowfield Catacombs"
+flag_id = 30190800
+is_dlc = false
+
+[[bosses]]
+id = "stray_mimic_tear"
+name = "Stray Mimic Tear"
+location = "Hidden Path to the Haligtree"
+flag_id = 30202800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAVES - LIMGRAVE / WEEPING PENINSULA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "patches"
+name = "Patches"
+location = "Murkwater Cave"
+flag_id = 31000800
+is_dlc = false
+
+[[bosses]]
+id = "runebear"
+name = "Runebear"
+location = "Earthbore Cave"
+flag_id = 31010800
+is_dlc = false
+
+[[bosses]]
+id = "miranda_tombsward"
+name = "Miranda the Blighted Bloom"
+location = "Tombsward Cave"
+flag_id = 31020800
+is_dlc = false
+
+[[bosses]]
+id = "beastman_groveside"
+name = "Beastman of Farum Azula"
+location = "Groveside Cave"
+flag_id = 31030800
+is_dlc = false
+
+[[bosses]]
+id = "demi_human_chief_coastal"
+name = "Demi-Human Chief"
+location = "Coastal Cave"
+flag_id = 31150800
+is_dlc = false
+
+[[bosses]]
+id = "guardian_golem"
+name = "Guardian Golem"
+location = "Highroad Cave"
+flag_id = 31170800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAVES - LIURNIA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "cleanrot_knight_stillwater"
+name = "Cleanrot Knight"
+location = "Stillwater Cave"
+flag_id = 31040800
+is_dlc = false
+
+[[bosses]]
+id = "bloodhound_knight_lakeside"
+name = "Bloodhound Knight"
+location = "Lakeside Crystal Cave"
+flag_id = 31050800
+is_dlc = false
+
+[[bosses]]
+id = "crystalians_academy"
+name = "Crystalians"
+location = "Academy Crystal Cave"
+flag_id = 31060800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAVES - MT. GELMIR / ALTUS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "kindred_of_rot"
+name = "Kindred of Rot"
+location = "Seethewater Cave"
+flag_id = 31070800
+is_dlc = false
+
+[[bosses]]
+id = "demi_human_queen_margot"
+name = "Demi-Human Queen Margot"
+location = "Volcano Cave"
+flag_id = 31090800
+is_dlc = false
+
+[[bosses]]
+id = "miranda_perfumer"
+name = "Miranda the Blighted Bloom"
+location = "Perfumer's Grotto"
+flag_id = 31180800
+is_dlc = false
+
+[[bosses]]
+id = "black_knife_sage"
+name = "Black Knife Assassin"
+location = "Sage's Cave"
+flag_id = 31190800
+is_dlc = false
+
+[[bosses]]
+id = "necromancer_garris"
+name = "Necromancer Garris"
+location = "Sage's Cave"
+flag_id = 31190850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAVES - CAELID / DRAGONBARROW
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "frenzied_duelist"
+name = "Frenzied Duelist"
+location = "Gaol Cave"
+flag_id = 31210800
+is_dlc = false
+
+[[bosses]]
+id = "beastman_dragonbarrow"
+name = "Beastman of Farum Azula"
+location = "Dragonbarrow Cave"
+flag_id = 31100800
+is_dlc = false
+
+[[bosses]]
+id = "cleanrot_knight_abandoned"
+name = "Cleanrot Knight"
+location = "Abandoned Cave"
+flag_id = 31200800
+is_dlc = false
+
+[[bosses]]
+id = "putrid_crystalians"
+name = "Putrid Crystalians"
+location = "Sellia Hideaway"
+flag_id = 31110800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAVES - MOUNTAINTOPS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "misbegotten_crusader"
+name = "Misbegotten Crusader"
+location = "Cave of the Forlorn"
+flag_id = 31120800
+is_dlc = false
+
+[[bosses]]
+id = "spirit_caller_snail_spiritcaller"
+name = "Spirit-Caller Snail"
+location = "Spiritcaller's Cave"
+flag_id = 31220800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# TUNNELS - LIMGRAVE / WEEPING PENINSULA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "scaly_misbegotten"
+name = "Scaly Misbegotten"
+location = "Morne Tunnel"
+flag_id = 32000800
+is_dlc = false
+
+[[bosses]]
+id = "stonedigger_troll_limgrave"
+name = "Stonedigger Troll"
+location = "Limgrave Tunnels"
+flag_id = 32010800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# TUNNELS - LIURNIA
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "crystalian_raya_lucaria"
+name = "Crystalian (Ringblade)"
+location = "Raya Lucaria Crystal Tunnel"
+flag_id = 32020800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# TUNNELS - ALTUS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "stonedigger_troll_altus"
+name = "Stonedigger Troll"
+location = "Old Altus Tunnel"
+flag_id = 32040800
+is_dlc = false
+
+[[bosses]]
+id = "onyx_lord_divine_tower"
+name = "Onyx Lord"
+location = "Divine Tower of West Altus"
+flag_id = 34120800
+is_dlc = false
+
+[[bosses]]
+id = "crystalian_altus"
+name = "Crystalian (Ringblade)"
+location = "Altus Tunnel"
+flag_id = 32050800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# TUNNELS - CAELID
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "magma_wyrm_gael"
+name = "Magma Wyrm"
+location = "Gael Tunnel"
+flag_id = 32070800
+is_dlc = false
+
+[[bosses]]
+id = "fallingstar_beast_sellia"
+name = "Fallingstar Beast"
+location = "Sellia Crystal Tunnel"
+flag_id = 32080800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# TUNNELS - SNOWFIELD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "astel_stars_of_darkness"
+name = "Astel, Stars of Darkness"
+location = "Yelough Anix Tunnel"
+flag_id = 32110800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# DIVINE TOWERS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "godskin_apostle_divine_tower"
+name = "Godskin Apostle"
+location = "Divine Tower of Caelid"
+flag_id = 34130800
+is_dlc = false
+
+[[bosses]]
+id = "fell_twins"
+name = "Fell Twins"
+location = "Divine Tower of East Altus"
+flag_id = 34140850
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LIMGRAVE OVERWORLD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "mad_pumpkin_head"
+name = "Mad Pumpkin Head"
+location = "Waypoint Ruins"
+flag_id = 1044360800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_agheel"
+name = "Night's Cavalry"
+location = "Agheel Lake North"
+flag_id = 1043370800
+is_dlc = false
+
+[[bosses]]
+id = "deathbird_stormgate"
+name = "Deathbird"
+location = "Stormgate"
+flag_id = 1042380800
+is_dlc = false
+
+[[bosses]]
+id = "ball_bearing_hunter_warmaster"
+name = "Ball-Bearing Hunter"
+location = "Warmaster's Shack"
+flag_id = 1042380850
+is_dlc = false
+
+[[bosses]]
+id = "ancient_hero_weeping"
+name = "Ancient Hero of Zamor"
+location = "Weeping Evergaol"
+flag_id = 1042330800
+is_dlc = false
+
+[[bosses]]
+id = "bloodhound_knight_darriwill"
+name = "Bloodhound Knight Darriwill"
+location = "Forlorn Hound Evergaol"
+flag_id = 1044350800
+is_dlc = false
+
+[[bosses]]
+id = "crucible_knight_stormhill"
+name = "Crucible Knight"
+location = "Stormhill Evergaol"
+flag_id = 1042370800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_avatar_weeping"
+name = "Erdtree Avatar"
+location = "Minor Erdtree (Weeping Peninsula)"
+flag_id = 1043330800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_morne"
+name = "Night's Cavalry"
+location = "Castle Morne Approach"
+flag_id = 1044320850
+is_dlc = false
+
+[[bosses]]
+id = "deathbird_morne"
+name = "Deathbird"
+location = "Castle Morne Approach"
+flag_id = 1044320800
+is_dlc = false
+
+[[bosses]]
+id = "leonine_misbegotten"
+name = "Leonine Misbegotten"
+location = "Castle Morne"
+flag_id = 1043300800
+is_dlc = false
+
+[[bosses]]
+id = "tree_sentinel_elleh"
+name = "Tree Sentinel"
+location = "Church of Elleh"
+flag_id = 1042360800
+is_dlc = false
+
+[[bosses]]
+id = "flying_dragon_agheel"
+name = "Flying Dragon Agheel"
+location = "Dragon-Burnt Ruins"
+flag_id = 1043360800
+is_dlc = false
+
+[[bosses]]
+id = "tibia_mariner_summonwater"
+name = "Tibia Mariner"
+location = "Summonwater Village"
+flag_id = 1045390800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LIURNIA OVERWORLD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "royal_revenant"
+name = "Royal Revenant"
+location = "Kingsrealm Ruins"
+flag_id = 1034480800
+is_dlc = false
+
+[[bosses]]
+id = "adan"
+name = "Adan, Thief of Fire"
+location = "Malefactor's Evergaol"
+flag_id = 1038410800
+is_dlc = false
+
+[[bosses]]
+id = "bols"
+name = "Bols, Carian Knight"
+location = "Cuckoo's Evergaol"
+flag_id = 1033450800
+is_dlc = false
+
+[[bosses]]
+id = "onyx_lord_royal"
+name = "Onyx Lord"
+location = "Royal Grave Evergaol"
+flag_id = 1036500800
+is_dlc = false
+
+[[bosses]]
+id = "alecto"
+name = "Alecto, Black Knife Ringleader"
+location = "Moonlight Altar"
+flag_id = 1033420800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_avatar_revenger"
+name = "Erdtree Avatar"
+location = "Revenger's Shack"
+flag_id = 1033430800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_avatar_liurnia"
+name = "Erdtree Avatar"
+location = "Minor Erdtree (Liurnia)"
+flag_id = 1038480800
+is_dlc = false
+
+[[bosses]]
+id = "loretta_caria"
+name = "Royal Knight Loretta"
+location = "Caria Manor"
+flag_id = 1035500800
+is_dlc = false
+
+[[bosses]]
+id = "ball_bearing_hunter_vows"
+name = "Ball-Bearing Hunter"
+location = "Church of Vows"
+flag_id = 1037460800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_liurnia_north"
+name = "Night's Cavalry"
+location = "Liurnia Highway Far North"
+flag_id = 1039430800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_raya_lucaria"
+name = "Night's Cavalry"
+location = "East Raya Lucaria Gate"
+flag_id = 1036480800
+is_dlc = false
+
+[[bosses]]
+id = "deathbird_laskyar"
+name = "Deathbird"
+location = "Laskyar Ruins"
+flag_id = 1037420800
+is_dlc = false
+
+[[bosses]]
+id = "death_rite_bird_gate_town"
+name = "Death Rite Bird"
+location = "Gate Town Northwest"
+flag_id = 1036450800
+is_dlc = false
+
+[[bosses]]
+id = "glintstone_dragon_smarag"
+name = "Glintstone Dragon Smarag"
+location = "Meeting Place"
+flag_id = 1034450800
+is_dlc = false
+
+[[bosses]]
+id = "glintstone_dragon_adula"
+name = "Glintstone Dragon Adula"
+location = "Moonfolk Ruins"
+flag_id = 1034420800
+is_dlc = false
+
+[[bosses]]
+id = "omenkiller"
+name = "Omenkiller"
+location = "Village of the Albinaurics"
+flag_id = 1035420800
+is_dlc = false
+
+[[bosses]]
+id = "tibia_mariner_jarburg"
+name = "Tibia Mariner"
+location = "Jarburg"
+flag_id = 1039440800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# ALTUS PLATEAU OVERWORLD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ancient_dragon_lansseax_coffin"
+name = "Ancient Dragon Lansseax"
+location = "Abandoned Coffin"
+flag_id = 1037510800
+is_dlc = false
+
+[[bosses]]
+id = "ancient_dragon_lansseax_rampart"
+name = "Ancient Dragon Lansseax"
+location = "Rampartside Path"
+flag_id = 1041520800
+is_dlc = false
+
+[[bosses]]
+id = "demi_human_queen_lux"
+name = "Demi-Human Queen"
+location = "Lux Ruins"
+flag_id = 1038510800
+is_dlc = false
+
+[[bosses]]
+id = "fallingstar_beast_altus"
+name = "Fallingstar Beast"
+location = "South of Tree Sentinel Duo"
+flag_id = 1041500800
+is_dlc = false
+
+[[bosses]]
+id = "sanguine_noble"
+name = "Sanguine Noble"
+location = "Writheblood Ruins"
+flag_id = 1040530800
+is_dlc = false
+
+[[bosses]]
+id = "tree_sentinel_duo"
+name = "Tree Sentinel"
+location = "Tree Sentinel Duo"
+flag_id = 1041510800
+is_dlc = false
+
+[[bosses]]
+id = "godskin_apostle_windmill"
+name = "Godskin Apostle"
+location = "Windmill Heights"
+flag_id = 1042550800
+is_dlc = false
+
+[[bosses]]
+id = "black_knife_sainted"
+name = "Black Knife Assassin"
+location = "Sainted Hero's Grave Entrance"
+flag_id = 1040520800
+is_dlc = false
+
+[[bosses]]
+id = "draconic_tree_sentinel"
+name = "Draconic Tree Sentinel"
+location = "Capital Rampart"
+flag_id = 1045520800
+is_dlc = false
+
+[[bosses]]
+id = "godefroy"
+name = "Godefroy the Grafted"
+location = "Golden Lineage Evergaol"
+flag_id = 1039500800
+is_dlc = false
+
+[[bosses]]
+id = "wormface"
+name = "Wormface"
+location = "Woodfolk Ruins"
+flag_id = 1041530800
+is_dlc = false
+
+[[bosses]]
+id = "deathbird_capital"
+name = "Deathbird"
+location = "Minor Erdtree (Capital Outskirts)"
+flag_id = 1044530800
+is_dlc = false
+
+[[bosses]]
+id = "ball_bearing_hunter_hermit"
+name = "Ball-Bearing Hunter"
+location = "Hermit Merchant's Shack"
+flag_id = 1043530800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# MT. GELMIR OVERWORLD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "demi_human_queen_azur"
+name = "Demi-Human Queen"
+location = "Primeval Sorcerer Azur"
+flag_id = 1037530800
+is_dlc = false
+
+[[bosses]]
+id = "magma_wyrm_seethewater"
+name = "Magma Wyrm"
+location = "Seethewater Terminus"
+flag_id = 1035530800
+is_dlc = false
+
+[[bosses]]
+id = "full_grown_fallingstar_beast"
+name = "Full-Grown Fallingstar Beast"
+location = "Crater (Mt. Gelmir)"
+flag_id = 1036540800
+is_dlc = false
+
+[[bosses]]
+id = "elemer"
+name = "Elemer of the Briar"
+location = "Shaded Castle"
+flag_id = 1039540800
+is_dlc = false
+
+[[bosses]]
+id = "ulcerated_tree_spirit_gelmir"
+name = "Ulcerated Tree Spirit"
+location = "Minor Erdtree (Mt. Gelmir)"
+flag_id = 1037540810
+is_dlc = false
+
+[[bosses]]
+id = "tibia_mariner_wyndham"
+name = "Tibia Mariner"
+location = "Wyndham Ruins"
+flag_id = 1038520800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAELID OVERWORLD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "putrid_avatar_caelid"
+name = "Putrid Avatar"
+location = "Minor Erdtree (Caelid)"
+flag_id = 1047400800
+is_dlc = false
+
+[[bosses]]
+id = "decaying_ekzykes"
+name = "Decaying Ekzykes"
+location = "Caelid Highway South"
+flag_id = 1048370800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_aeonia"
+name = "Night's Cavalry"
+location = "Southern Aeonia Swamp Bank"
+flag_id = 1049370800
+is_dlc = false
+
+[[bosses]]
+id = "death_rite_bird_aeonia"
+name = "Death Rite Bird"
+location = "Southern Aeonia Swamp Bank"
+flag_id = 1049370850
+is_dlc = false
+
+[[bosses]]
+id = "commander_oneil"
+name = "Commander O'Neil"
+location = "East Aeonia Swamp"
+flag_id = 1049380800
+is_dlc = false
+
+[[bosses]]
+id = "crucible_knight_redmane"
+name = "Crucible Knight"
+location = "Redmane Castle"
+flag_id = 1051360800
+is_dlc = false
+
+[[bosses]]
+id = "radahn"
+name = "Starscourge Radahn"
+location = "Battlefield (Caelid)"
+flag_id = 1252380800
+is_dlc = false
+
+[[bosses]]
+id = "nox_priest"
+name = "Nox Priest"
+location = "West Sellia"
+flag_id = 1049390800
+is_dlc = false
+
+[[bosses]]
+id = "ball_bearing_hunter_dragonbarrow"
+name = "Bell-Bearing Hunter"
+location = "Isolated Merchant's Shack"
+flag_id = 1048410800
+is_dlc = false
+
+[[bosses]]
+id = "battlemage_hugues"
+name = "Battlemage Hugues"
+location = "Sellia Crystal Tunnel Entrance"
+flag_id = 1049390850
+is_dlc = false
+
+[[bosses]]
+id = "putrid_avatar_dragonbarrow"
+name = "Putrid Avatar"
+location = "Dragonbarrow Fork"
+flag_id = 1051400800
+is_dlc = false
+
+[[bosses]]
+id = "flying_dragon_greyll"
+name = "Flying Dragon Greyll"
+location = "Dragonbarrow"
+flag_id = 1052410800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_dragonbarrow"
+name = "Night's Cavalry"
+location = "Dragonbarrow"
+flag_id = 1052410850
+is_dlc = false
+
+[[bosses]]
+id = "black_blade_kindred_sanctum"
+name = "Black Blade Kindred"
+location = "Bestial Sanctum"
+flag_id = 1051430800
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# MOUNTAINTOPS / SNOWFIELD OVERWORLD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "nights_cavalry_forbidden"
+name = "Night's Cavalry"
+location = "Forbidden Lands"
+flag_id = 1048510800
+is_dlc = false
+
+[[bosses]]
+id = "black_blade_kindred_rold"
+name = "Black Blade Kindred"
+location = "Before Grand Lift of Rold"
+flag_id = 1049520800
+is_dlc = false
+
+[[bosses]]
+id = "borealis"
+name = "Borealis the Freezing Fog"
+location = "Freezing Fields"
+flag_id = 1254560800
+is_dlc = false
+
+[[bosses]]
+id = "roundtable_knight_vyke"
+name = "Roundtable Knight Vyke"
+location = "Lord Contender's Evergaol"
+flag_id = 1053560800
+is_dlc = false
+
+[[bosses]]
+id = "fire_giant"
+name = "Fire Giant"
+location = "Giant's Forge"
+flag_id = 1052520800
+is_dlc = false
+
+[[bosses]]
+id = "erdtree_avatar_mountaintops"
+name = "Erdtree Avatar"
+location = "Minor Erdtree (Mountaintops)"
+flag_id = 1052560800
+is_dlc = false
+
+[[bosses]]
+id = "death_rite_bird_castle_sol"
+name = "Death Rite Bird"
+location = "West of Castle Sol"
+flag_id = 1050570800
+is_dlc = false
+
+[[bosses]]
+id = "putrid_avatar_snowfield"
+name = "Putrid Avatar"
+location = "Minor Erdtree (Snowfield)"
+flag_id = 1050570850
+is_dlc = false
+
+[[bosses]]
+id = "commander_niall"
+name = "Commander Niall"
+location = "Castle Sol"
+flag_id = 1051570800
+is_dlc = false
+
+[[bosses]]
+id = "great_wyrm_theodorix"
+name = "Great Wyrm Theodorix"
+location = "Albinauric Rise"
+flag_id = 1050560800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_southwest"
+name = "Night's Cavalry"
+location = "Southwest (Mountaintops)"
+flag_id = 1248550800
+is_dlc = false
+
+[[bosses]]
+id = "death_rite_bird_ordina"
+name = "Death Rite Bird"
+location = "Ordina, Liturgical Town"
+flag_id = 1048570800
+is_dlc = false
+
+[[bosses]]
+id = "pumpkinhead_duo"
+name = "Pumpkinhead Duo"
+location = "Caelem Ruins"
+flag_id = 1048400800
+is_dlc = false
+
+[[bosses]]
+id = "nights_cavalry_altus_highway"
+name = "Night's Cavalry"
+location = "Altus Highway"
+flag_id = 1039510800
+is_dlc = false
+
+# =============================================================================
+# SHADOW OF THE ERDTREE DLC BOSSES
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# DLC - GRAVESITE PLAIN
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ghostflame_dragon_gravesite"
+name = "Ghostflame Dragon"
+location = "Gravesite Plain (Northwest)"
+flag_id = 2045440800
+is_dlc = true
+
+[[bosses]]
+id = "blackgaol_knight"
+name = "Blackgaol Knight"
+location = "Western Nameless Mausoleum"
+flag_id = 2046410800
+is_dlc = true
+
+[[bosses]]
+id = "chief_bloodfiend"
+name = "Chief Bloodfiend"
+location = "Rivermouth Cave"
+flag_id = 43000800
+is_dlc = true
+
+[[bosses]]
+id = "lamenter"
+name = "Lamenter"
+location = "Lamenter's Gaol"
+flag_id = 41020800
+is_dlc = true
+
+[[bosses]]
+id = "demi_human_swordmaster_onze"
+name = "Demi-Human Swordmaster Onze"
+location = "Belurat Gaol"
+flag_id = 41000800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - BELURAT, TOWER SETTLEMENT
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "divine_beast"
+name = "Divine Beast Dancing Lion"
+location = "Belurat, Tower Settlement"
+flag_id = 20000800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - CASTLE ENSIS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "rellana"
+name = "Rellana, Twin Moon Knight"
+location = "Castle Ensis"
+flag_id = 2048440800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - SCADU ALTUS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ghostflame_dragon_scadu"
+name = "Ghostflame Dragon"
+location = "Scadu Altus"
+flag_id = 2049430800
+is_dlc = true
+
+[[bosses]]
+id = "ralva"
+name = "Ralva the Great Red Bear"
+location = "Scadu Altus"
+flag_id = 2049450800
+is_dlc = true
+
+[[bosses]]
+id = "rugalea"
+name = "Rugalea the Great Red Bear"
+location = "Rauh Base (Northwest)"
+flag_id = 2044470800
+is_dlc = true
+
+[[bosses]]
+id = "dryleaf_dane"
+name = "Dryleaf Dane"
+location = "Moorth Ruins"
+flag_id = 2049440800
+is_dlc = true
+
+[[bosses]]
+id = "black_knight_edredd"
+name = "Black Knight Edredd"
+location = "Fort of Reprimand"
+flag_id = 2049430850
+is_dlc = true
+
+[[bosses]]
+id = "black_knight_garrew"
+name = "Black Knight Garrew"
+location = "Fog Rift Fort"
+flag_id = 2047450800
+is_dlc = true
+
+[[bosses]]
+id = "red_bear"
+name = "Red Bear"
+location = "Northern Nameless Mausoleum"
+flag_id = 2046450800
+is_dlc = true
+
+[[bosses]]
+id = "rakshasa"
+name = "Rakshasa"
+location = "Eastern Nameless Mausoleum"
+flag_id = 2051440800
+is_dlc = true
+
+[[bosses]]
+id = "metyr"
+name = "Metyr, Mother of Fingers"
+location = "Cathedral of Manus Metyr"
+flag_id = 25000800
+is_dlc = true
+
+[[bosses]]
+id = "count_ymir"
+name = "Count Ymir, Mother of Fingers"
+location = "Cathedral of Manus Metyr"
+flag_id = 2051450800
+is_dlc = true
+
+[[bosses]]
+id = "death_knight_fog_rift"
+name = "Death Knight"
+location = "Fog Rift Catacombs"
+flag_id = 40000800
+is_dlc = true
+
+[[bosses]]
+id = "death_knight_scorpion"
+name = "Death Knight"
+location = "Scorpion River Catacombs"
+flag_id = 40010800
+is_dlc = true
+
+[[bosses]]
+id = "curseblade_labirith"
+name = "Curseblade Labirith"
+location = "Bonny Gaol"
+flag_id = 41010800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - SHADOW KEEP
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "golden_hippopotamus"
+name = "Golden Hippopotamus"
+location = "Main Gate Plaza"
+flag_id = 21000850
+is_dlc = true
+
+[[bosses]]
+id = "messmer"
+name = "Base Serpent Messmer"
+location = "Messmer's Dark Chamber"
+flag_id = 21010800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - ANCIENT RUINS OF RAUH
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "divine_beast_rauh"
+name = "Divine Beast Dancing Lion"
+location = "Ancient Ruins of Rauh"
+flag_id = 2046460800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - CHURCH OF THE BUD
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "romina"
+name = "Romina, Saint of the Bud"
+location = "Church of the Bud"
+flag_id = 2044450800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - CERULEAN COAST
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "ghostflame_dragon_cerulean"
+name = "Ghostflame Dragon"
+location = "Cerulean Coast"
+flag_id = 2048380850
+is_dlc = true
+
+[[bosses]]
+id = "dancer_of_ranah"
+name = "Dancer of Ranah"
+location = "Southern Nameless Mausoleum"
+flag_id = 2046380800
+is_dlc = true
+
+[[bosses]]
+id = "putrescent_knight"
+name = "Putrescent Knight"
+location = "Stone Coffin Fissure"
+flag_id = 22000800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - CHARO'S HIDDEN GRAVE
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "death_rite_bird_charo"
+name = "Death Rite Bird"
+location = "Charo's Hidden Grave"
+flag_id = 2047390800
+is_dlc = true
+
+[[bosses]]
+id = "demi_human_queen_marigga"
+name = "Demi-Human Queen Marigga"
+location = "Charo's Hidden Grave (West)"
+flag_id = 2046400800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - JAGGED PEAK
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "jagged_peak_drake_foot"
+name = "Jagged Peak Drake"
+location = "Foot of the Jagged Peak"
+flag_id = 2049410800
+is_dlc = true
+
+[[bosses]]
+id = "jagged_peak_drake_mountainside"
+name = "Jagged Peak Drake"
+location = "Jagged Peak Mountainside"
+flag_id = 2052400800
+is_dlc = true
+
+[[bosses]]
+id = "ancient_dragon_man"
+name = "Ancient Dragon-Man"
+location = "Dragon's Pit"
+flag_id = 43010800
+is_dlc = true
+
+[[bosses]]
+id = "ancient_dragon_senessax"
+name = "Ancient Dragon Senessax"
+location = "Jagged Peak Mountainside"
+flag_id = 2054390850
+is_dlc = true
+
+[[bosses]]
+id = "bayle"
+name = "Bayle the Dread"
+location = "Jagged Peak Summit"
+flag_id = 2054390800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - SCADUVIEW
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "tree_sentinel_hinterland"
+name = "Tree Sentinel"
+location = "Hinterland"
+flag_id = 2050470800
+is_dlc = true
+
+[[bosses]]
+id = "tree_sentinel_hinterland_bridge"
+name = "Tree Sentinel"
+location = "Hinterland Bridge"
+flag_id = 2050480860
+is_dlc = true
+
+[[bosses]]
+id = "fallingstar_beast_fingerstone"
+name = "Fallingstar Beast"
+location = "Fingerstone Hill"
+flag_id = 2052480800
+is_dlc = true
+
+[[bosses]]
+id = "gaius"
+name = "Commander Gaius"
+location = "Scaduview"
+flag_id = 2049480800
+is_dlc = true
+
+[[bosses]]
+id = "scadutree_avatar"
+name = "Scadutree Avatar"
+location = "Scadutree Base"
+flag_id = 2050480800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - ABYSSAL WOODS
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "jori"
+name = "Jori, Elder Inquisitor"
+location = "Darklight Catacombs"
+flag_id = 2052430800
+is_dlc = true
+
+[[bosses]]
+id = "midra"
+name = "Midra, Lord of Frenzied Flame"
+location = "Midra's Manse"
+flag_id = 28000800
+is_dlc = true
+
+# -----------------------------------------------------------------------------
+# DLC - ENIR-ILIM
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "promised_consort"
+name = "Radahn, Consort of Miquella"
+location = "Enir-Ilim"
+flag_id = 20010800
+is_dlc = true
+
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "all-bosses"
+name = "All Bosses (Base Game)"
+description = "All base game bosses (143 bosses)"
+boss_ids = [
+    # Stormveil Castle
+    "godrick", "margit", "grafted_scion",
+    # Leyndell
+    "morgott", "godfrey_shade", "hoarah_loux", "gideon",
+    # Underground
+    "dragonkin_nokstella", "dragonkin_lake_of_rot", "valiant_gargoyles", "dragonkin_siofra", "mimic_tear",
+    "crucible_knight_sirulia", "fias_champion", "fortissax", "astel", "mohg",
+    "ancestor_spirit", "regal_ancestor",
+    # Crumbling Farum Azula
+    "maliketh", "dragonlord", "godskin_duo",
+    # Raya Lucaria
+    "rennala", "red_wolf",
+    # Haligtree
+    "malenia", "loretta_haligtree",
+    # Volcano Manor
+    "rykard", "godskin_noble_volcano", "abductor_virgins",
+    # Stranded Graveyard
+    "ulcerated_tree_spirit_graveyard", "soldier_of_godrick",
+    # Elden Throne
+    "elden_beast",
+    # Subterranean Shunning-Grounds
+    "mohg_omen", "esgar",
+    # Ruin-Strewn Precipice
+    "magma_wyrm_makar",
+    # Catacombs - Limgrave/Weeping
+    "cemetery_shade_tombsward", "erdtree_watchdog_impaler", "erdtree_watchdog_stormfoot", "black_knife_deathtouched", "grave_warden_murkwater",
+    # Catacombs - Liurnia
+    "cemetery_shade_black_knife", "black_knife_catacombs", "spirit_caller_snail_roads_end", "erdtree_watchdog_cliffbottom",
+    # Hero's Graves
+    "ancient_hero_sainted", "red_wolf_champion", "crucible_knight_ordovis", "misbegotten_warrior_unsightly", "erdtree_watchdog_wyndham", "grave_warden_auriza",
+    # Catacombs - Caelid
+    "erdtree_watchdog_minor_caelid", "cemetery_shade_caelid", "putrid_tree_spirit_war_dead",
+    # Catacombs - Mountaintops/Snowfield
+    "ancient_hero_giant_conquering", "ulcerated_tree_spirit_giants_mountaintop", "putrid_grave_warden_snowfield", "stray_mimic_tear",
+    # Caves - Limgrave/Weeping
+    "patches", "runebear", "miranda_tombsward", "beastman_groveside", "demi_human_chief_coastal", "guardian_golem",
+    # Caves - Liurnia
+    "cleanrot_knight_stillwater", "bloodhound_knight_lakeside", "crystalians_academy",
+    # Caves - Mt. Gelmir/Altus
+    "kindred_of_rot", "demi_human_queen_margot", "miranda_perfumer", "black_knife_sage", "necromancer_garris",
+    # Caves - Caelid/Dragonbarrow
+    "frenzied_duelist", "beastman_dragonbarrow", "cleanrot_knight_abandoned", "putrid_crystalians",
+    # Caves - Mountaintops
+    "misbegotten_crusader", "spirit_caller_snail_spiritcaller",
+    # Tunnels
+    "scaly_misbegotten", "stonedigger_troll_limgrave", "crystalian_raya_lucaria", "stonedigger_troll_altus", "onyx_lord_divine_tower", "crystalian_altus",
+    "magma_wyrm_gael", "fallingstar_beast_sellia", "astel_stars_of_darkness",
+    # Divine Towers
+    "godskin_apostle_divine_tower", "fell_twins",
+    # Limgrave Overworld
+    "mad_pumpkin_head", "nights_cavalry_agheel", "deathbird_stormgate", "ball_bearing_hunter_warmaster",
+    "ancient_hero_weeping", "bloodhound_knight_darriwill", "crucible_knight_stormhill", "erdtree_avatar_weeping",
+    "nights_cavalry_morne", "deathbird_morne", "leonine_misbegotten", "tree_sentinel_elleh", "flying_dragon_agheel", "tibia_mariner_summonwater",
+    # Liurnia Overworld
+    "royal_revenant", "adan", "bols", "onyx_lord_royal", "alecto", "erdtree_avatar_revenger", "erdtree_avatar_liurnia",
+    "loretta_caria", "ball_bearing_hunter_vows", "nights_cavalry_liurnia_north", "nights_cavalry_raya_lucaria",
+    "deathbird_laskyar", "death_rite_bird_gate_town", "glintstone_dragon_smarag", "glintstone_dragon_adula", "omenkiller", "tibia_mariner_jarburg",
+    # Altus Plateau Overworld
+    "ancient_dragon_lansseax_coffin", "ancient_dragon_lansseax_rampart", "demi_human_queen_lux", "fallingstar_beast_altus",
+    "sanguine_noble", "tree_sentinel_duo", "godskin_apostle_windmill", "black_knife_sainted", "draconic_tree_sentinel",
+    "godefroy", "wormface", "deathbird_capital", "ball_bearing_hunter_hermit",
+    # Mt. Gelmir Overworld
+    "demi_human_queen_azur", "magma_wyrm_seethewater", "full_grown_fallingstar_beast", "elemer", "ulcerated_tree_spirit_gelmir", "tibia_mariner_wyndham",
+    # Caelid Overworld
+    "putrid_avatar_caelid", "decaying_ekzykes", "nights_cavalry_aeonia", "death_rite_bird_aeonia", "commander_oneil",
+    "crucible_knight_redmane", "radahn", "nox_priest", "ball_bearing_hunter_dragonbarrow", "battlemage_hugues",
+    "putrid_avatar_dragonbarrow", "flying_dragon_greyll", "nights_cavalry_dragonbarrow", "black_blade_kindred_sanctum",
+    # Mountaintops/Snowfield Overworld
+    "nights_cavalry_forbidden", "black_blade_kindred_rold", "borealis", "roundtable_knight_vyke", "fire_giant",
+    "erdtree_avatar_mountaintops", "death_rite_bird_castle_sol", "putrid_avatar_snowfield", "commander_niall",
+    "great_wyrm_theodorix", "nights_cavalry_southwest", "death_rite_bird_ordina", "pumpkinhead_duo", "nights_cavalry_altus_highway"
+]
+
+[[presets]]
+id = "all-bosses-dlc"
+name = "All Bosses + DLC"
+description = "All bosses including Shadow of the Erdtree (183 bosses)"
+boss_ids = [
+    # === BASE GAME ===
+    # Stormveil Castle
+    "godrick", "margit", "grafted_scion",
+    # Leyndell
+    "morgott", "godfrey_shade", "hoarah_loux", "gideon",
+    # Underground
+    "dragonkin_nokstella", "dragonkin_lake_of_rot", "valiant_gargoyles", "dragonkin_siofra", "mimic_tear",
+    "crucible_knight_sirulia", "fias_champion", "fortissax", "astel", "mohg",
+    "ancestor_spirit", "regal_ancestor",
+    # Crumbling Farum Azula
+    "maliketh", "dragonlord", "godskin_duo",
+    # Raya Lucaria
+    "rennala", "red_wolf",
+    # Haligtree
+    "malenia", "loretta_haligtree",
+    # Volcano Manor
+    "rykard", "godskin_noble_volcano", "abductor_virgins",
+    # Stranded Graveyard
+    "ulcerated_tree_spirit_graveyard", "soldier_of_godrick",
+    # Elden Throne
+    "elden_beast",
+    # Subterranean Shunning-Grounds
+    "mohg_omen", "esgar",
+    # Ruin-Strewn Precipice
+    "magma_wyrm_makar",
+    # Catacombs - Limgrave/Weeping
+    "cemetery_shade_tombsward", "erdtree_watchdog_impaler", "erdtree_watchdog_stormfoot", "black_knife_deathtouched", "grave_warden_murkwater",
+    # Catacombs - Liurnia
+    "cemetery_shade_black_knife", "black_knife_catacombs", "spirit_caller_snail_roads_end", "erdtree_watchdog_cliffbottom",
+    # Hero's Graves
+    "ancient_hero_sainted", "red_wolf_champion", "crucible_knight_ordovis", "misbegotten_warrior_unsightly", "erdtree_watchdog_wyndham", "grave_warden_auriza",
+    # Catacombs - Caelid
+    "erdtree_watchdog_minor_caelid", "cemetery_shade_caelid", "putrid_tree_spirit_war_dead",
+    # Catacombs - Mountaintops/Snowfield
+    "ancient_hero_giant_conquering", "ulcerated_tree_spirit_giants_mountaintop", "putrid_grave_warden_snowfield", "stray_mimic_tear",
+    # Caves - Limgrave/Weeping
+    "patches", "runebear", "miranda_tombsward", "beastman_groveside", "demi_human_chief_coastal", "guardian_golem",
+    # Caves - Liurnia
+    "cleanrot_knight_stillwater", "bloodhound_knight_lakeside", "crystalians_academy",
+    # Caves - Mt. Gelmir/Altus
+    "kindred_of_rot", "demi_human_queen_margot", "miranda_perfumer", "black_knife_sage", "necromancer_garris",
+    # Caves - Caelid/Dragonbarrow
+    "frenzied_duelist", "beastman_dragonbarrow", "cleanrot_knight_abandoned", "putrid_crystalians",
+    # Caves - Mountaintops
+    "misbegotten_crusader", "spirit_caller_snail_spiritcaller",
+    # Tunnels
+    "scaly_misbegotten", "stonedigger_troll_limgrave", "crystalian_raya_lucaria", "stonedigger_troll_altus", "onyx_lord_divine_tower", "crystalian_altus",
+    "magma_wyrm_gael", "fallingstar_beast_sellia", "astel_stars_of_darkness",
+    # Divine Towers
+    "godskin_apostle_divine_tower", "fell_twins",
+    # Limgrave Overworld
+    "mad_pumpkin_head", "nights_cavalry_agheel", "deathbird_stormgate", "ball_bearing_hunter_warmaster",
+    "ancient_hero_weeping", "bloodhound_knight_darriwill", "crucible_knight_stormhill", "erdtree_avatar_weeping",
+    "nights_cavalry_morne", "deathbird_morne", "leonine_misbegotten", "tree_sentinel_elleh", "flying_dragon_agheel", "tibia_mariner_summonwater",
+    # Liurnia Overworld
+    "royal_revenant", "adan", "bols", "onyx_lord_royal", "alecto", "erdtree_avatar_revenger", "erdtree_avatar_liurnia",
+    "loretta_caria", "ball_bearing_hunter_vows", "nights_cavalry_liurnia_north", "nights_cavalry_raya_lucaria",
+    "deathbird_laskyar", "death_rite_bird_gate_town", "glintstone_dragon_smarag", "glintstone_dragon_adula", "omenkiller", "tibia_mariner_jarburg",
+    # Altus Plateau Overworld
+    "ancient_dragon_lansseax_coffin", "ancient_dragon_lansseax_rampart", "demi_human_queen_lux", "fallingstar_beast_altus",
+    "sanguine_noble", "tree_sentinel_duo", "godskin_apostle_windmill", "black_knife_sainted", "draconic_tree_sentinel",
+    "godefroy", "wormface", "deathbird_capital", "ball_bearing_hunter_hermit",
+    # Mt. Gelmir Overworld
+    "demi_human_queen_azur", "magma_wyrm_seethewater", "full_grown_fallingstar_beast", "elemer", "ulcerated_tree_spirit_gelmir", "tibia_mariner_wyndham",
+    # Caelid Overworld
+    "putrid_avatar_caelid", "decaying_ekzykes", "nights_cavalry_aeonia", "death_rite_bird_aeonia", "commander_oneil",
+    "crucible_knight_redmane", "radahn", "nox_priest", "ball_bearing_hunter_dragonbarrow", "battlemage_hugues",
+    "putrid_avatar_dragonbarrow", "flying_dragon_greyll", "nights_cavalry_dragonbarrow", "black_blade_kindred_sanctum",
+    # Mountaintops/Snowfield Overworld
+    "nights_cavalry_forbidden", "black_blade_kindred_rold", "borealis", "roundtable_knight_vyke", "fire_giant",
+    "erdtree_avatar_mountaintops", "death_rite_bird_castle_sol", "putrid_avatar_snowfield", "commander_niall",
+    "great_wyrm_theodorix", "nights_cavalry_southwest", "death_rite_bird_ordina", "pumpkinhead_duo", "nights_cavalry_altus_highway",
+    # === DLC - SHADOW OF THE ERDTREE ===
+    # Gravesite Plain
+    "ghostflame_dragon_gravesite", "blackgaol_knight", "chief_bloodfiend", "lamenter", "demi_human_swordmaster_onze",
+    # Belurat
+    "divine_beast",
+    # Castle Ensis
+    "rellana",
+    # Scadu Altus
+    "ghostflame_dragon_scadu", "ralva", "rugalea", "dryleaf_dane", "black_knight_edredd", "black_knight_garrew",
+    "red_bear", "rakshasa", "metyr", "count_ymir", "death_knight_fog_rift", "death_knight_scorpion", "curseblade_labirith",
+    # Shadow Keep
+    "golden_hippopotamus", "messmer",
+    # Ancient Ruins of Rauh
+    "divine_beast_rauh",
+    # Church of the Bud
+    "romina",
+    # Cerulean Coast
+    "ghostflame_dragon_cerulean", "dancer_of_ranah", "putrescent_knight",
+    # Charo's Hidden Grave
+    "death_rite_bird_charo", "demi_human_queen_marigga",
+    # Jagged Peak
+    "jagged_peak_drake_foot", "jagged_peak_drake_mountainside", "ancient_dragon_man", "ancient_dragon_senessax", "bayle",
+    # Scaduview
+    "tree_sentinel_hinterland", "tree_sentinel_hinterland_bridge", "fallingstar_beast_fingerstone", "gaius", "scadutree_avatar",
+    # Abyssal Woods
+    "jori", "midra",
+    # Enir-Ilim
+    "promised_consort"
+]
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Required story bosses only (13 bosses)"
+boss_ids = [
+    "margit", "godrick", "radahn", "godfrey_shade", "morgott",
+    "fire_giant", "godskin_duo", "maliketh", "gideon", "hoarah_loux", "elden_beast"
+]
+
+[[presets]]
+id = "remembrances"
+name = "All Remembrances"
+description = "All Remembrance bosses (17 bosses)"
+boss_ids = [
+    "godrick", "rennala", "radahn", "morgott", "rykard",
+    "fire_giant", "mohg", "maliketh", "malenia", "dragonlord",
+    "hoarah_loux", "elden_beast", "astel", "fortissax", "godskin_duo", "regal_ancestor", "ancestor_spirit"
+]
+
+[[presets]]
+id = "dlc-only"
+name = "Shadow of the Erdtree Only"
+description = "DLC bosses only (40 bosses)"
+boss_ids = [
+    # Gravesite Plain
+    "ghostflame_dragon_gravesite", "blackgaol_knight", "chief_bloodfiend", "lamenter", "demi_human_swordmaster_onze",
+    # Belurat
+    "divine_beast",
+    # Castle Ensis
+    "rellana",
+    # Scadu Altus
+    "ghostflame_dragon_scadu", "ralva", "rugalea", "dryleaf_dane", "black_knight_edredd", "black_knight_garrew",
+    "red_bear", "rakshasa", "metyr", "count_ymir", "death_knight_fog_rift", "death_knight_scorpion", "curseblade_labirith",
+    # Shadow Keep
+    "golden_hippopotamus", "messmer",
+    # Ancient Ruins of Rauh
+    "divine_beast_rauh",
+    # Church of the Bud
+    "romina",
+    # Cerulean Coast
+    "ghostflame_dragon_cerulean", "dancer_of_ranah", "putrescent_knight",
+    # Charo's Hidden Grave
+    "death_rite_bird_charo", "demi_human_queen_marigga",
+    # Jagged Peak
+    "jagged_peak_drake_foot", "jagged_peak_drake_mountainside", "ancient_dragon_man", "ancient_dragon_senessax", "bayle",
+    # Scaduview
+    "tree_sentinel_hinterland", "tree_sentinel_hinterland_bridge", "fallingstar_beast_fingerstone", "gaius", "scadutree_avatar",
+    # Abyssal Woods
+    "jori", "midra",
+    # Enir-Ilim
+    "promised_consort"
+]
+
+[[presets]]
+id = "dlc-remembrances"
+name = "DLC Remembrances"
+description = "Shadow of the Erdtree Remembrance bosses (10 bosses)"
+boss_ids = [
+    "divine_beast", "rellana", "messmer", "romina", "metyr",
+    "midra", "bayle", "gaius", "scadutree_avatar", "promised_consort"
+]
+
+[[presets]]
+id = "major-bosses"
+name = "Major Bosses"
+description = "Main story and major optional bosses (30 bosses)"
+boss_ids = [
+    # Main Story
+    "margit", "godrick", "red_wolf", "rennala", "radahn", "godfrey_shade", "morgott",
+    "fire_giant", "godskin_duo", "maliketh", "gideon", "hoarah_loux", "elden_beast",
+    # Major Optional
+    "rykard", "mohg", "malenia", "dragonlord", "fortissax", "astel",
+    "loretta_caria", "loretta_haligtree", "ancestor_spirit", "regal_ancestor",
+    "mimic_tear", "valiant_gargoyles", "mohg_omen", "elemer", "commander_niall",
+    "full_grown_fallingstar_beast", "borealis"
+]
+
+# =============================================================================
+# SITES OF GRACE
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# LIMGRAVE
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "the_first_step"
+name = "The First Step"
+location = "Limgrave"
+flag_id = 76100
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_elleh"
+name = "Church of Elleh"
+location = "Limgrave"
+flag_id = 76101
+is_dlc = false
+
+[[sites_of_grace]]
+id = "gatefront"
+name = "Gatefront"
+location = "Limgrave"
+flag_id = 76102
+is_dlc = false
+
+[[sites_of_grace]]
+id = "agheel_lake_south"
+name = "Agheel Lake South"
+location = "Limgrave"
+flag_id = 76103
+is_dlc = false
+
+[[sites_of_grace]]
+id = "agheel_lake_north"
+name = "Agheel Lake North"
+location = "Limgrave"
+flag_id = 76104
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_dragon_communion"
+name = "Church of Dragon Communion"
+location = "Limgrave"
+flag_id = 76105
+is_dlc = false
+
+[[sites_of_grace]]
+id = "seaside_ruins"
+name = "Seaside Ruins"
+location = "Limgrave"
+flag_id = 76106
+is_dlc = false
+
+[[sites_of_grace]]
+id = "mistwood_outskirts"
+name = "Mistwood Outskirts"
+location = "Limgrave"
+flag_id = 76107
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fort_haight_west"
+name = "Fort Haight West"
+location = "Limgrave"
+flag_id = 76108
+is_dlc = false
+
+[[sites_of_grace]]
+id = "third_church_of_marika"
+name = "Third Church of Marika"
+location = "Limgrave"
+flag_id = 76109
+is_dlc = false
+
+[[sites_of_grace]]
+id = "artists_shack"
+name = "Artist's Shack"
+location = "Limgrave"
+flag_id = 76110
+is_dlc = false
+
+[[sites_of_grace]]
+id = "waypoint_ruins_cellar"
+name = "Waypoint Ruins Cellar"
+location = "Limgrave"
+flag_id = 76111
+is_dlc = false
+
+# Weeping Peninsula
+[[sites_of_grace]]
+id = "castle_morne_rampart"
+name = "Castle Morne Rampart"
+location = "Weeping Peninsula"
+flag_id = 76150
+is_dlc = false
+
+[[sites_of_grace]]
+id = "beside_the_crater_pocked_glade"
+name = "Beside the Crater-Pocked Glade"
+location = "Weeping Peninsula"
+flag_id = 76151
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_pilgrimage"
+name = "Church of Pilgrimage"
+location = "Weeping Peninsula"
+flag_id = 76152
+is_dlc = false
+
+[[sites_of_grace]]
+id = "castle_morne_lift"
+name = "Castle Morne Lift"
+location = "Weeping Peninsula"
+flag_id = 76153
+is_dlc = false
+
+[[sites_of_grace]]
+id = "behind_castle_morne"
+name = "Behind the Castle"
+location = "Weeping Peninsula"
+flag_id = 76154
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fourth_church_of_marika"
+name = "Fourth Church of Marika"
+location = "Weeping Peninsula"
+flag_id = 76155
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# STORMVEIL CASTLE
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "stormhill_shack"
+name = "Stormhill Shack"
+location = "Stormhill"
+flag_id = 76200
+is_dlc = false
+
+[[sites_of_grace]]
+id = "stormveil_main_gate"
+name = "Stormveil Main Gate"
+location = "Stormveil Castle"
+flag_id = 76201
+is_dlc = false
+
+[[sites_of_grace]]
+id = "gateside_chamber"
+name = "Gateside Chamber"
+location = "Stormveil Castle"
+flag_id = 76202
+is_dlc = false
+
+[[sites_of_grace]]
+id = "stormveil_cliffside"
+name = "Stormveil Cliffside"
+location = "Stormveil Castle"
+flag_id = 76203
+is_dlc = false
+
+[[sites_of_grace]]
+id = "rampart_tower"
+name = "Rampart Tower"
+location = "Stormveil Castle"
+flag_id = 76204
+is_dlc = false
+
+[[sites_of_grace]]
+id = "liftside_chamber"
+name = "Liftside Chamber"
+location = "Stormveil Castle"
+flag_id = 76205
+is_dlc = false
+
+[[sites_of_grace]]
+id = "secluded_cell"
+name = "Secluded Cell"
+location = "Stormveil Castle"
+flag_id = 76206
+is_dlc = false
+
+[[sites_of_grace]]
+id = "godrick_the_grafted"
+name = "Godrick the Grafted"
+location = "Stormveil Castle"
+flag_id = 76207
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LIURNIA OF THE LAKES
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "lake_facing_cliffs"
+name = "Lake-Facing Cliffs"
+location = "Liurnia"
+flag_id = 76300
+is_dlc = false
+
+[[sites_of_grace]]
+id = "liurnia_lake_shore"
+name = "Liurnia Lake Shore"
+location = "Liurnia"
+flag_id = 76301
+is_dlc = false
+
+[[sites_of_grace]]
+id = "laskyar_ruins"
+name = "Laskyar Ruins"
+location = "Liurnia"
+flag_id = 76302
+is_dlc = false
+
+[[sites_of_grace]]
+id = "scenic_isle"
+name = "Scenic Isle"
+location = "Liurnia"
+flag_id = 76303
+is_dlc = false
+
+[[sites_of_grace]]
+id = "academy_gate_town"
+name = "Academy Gate Town"
+location = "Liurnia"
+flag_id = 76304
+is_dlc = false
+
+[[sites_of_grace]]
+id = "south_raya_lucaria_gate"
+name = "South Raya Lucaria Gate"
+location = "Liurnia"
+flag_id = 76305
+is_dlc = false
+
+[[sites_of_grace]]
+id = "main_academy_gate"
+name = "Main Academy Gate"
+location = "Liurnia"
+flag_id = 76306
+is_dlc = false
+
+[[sites_of_grace]]
+id = "liurnia_highway_south"
+name = "Liurnia Highway South"
+location = "Liurnia"
+flag_id = 76307
+is_dlc = false
+
+[[sites_of_grace]]
+id = "gate_town_north"
+name = "Gate Town North"
+location = "Liurnia"
+flag_id = 76308
+is_dlc = false
+
+[[sites_of_grace]]
+id = "east_gate_bridge_trestle"
+name = "East Gate Bridge Trestle"
+location = "Liurnia"
+flag_id = 76309
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_irith"
+name = "Church of Irith"
+location = "Liurnia"
+flag_id = 76310
+is_dlc = false
+
+[[sites_of_grace]]
+id = "caria_manor_main_gate"
+name = "Main Caria Manor Gate"
+location = "Liurnia"
+flag_id = 76311
+is_dlc = false
+
+[[sites_of_grace]]
+id = "manor_upper_level"
+name = "Manor Upper Level"
+location = "Liurnia"
+flag_id = 76312
+is_dlc = false
+
+[[sites_of_grace]]
+id = "manor_lower_level"
+name = "Manor Lower Level"
+location = "Liurnia"
+flag_id = 76313
+is_dlc = false
+
+[[sites_of_grace]]
+id = "royal_moongazing_grounds"
+name = "Royal Moongazing Grounds"
+location = "Liurnia"
+flag_id = 76314
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ranni_tower"
+name = "Ranni's Chamber"
+location = "Liurnia"
+flag_id = 76315
+is_dlc = false
+
+# Academy of Raya Lucaria
+[[sites_of_grace]]
+id = "church_of_the_cuckoo"
+name = "Church of the Cuckoo"
+location = "Academy of Raya Lucaria"
+flag_id = 76350
+is_dlc = false
+
+[[sites_of_grace]]
+id = "schoolhouse_classroom"
+name = "Schoolhouse Classroom"
+location = "Academy of Raya Lucaria"
+flag_id = 76351
+is_dlc = false
+
+[[sites_of_grace]]
+id = "debate_parlor"
+name = "Debate Parlor"
+location = "Academy of Raya Lucaria"
+flag_id = 76352
+is_dlc = false
+
+[[sites_of_grace]]
+id = "raya_lucaria_grand_library"
+name = "Raya Lucaria Grand Library"
+location = "Academy of Raya Lucaria"
+flag_id = 76353
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# ALTUS PLATEAU
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "erdtree_gazing_hill"
+name = "Erdtree-Gazing Hill"
+location = "Altus Plateau"
+flag_id = 76400
+is_dlc = false
+
+[[sites_of_grace]]
+id = "altus_highway_junction"
+name = "Altus Highway Junction"
+location = "Altus Plateau"
+flag_id = 76401
+is_dlc = false
+
+[[sites_of_grace]]
+id = "forest_spanning_greatbridge"
+name = "Forest-Spanning Greatbridge"
+location = "Altus Plateau"
+flag_id = 76402
+is_dlc = false
+
+[[sites_of_grace]]
+id = "outer_wall_phantom_tree"
+name = "Outer Wall Phantom Tree"
+location = "Altus Plateau"
+flag_id = 76403
+is_dlc = false
+
+[[sites_of_grace]]
+id = "outer_wall_battleground"
+name = "Outer Wall Battleground"
+location = "Altus Plateau"
+flag_id = 76404
+is_dlc = false
+
+[[sites_of_grace]]
+id = "capital_rampart"
+name = "Capital Rampart"
+location = "Altus Plateau"
+flag_id = 76405
+is_dlc = false
+
+# Mt. Gelmir
+[[sites_of_grace]]
+id = "bridge_of_iniquity"
+name = "Bridge of Iniquity"
+location = "Mt. Gelmir"
+flag_id = 76450
+is_dlc = false
+
+[[sites_of_grace]]
+id = "first_mt_gelmir_campsite"
+name = "First Mt. Gelmir Campsite"
+location = "Mt. Gelmir"
+flag_id = 76451
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ninth_mt_gelmir_campsite"
+name = "Ninth Mt. Gelmir Campsite"
+location = "Mt. Gelmir"
+flag_id = 76452
+is_dlc = false
+
+[[sites_of_grace]]
+id = "volcano_manor"
+name = "Volcano Manor"
+location = "Volcano Manor"
+flag_id = 76453
+is_dlc = false
+
+[[sites_of_grace]]
+id = "temple_of_eiglay"
+name = "Temple of Eiglay"
+location = "Volcano Manor"
+flag_id = 76454
+is_dlc = false
+
+[[sites_of_grace]]
+id = "audience_pathway"
+name = "Audience Pathway"
+location = "Volcano Manor"
+flag_id = 76455
+is_dlc = false
+
+[[sites_of_grace]]
+id = "rykard_lord_of_blasphemy"
+name = "Rykard, Lord of Blasphemy"
+location = "Volcano Manor"
+flag_id = 76456
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# LEYNDELL, ROYAL CAPITAL
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "east_capital_rampart"
+name = "East Capital Rampart"
+location = "Leyndell"
+flag_id = 76500
+is_dlc = false
+
+[[sites_of_grace]]
+id = "lower_capital_church"
+name = "Lower Capital Church"
+location = "Leyndell"
+flag_id = 76501
+is_dlc = false
+
+[[sites_of_grace]]
+id = "avenue_balcony"
+name = "Avenue Balcony"
+location = "Leyndell"
+flag_id = 76502
+is_dlc = false
+
+[[sites_of_grace]]
+id = "west_capital_rampart"
+name = "West Capital Rampart"
+location = "Leyndell"
+flag_id = 76503
+is_dlc = false
+
+[[sites_of_grace]]
+id = "queens_bedchamber"
+name = "Queen's Bedchamber"
+location = "Leyndell"
+flag_id = 76504
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fortified_manor_first_floor"
+name = "Fortified Manor, First Floor"
+location = "Leyndell"
+flag_id = 76505
+is_dlc = false
+
+[[sites_of_grace]]
+id = "divine_bridge"
+name = "Divine Bridge"
+location = "Leyndell"
+flag_id = 76506
+is_dlc = false
+
+[[sites_of_grace]]
+id = "elden_throne"
+name = "Elden Throne"
+location = "Leyndell"
+flag_id = 76507
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CAELID
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "rotview_balcony"
+name = "Rotview Balcony"
+location = "Caelid"
+flag_id = 76600
+is_dlc = false
+
+[[sites_of_grace]]
+id = "caelid_highway_south"
+name = "Caelid Highway South"
+location = "Caelid"
+flag_id = 76601
+is_dlc = false
+
+[[sites_of_grace]]
+id = "caelem_ruins"
+name = "Caelem Ruins"
+location = "Caelid"
+flag_id = 76602
+is_dlc = false
+
+[[sites_of_grace]]
+id = "smoldering_wall"
+name = "Smoldering Wall"
+location = "Caelid"
+flag_id = 76603
+is_dlc = false
+
+[[sites_of_grace]]
+id = "deep_siofra_well"
+name = "Deep Siofra Well"
+location = "Caelid"
+flag_id = 76604
+is_dlc = false
+
+[[sites_of_grace]]
+id = "southern_aeonia_swamp_bank"
+name = "Southern Aeonia Swamp Bank"
+location = "Caelid"
+flag_id = 76605
+is_dlc = false
+
+[[sites_of_grace]]
+id = "sellia_under_stair"
+name = "Sellia Under-Stair"
+location = "Caelid"
+flag_id = 76606
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_the_plague"
+name = "Church of the Plague"
+location = "Caelid"
+flag_id = 76607
+is_dlc = false
+
+[[sites_of_grace]]
+id = "redmane_castle_plaza"
+name = "Redmane Castle Plaza"
+location = "Caelid"
+flag_id = 76608
+is_dlc = false
+
+[[sites_of_grace]]
+id = "chamber_outside_the_plaza"
+name = "Chamber Outside the Plaza"
+location = "Caelid"
+flag_id = 76609
+is_dlc = false
+
+[[sites_of_grace]]
+id = "starscourge_radahn"
+name = "Starscourge Radahn"
+location = "Caelid"
+flag_id = 76610
+is_dlc = false
+
+# Dragonbarrow
+[[sites_of_grace]]
+id = "dragonbarrow_west"
+name = "Dragonbarrow West"
+location = "Dragonbarrow"
+flag_id = 76650
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragonbarrow_fork"
+name = "Dragonbarrow Fork"
+location = "Dragonbarrow"
+flag_id = 76651
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fort_faroth"
+name = "Fort Faroth"
+location = "Dragonbarrow"
+flag_id = 76652
+is_dlc = false
+
+[[sites_of_grace]]
+id = "bestial_sanctum"
+name = "Bestial Sanctum"
+location = "Dragonbarrow"
+flag_id = 76653
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# MOUNTAINTOPS OF THE GIANTS
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "zamor_ruins"
+name = "Zamor Ruins"
+location = "Mountaintops"
+flag_id = 76700
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ancient_snow_valley_ruins"
+name = "Ancient Snow Valley Ruins"
+location = "Mountaintops"
+flag_id = 76701
+is_dlc = false
+
+[[sites_of_grace]]
+id = "freezing_lake"
+name = "Freezing Lake"
+location = "Mountaintops"
+flag_id = 76702
+is_dlc = false
+
+[[sites_of_grace]]
+id = "first_church_of_marika"
+name = "First Church of Marika"
+location = "Mountaintops"
+flag_id = 76703
+is_dlc = false
+
+[[sites_of_grace]]
+id = "fire_giant"
+name = "Fire Giant"
+location = "Mountaintops"
+flag_id = 76704
+is_dlc = false
+
+[[sites_of_grace]]
+id = "foot_of_the_forge"
+name = "Foot of the Forge"
+location = "Mountaintops"
+flag_id = 76705
+is_dlc = false
+
+[[sites_of_grace]]
+id = "giants_gravepost"
+name = "Giant's Gravepost"
+location = "Mountaintops"
+flag_id = 76706
+is_dlc = false
+
+[[sites_of_grace]]
+id = "church_of_repose"
+name = "Church of Repose"
+location = "Mountaintops"
+flag_id = 76707
+is_dlc = false
+
+[[sites_of_grace]]
+id = "castle_sol_main_gate"
+name = "Castle Sol Main Gate"
+location = "Mountaintops"
+flag_id = 76708
+is_dlc = false
+
+[[sites_of_grace]]
+id = "castle_sol_rooftop"
+name = "Castle Sol Rooftop"
+location = "Mountaintops"
+flag_id = 76709
+is_dlc = false
+
+# Consecrated Snowfield
+[[sites_of_grace]]
+id = "consecrated_snowfield"
+name = "Consecrated Snowfield"
+location = "Consecrated Snowfield"
+flag_id = 76750
+is_dlc = false
+
+[[sites_of_grace]]
+id = "inner_consecrated_snowfield"
+name = "Inner Consecrated Snowfield"
+location = "Consecrated Snowfield"
+flag_id = 76751
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ordina_liturgical_town"
+name = "Ordina, Liturgical Town"
+location = "Consecrated Snowfield"
+flag_id = 76752
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# CRUMBLING FARUM AZULA
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "crumbling_beast_grave"
+name = "Crumbling Beast Grave"
+location = "Crumbling Farum Azula"
+flag_id = 76800
+is_dlc = false
+
+[[sites_of_grace]]
+id = "crumbling_beast_grave_depths"
+name = "Crumbling Beast Grave Depths"
+location = "Crumbling Farum Azula"
+flag_id = 76801
+is_dlc = false
+
+[[sites_of_grace]]
+id = "tempest_facing_balcony"
+name = "Tempest-Facing Balcony"
+location = "Crumbling Farum Azula"
+flag_id = 76802
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple"
+name = "Dragon Temple"
+location = "Crumbling Farum Azula"
+flag_id = 76803
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple_lift"
+name = "Dragon Temple Lift"
+location = "Crumbling Farum Azula"
+flag_id = 76804
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple_transept"
+name = "Dragon Temple Transept"
+location = "Crumbling Farum Azula"
+flag_id = 76805
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dragon_temple_altar"
+name = "Dragon Temple Altar"
+location = "Crumbling Farum Azula"
+flag_id = 76806
+is_dlc = false
+
+[[sites_of_grace]]
+id = "beside_great_bridge"
+name = "Beside the Great Bridge"
+location = "Crumbling Farum Azula"
+flag_id = 76807
+is_dlc = false
+
+[[sites_of_grace]]
+id = "maliketh_black_blade"
+name = "Maliketh, the Black Blade"
+location = "Crumbling Farum Azula"
+flag_id = 76808
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# MIQUELLA'S HALIGTREE
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "haligtree_canopy"
+name = "Haligtree Canopy"
+location = "Miquella's Haligtree"
+flag_id = 76850
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_town"
+name = "Haligtree Town"
+location = "Miquella's Haligtree"
+flag_id = 76851
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_town_plaza"
+name = "Haligtree Town Plaza"
+location = "Miquella's Haligtree"
+flag_id = 76852
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_promenade"
+name = "Haligtree Promenade"
+location = "Miquella's Haligtree"
+flag_id = 76853
+is_dlc = false
+
+[[sites_of_grace]]
+id = "elphael_inner_wall"
+name = "Elphael Inner Wall"
+location = "Miquella's Haligtree"
+flag_id = 76854
+is_dlc = false
+
+[[sites_of_grace]]
+id = "drainage_channel"
+name = "Drainage Channel"
+location = "Miquella's Haligtree"
+flag_id = 76855
+is_dlc = false
+
+[[sites_of_grace]]
+id = "haligtree_roots"
+name = "Haligtree Roots"
+location = "Miquella's Haligtree"
+flag_id = 76856
+is_dlc = false
+
+[[sites_of_grace]]
+id = "malenia_goddess_of_rot"
+name = "Malenia, Goddess of Rot"
+location = "Miquella's Haligtree"
+flag_id = 76857
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# UNDERGROUND - SIOFRA & AINSEL
+# -----------------------------------------------------------------------------
+
+[[sites_of_grace]]
+id = "siofra_river_well_depths"
+name = "Siofra River Well Depths"
+location = "Siofra River"
+flag_id = 76900
+is_dlc = false
+
+[[sites_of_grace]]
+id = "siofra_river_bank"
+name = "Siofra River Bank"
+location = "Siofra River"
+flag_id = 76901
+is_dlc = false
+
+[[sites_of_grace]]
+id = "worshippers_woods"
+name = "Worshippers' Woods"
+location = "Siofra River"
+flag_id = 76902
+is_dlc = false
+
+[[sites_of_grace]]
+id = "below_the_well"
+name = "Below the Well"
+location = "Siofra River"
+flag_id = 76903
+is_dlc = false
+
+[[sites_of_grace]]
+id = "nokron_eternal_city"
+name = "Nokron, Eternal City"
+location = "Nokron"
+flag_id = 76904
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ancestral_woods"
+name = "Ancestral Woods"
+location = "Nokron"
+flag_id = 76905
+is_dlc = false
+
+[[sites_of_grace]]
+id = "night_sacred_ground"
+name = "Night's Sacred Ground"
+location = "Nokron"
+flag_id = 76906
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ainsel_river_well_depths"
+name = "Ainsel River Well Depths"
+location = "Ainsel River"
+flag_id = 76907
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ainsel_river_sluice_gate"
+name = "Ainsel River Sluice Gate"
+location = "Ainsel River"
+flag_id = 76908
+is_dlc = false
+
+[[sites_of_grace]]
+id = "ainsel_river_main"
+name = "Ainsel River Main"
+location = "Ainsel River"
+flag_id = 76909
+is_dlc = false
+
+[[sites_of_grace]]
+id = "nokstella_eternal_city"
+name = "Nokstella, Eternal City"
+location = "Ainsel River"
+flag_id = 76910
+is_dlc = false
+
+[[sites_of_grace]]
+id = "lake_of_rot_shoreside"
+name = "Lake of Rot Shoreside"
+location = "Lake of Rot"
+flag_id = 76911
+is_dlc = false
+
+[[sites_of_grace]]
+id = "grand_cloister"
+name = "Grand Cloister"
+location = "Lake of Rot"
+flag_id = 76912
+is_dlc = false
+
+# Deeproot Depths
+[[sites_of_grace]]
+id = "root_facing_cliffs"
+name = "Root-Facing Cliffs"
+location = "Deeproot Depths"
+flag_id = 76950
+is_dlc = false
+
+[[sites_of_grace]]
+id = "great_waterfall_crest"
+name = "Great Waterfall Crest"
+location = "Deeproot Depths"
+flag_id = 76951
+is_dlc = false
+
+[[sites_of_grace]]
+id = "deeproot_depths"
+name = "Deeproot Depths"
+location = "Deeproot Depths"
+flag_id = 76952
+is_dlc = false
+
+[[sites_of_grace]]
+id = "across_the_roots"
+name = "Across the Roots"
+location = "Deeproot Depths"
+flag_id = 76953
+is_dlc = false
+
+[[sites_of_grace]]
+id = "prince_of_deaths_throne"
+name = "Prince of Death's Throne"
+location = "Deeproot Depths"
+flag_id = 76954
+is_dlc = false
+
+# Mohgwyn Palace
+[[sites_of_grace]]
+id = "palace_approach_ledge_road"
+name = "Palace Approach Ledge-Road"
+location = "Mohgwyn Palace"
+flag_id = 76960
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dynasty_mausoleum_entrance"
+name = "Dynasty Mausoleum Entrance"
+location = "Mohgwyn Palace"
+flag_id = 76961
+is_dlc = false
+
+[[sites_of_grace]]
+id = "dynasty_mausoleum_midpoint"
+name = "Dynasty Mausoleum Midpoint"
+location = "Mohgwyn Palace"
+flag_id = 76962
+is_dlc = false
+
+[[sites_of_grace]]
+id = "cocoon_of_the_empyrean"
+name = "Cocoon of the Empyrean"
+location = "Mohgwyn Palace"
+flag_id = 76963
+is_dlc = false
+
+# -----------------------------------------------------------------------------
+# DLC - SHADOW OF THE ERDTREE
+# -----------------------------------------------------------------------------
+
+# Gravesite Plain
+[[sites_of_grace]]
+id = "gravesite_plain"
+name = "Gravesite Plain"
+location = "Gravesite Plain"
+flag_id = 77000
+is_dlc = true
+
+[[sites_of_grace]]
+id = "scorched_ruins"
+name = "Scorched Ruins"
+location = "Gravesite Plain"
+flag_id = 77001
+is_dlc = true
+
+[[sites_of_grace]]
+id = "ellac_river_cave"
+name = "Ellac River Cave"
+location = "Gravesite Plain"
+flag_id = 77002
+is_dlc = true
+
+[[sites_of_grace]]
+id = "castle_front"
+name = "Castle Front"
+location = "Gravesite Plain"
+flag_id = 77003
+is_dlc = true
+
+[[sites_of_grace]]
+id = "pillar_path_cross"
+name = "Pillar Path Cross"
+location = "Gravesite Plain"
+flag_id = 77004
+is_dlc = true
+
+[[sites_of_grace]]
+id = "pillar_path_waypoint"
+name = "Pillar Path Waypoint"
+location = "Gravesite Plain"
+flag_id = 77005
+is_dlc = true
+
+[[sites_of_grace]]
+id = "cliffroad_terminus"
+name = "Cliffroad Terminus"
+location = "Gravesite Plain"
+flag_id = 77006
+is_dlc = true
+
+# Belurat
+[[sites_of_grace]]
+id = "belurat_tower_settlement"
+name = "Belurat, Tower Settlement"
+location = "Belurat"
+flag_id = 77050
+is_dlc = true
+
+[[sites_of_grace]]
+id = "stagefront"
+name = "Stagefront"
+location = "Belurat"
+flag_id = 77051
+is_dlc = true
+
+[[sites_of_grace]]
+id = "small_private_altar"
+name = "Small Private Altar"
+location = "Belurat"
+flag_id = 77052
+is_dlc = true
+
+[[sites_of_grace]]
+id = "theatre_of_the_divine_beast"
+name = "Theatre of the Divine Beast"
+location = "Belurat"
+flag_id = 77053
+is_dlc = true
+
+# Castle Ensis
+[[sites_of_grace]]
+id = "castle_ensis_checkpoint"
+name = "Castle Ensis Checkpoint"
+location = "Castle Ensis"
+flag_id = 77100
+is_dlc = true
+
+[[sites_of_grace]]
+id = "ensis_moongazing_grounds"
+name = "Ensis Moongazing Grounds"
+location = "Castle Ensis"
+flag_id = 77101
+is_dlc = true
+
+# Scadu Altus
+[[sites_of_grace]]
+id = "highroad_cross"
+name = "Highroad Cross"
+location = "Scadu Altus"
+flag_id = 77150
+is_dlc = true
+
+[[sites_of_grace]]
+id = "moorth_ruins"
+name = "Moorth Ruins"
+location = "Scadu Altus"
+flag_id = 77151
+is_dlc = true
+
+[[sites_of_grace]]
+id = "bonny_village"
+name = "Bonny Village"
+location = "Scadu Altus"
+flag_id = 77152
+is_dlc = true
+
+[[sites_of_grace]]
+id = "church_district_entrance"
+name = "Church District Entrance"
+location = "Scadu Altus"
+flag_id = 77153
+is_dlc = true
+
+# Shadow Keep
+[[sites_of_grace]]
+id = "shadow_keep_main_gate"
+name = "Shadow Keep, Main Gate"
+location = "Shadow Keep"
+flag_id = 77200
+is_dlc = true
+
+[[sites_of_grace]]
+id = "main_gate_plaza"
+name = "Main Gate Plaza"
+location = "Shadow Keep"
+flag_id = 77201
+is_dlc = true
+
+[[sites_of_grace]]
+id = "storehouse_first_floor"
+name = "Storehouse, First Floor"
+location = "Shadow Keep"
+flag_id = 77202
+is_dlc = true
+
+[[sites_of_grace]]
+id = "dark_chamber_entrance"
+name = "Dark Chamber Entrance"
+location = "Shadow Keep"
+flag_id = 77203
+is_dlc = true
+
+[[sites_of_grace]]
+id = "messmers_dark_chamber"
+name = "Messmer's Dark Chamber"
+location = "Shadow Keep"
+flag_id = 77204
+is_dlc = true
+
+# Scaduview / Rauh
+[[sites_of_grace]]
+id = "scaduview"
+name = "Scaduview"
+location = "Scaduview"
+flag_id = 77250
+is_dlc = true
+
+[[sites_of_grace]]
+id = "scadutree_base"
+name = "Scadutree Base"
+location = "Scaduview"
+flag_id = 77251
+is_dlc = true
+
+[[sites_of_grace]]
+id = "temple_town_ruins"
+name = "Temple Town Ruins"
+location = "Ancient Ruins of Rauh"
+flag_id = 77252
+is_dlc = true
+
+[[sites_of_grace]]
+id = "church_of_the_bud"
+name = "Church of the Bud"
+location = "Ancient Ruins of Rauh"
+flag_id = 77253
+is_dlc = true
+
+[[sites_of_grace]]
+id = "church_of_the_bud_main_entrance"
+name = "Church of the Bud, Main Entrance"
+location = "Ancient Ruins of Rauh"
+flag_id = 77254
+is_dlc = true
+
+# Abyssal Woods
+[[sites_of_grace]]
+id = "abyssal_woods"
+name = "Abyssal Woods"
+location = "Abyssal Woods"
+flag_id = 77300
+is_dlc = true
+
+[[sites_of_grace]]
+id = "forsaken_graveyard"
+name = "Forsaken Graveyard"
+location = "Abyssal Woods"
+flag_id = 77301
+is_dlc = true
+
+[[sites_of_grace]]
+id = "midras_manse"
+name = "Midra's Manse"
+location = "Abyssal Woods"
+flag_id = 77302
+is_dlc = true
+
+[[sites_of_grace]]
+id = "discussion_chamber"
+name = "Discussion Chamber"
+location = "Abyssal Woods"
+flag_id = 77303
+is_dlc = true
+
+[[sites_of_grace]]
+id = "second_floor_chamber"
+name = "Second Floor Chamber"
+location = "Abyssal Woods"
+flag_id = 77304
+is_dlc = true
+
+# Jagged Peak
+[[sites_of_grace]]
+id = "dragons_pit"
+name = "Dragon's Pit"
+location = "Jagged Peak"
+flag_id = 77350
+is_dlc = true
+
+[[sites_of_grace]]
+id = "dragons_pit_terminus"
+name = "Dragon's Pit Terminus"
+location = "Jagged Peak"
+flag_id = 77351
+is_dlc = true
+
+[[sites_of_grace]]
+id = "foot_of_jagged_peak"
+name = "Foot of the Jagged Peak"
+location = "Jagged Peak"
+flag_id = 77352
+is_dlc = true
+
+[[sites_of_grace]]
+id = "jagged_peak_mountainside"
+name = "Jagged Peak Mountainside"
+location = "Jagged Peak"
+flag_id = 77353
+is_dlc = true
+
+[[sites_of_grace]]
+id = "jagged_peak_summit"
+name = "Jagged Peak Summit"
+location = "Jagged Peak"
+flag_id = 77354
+is_dlc = true
+
+# Enir-Ilim
+[[sites_of_grace]]
+id = "cleansing_chamber_anteroom"
+name = "Cleansing Chamber Anteroom"
+location = "Enir-Ilim"
+flag_id = 77400
+is_dlc = true
+
+[[sites_of_grace]]
+id = "spiral_rise"
+name = "Spiral Rise"
+location = "Enir-Ilim"
+flag_id = 77401
+is_dlc = true
+
+[[sites_of_grace]]
+id = "enir_ilim"
+name = "Enir-Ilim"
+location = "Enir-Ilim"
+flag_id = 77402
+is_dlc = true
+
+[[sites_of_grace]]
+id = "first_rise"
+name = "First Rise"
+location = "Enir-Ilim"
+flag_id = 77403
+is_dlc = true
+
+[[sites_of_grace]]
+id = "divine_gate_front_staircase"
+name = "Divine Gate Front Staircase"
+location = "Enir-Ilim"
+flag_id = 77404
+is_dlc = true
+
+[[sites_of_grace]]
+id = "radahn_consort_of_miquella"
+name = "Radahn, Consort of Miquella"
+location = "Enir-Ilim"
+flag_id = 77405
+is_dlc = true
+
+# =============================================================================
+# KNOWN FLAGS - Key Items, Great Runes, Story Progression
+# =============================================================================
+
+# Great Runes
+[[known_flags]]
+id = "great_rune_godrick"
+name = "Godrick's Great Rune"
+category = "great_runes"
+flag_id = 171
+
+[[known_flags]]
+id = "great_rune_rennala"
+name = "Great Rune of the Unborn"
+category = "great_runes"
+flag_id = 172
+
+[[known_flags]]
+id = "great_rune_radahn"
+name = "Radahn's Great Rune"
+category = "great_runes"
+flag_id = 173
+
+[[known_flags]]
+id = "great_rune_morgott"
+name = "Morgott's Great Rune"
+category = "great_runes"
+flag_id = 174
+
+[[known_flags]]
+id = "great_rune_rykard"
+name = "Rykard's Great Rune"
+category = "great_runes"
+flag_id = 175
+
+[[known_flags]]
+id = "great_rune_mohg"
+name = "Mohg's Great Rune"
+category = "great_runes"
+flag_id = 176
+
+[[known_flags]]
+id = "great_rune_malenia"
+name = "Malenia's Great Rune"
+category = "great_runes"
+flag_id = 177
+
+# Remembrances
+[[known_flags]]
+id = "remembrance_godrick"
+name = "Remembrance of the Grafted"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_rennala"
+name = "Remembrance of the Full Moon Queen"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_radahn"
+name = "Remembrance of the Starscourge"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_morgott"
+name = "Remembrance of the Omen King"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_rykard"
+name = "Remembrance of the Blasphemous"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_fire_giant"
+name = "Remembrance of the Fire Giant"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_mohg"
+name = "Remembrance of the Blood Lord"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_malenia"
+name = "Remembrance of the Rot Goddess"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_dragonlord"
+name = "Remembrance of the Dragonlord"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_maliketh"
+name = "Remembrance of the Black Blade"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_hoarah_loux"
+name = "Remembrance of Hoarah Loux"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_elden_beast"
+name = "Elden Remembrance"
+category = "remembrances"
+flag_id = 0
+
+# Key Items
+[[known_flags]]
+id = "academy_glintstone_key"
+name = "Academy Glintstone Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "discarded_palace_key"
+name = "Discarded Palace Key"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "haligtree_secret_medallion_left"
+name = "Haligtree Secret Medallion (Left)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "haligtree_secret_medallion_right"
+name = "Haligtree Secret Medallion (Right)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "dectus_medallion_left"
+name = "Dectus Medallion (Left)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "dectus_medallion_right"
+name = "Dectus Medallion (Right)"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "pureblood_knights_medal"
+name = "Pureblood Knight's Medal"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "carian_inverted_statue"
+name = "Carian Inverted Statue"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "cursemark_of_death"
+name = "Cursemark of Death"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "fingerslayer_blade"
+name = "Fingerslayer Blade"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "dark_moon_ring"
+name = "Dark Moon Ring"
+category = "key_items"
+flag_id = 0
+
+[[known_flags]]
+id = "miniature_ranni"
+name = "Miniature Ranni"
+category = "key_items"
+flag_id = 0
+
+# Stonesword Keys
+[[known_flags]]
+id = "stonesword_key"
+name = "Stonesword Key Obtained"
+category = "keys"
+flag_id = 0
+
+# Covenants / NPC Questlines
+[[known_flags]]
+id = "varre_white_mask"
+name = "Varre's White Mask Obtained"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "ranni_quest_complete"
+name = "Ranni Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "fia_quest_complete"
+name = "Fia Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "millicent_quest_complete"
+name = "Millicent Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "alexander_quest_complete"
+name = "Alexander Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "blaidd_quest_complete"
+name = "Blaidd Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "nepheli_quest_complete"
+name = "Nepheli Quest Complete"
+category = "npc"
+flag_id = 0
+
+[[known_flags]]
+id = "sellen_quest_complete"
+name = "Sellen Quest Complete"
+category = "npc"
+flag_id = 0
+
+# Endings
+[[known_flags]]
+id = "ending_age_of_fracture"
+name = "Ending: Age of Fracture"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_age_of_duskborn"
+name = "Ending: Age of Duskborn"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_blessing_of_despair"
+name = "Ending: Blessing of Despair"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_age_of_order"
+name = "Ending: Age of Order"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_lord_of_frenzied_flame"
+name = "Ending: Lord of Frenzied Flame"
+category = "endings"
+flag_id = 0
+
+[[known_flags]]
+id = "ending_age_of_stars"
+name = "Ending: Age of Stars"
+category = "endings"
+flag_id = 0
+
+# Story Progression
+[[known_flags]]
+id = "erdtree_burned"
+name = "Erdtree Set Ablaze"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "nokron_unlocked"
+name = "Nokron Unlocked (Radahn Defeated)"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "leyndell_ashen"
+name = "Leyndell Transformed to Ash"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "ranni_ending_setup"
+name = "Dark Moon Ring Given to Ranni"
+category = "story"
+flag_id = 0
+
+[[known_flags]]
+id = "frenzied_flame_inherited"
+name = "Frenzied Flame Inherited"
+category = "story"
+flag_id = 0
+
+# DLC - Shadow of the Erdtree
+[[known_flags]]
+id = "remembrance_messmer"
+name = "Remembrance of the Impaler"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_promised_consort"
+name = "Remembrance of a God and a Lord"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_midra"
+name = "Remembrance of the Lord of Frenzied Flame"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_bayle"
+name = "Remembrance of the Dread"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_romina"
+name = "Remembrance of the Saint of the Bud"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_rellana"
+name = "Remembrance of the Twin Moon Knight"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_dancing_lion"
+name = "Remembrance of the Dancing Lion"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_gaius"
+name = "Remembrance of the Wild Boar Rider"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_metyr"
+name = "Remembrance of the Mother of Fingers"
+category = "remembrances"
+flag_id = 0
+
+[[known_flags]]
+id = "remembrance_scadutree"
+name = "Remembrance of the Shadow Sunflower"
+category = "remembrances"
+flag_id = 0

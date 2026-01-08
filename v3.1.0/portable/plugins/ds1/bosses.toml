@@ -1,0 +1,271 @@
+# =============================================================================
+# BOSSES
+# =============================================================================
+
+[[bosses]]
+id = "asylum_demon"
+name = "Asylum Demon"
+location = "Northern Undead Asylum"
+required = true
+is_dlc = false
+flag_id = 16
+order = 1
+aliases = ["Asylum"]
+
+[[bosses]]
+id = "taurus_demon"
+name = "Taurus Demon"
+location = "Undead Burg"
+required = true
+is_dlc = false
+flag_id = 11010901
+order = 2
+aliases = ["Taurus", "Bull"]
+
+[[bosses]]
+id = "bell_gargoyles"
+name = "Bell Gargoyles"
+location = "Undead Parish"
+required = true
+is_dlc = false
+flag_id = 3
+order = 3
+aliases = ["Gargoyles", "Gargs"]
+
+[[bosses]]
+id = "quelaag"
+name = "Chaos Witch Quelaag"
+location = "Blighttown"
+required = true
+is_dlc = false
+flag_id = 9
+order = 4
+aliases = ["Quelaag", "Spider"]
+
+[[bosses]]
+id = "iron_golem"
+name = "Iron Golem"
+location = "Sen's Fortress"
+required = true
+is_dlc = false
+flag_id = 11
+order = 5
+aliases = ["Golem"]
+
+[[bosses]]
+id = "ornstein_smough"
+name = "Ornstein & Smough"
+location = "Anor Londo"
+required = true
+is_dlc = false
+flag_id = 12
+order = 6
+aliases = ["O&S", "OnS", "Orny and Smough", "Pikachu and Snorlax"]
+
+[[bosses]]
+id = "sif"
+name = "Great Grey Wolf Sif"
+location = "Darkroot Garden"
+required = true
+is_dlc = false
+flag_id = 5
+order = 7
+aliases = ["Sif", "Doggo", "Good Boy"]
+
+[[bosses]]
+id = "four_kings"
+name = "Four Kings"
+location = "The Abyss"
+required = true
+is_dlc = false
+flag_id = 13
+order = 8
+aliases = ["4K", "Kings"]
+
+[[bosses]]
+id = "seath"
+name = "Seath the Scaleless"
+location = "Crystal Cave"
+required = true
+is_dlc = false
+flag_id = 14
+order = 9
+aliases = ["Seath"]
+
+[[bosses]]
+id = "nito"
+name = "Gravelord Nito"
+location = "Tomb of the Giants"
+required = true
+is_dlc = false
+flag_id = 7
+order = 10
+aliases = ["Nito"]
+
+[[bosses]]
+id = "bed_of_chaos"
+name = "Bed of Chaos"
+location = "Lost Izalith"
+required = true
+is_dlc = false
+flag_id = 10
+order = 11
+aliases = ["BoC", "Bed", "Worst Boss"]
+
+[[bosses]]
+id = "gwyn"
+name = "Gwyn, Lord of Cinder"
+location = "Kiln of the First Flame"
+required = true
+is_dlc = false
+flag_id = 15
+order = 12
+aliases = ["Gwyn", "Final Boss"]
+
+[[bosses]]
+id = "capra_demon"
+name = "Capra Demon"
+location = "Lower Undead Burg"
+required = false
+is_dlc = false
+flag_id = 11010902
+order = 13
+aliases = ["Capra", "Goat"]
+
+[[bosses]]
+id = "gaping_dragon"
+name = "Gaping Dragon"
+location = "Depths"
+required = false
+is_dlc = false
+flag_id = 2
+order = 14
+aliases = ["Gaping", "Vagina Dragon"]
+
+[[bosses]]
+id = "moonlight_butterfly"
+name = "Moonlight Butterfly"
+location = "Darkroot Garden"
+required = false
+is_dlc = false
+flag_id = 11200900
+order = 15
+aliases = ["Butterfly", "MLB"]
+
+[[bosses]]
+id = "stray_demon"
+name = "Stray Demon"
+location = "Northern Undead Asylum"
+required = false
+is_dlc = false
+flag_id = 11810900
+order = 16
+aliases = ["Stray"]
+
+[[bosses]]
+id = "demon_firesage"
+name = "Demon Firesage"
+location = "Lost Izalith"
+required = false
+is_dlc = false
+flag_id = 11410410
+order = 17
+aliases = ["Firesage"]
+
+[[bosses]]
+id = "centipede_demon"
+name = "Centipede Demon"
+location = "Lost Izalith"
+required = false
+is_dlc = false
+flag_id = 11410901
+order = 18
+aliases = ["Centipede"]
+
+[[bosses]]
+id = "crossbreed_priscilla"
+name = "Crossbreed Priscilla"
+location = "Painted World"
+required = false
+is_dlc = false
+flag_id = 4
+order = 19
+aliases = ["Priscilla", "Fluffy Tail"]
+
+[[bosses]]
+id = "dark_sun_gwyndolin"
+name = "Dark Sun Gwyndolin"
+location = "Anor Londo"
+required = false
+is_dlc = false
+flag_id = 11510900
+order = 20
+aliases = ["Gwyndolin", "Trap"]
+
+[[bosses]]
+id = "ceaseless_discharge"
+name = "Ceaseless Discharge"
+location = "Demon Ruins"
+required = false
+is_dlc = false
+flag_id = 11410900
+order = 21
+aliases = ["Ceaseless", "CD"]
+
+[[bosses]]
+id = "pinwheel"
+name = "Pinwheel"
+location = "Catacombs"
+required = false
+is_dlc = false
+flag_id = 6
+order = 22
+aliases = ["Easiest Boss"]
+
+# =============================================================================
+# ARTORIAS OF THE ABYSS DLC
+# =============================================================================
+
+[[bosses]]
+id = "sanctuary_guardian"
+name = "Sanctuary Guardian"
+location = "Royal Wood"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210000
+order = 23
+aliases = ["Sanctuary", "Manticore"]
+
+[[bosses]]
+id = "artorias"
+name = "Knight Artorias"
+location = "Royal Wood"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210001
+order = 24
+aliases = ["Artorias", "Arty"]
+
+[[bosses]]
+id = "manus"
+name = "Manus, Father of the Abyss"
+location = "Chasm of the Abyss"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210002
+order = 25
+aliases = ["Manus", "Big Hand"]
+
+[[bosses]]
+id = "kalameet"
+name = "Black Dragon Kalameet"
+location = "Royal Wood"
+required = true
+is_dlc = true
+dlc_name = "Artorias of the Abyss"
+flag_id = 11210004
+order = 26
+aliases = ["Kalameet"]

@@ -1,0 +1,1765 @@
+[plugin]
+id = "sekiro"
+name = "Sekiro: Shadows Die Twice"
+short_name = "SEK"
+version = "1.1.0"
+author = "NYA Core"
+description = "Sekiro autosplitter with full boss tracking"
+update_url = "https://raw.githubusercontent.com/valkyaha/NYA-Core-Assets/main/plugins/sekiro/plugin.toml"
+
+# Save file location for practice mode backup/restore
+save_location_windows = "%APPDATA%/Sekiro"
+save_location_linux = "~/.local/share/Steam/userdata"
+save_type = "folder"
+
+[process]
+names = ["sekiro.exe"]
+
+# =============================================================================
+# RECOMMENDED TOOLS
+# =============================================================================
+
+[[tools]]
+name = "Sekiro Save Manager"
+description = "Backup and manage save files"
+author = "Community"
+version = "1.0.0"
+download_url = "https://github.com/Atvaark/Sekiro.SaveManager/releases"
+category = "utility"
+required = false
+
+[[tools]]
+name = "Sekiro FPS Unlocker"
+description = "Unlock framerate beyond 60 FPS"
+author = "uberhalit"
+version = "Latest"
+download_url = "https://github.com/uberhalit/Sekiro FpsUnlockAndMore/releases"
+category = "mod"
+required = false
+
+[[tools]]
+name = "Sekiro Practice Tool"
+description = "Practice specific bosses and sections"
+author = "Zullie"
+version = "Latest"
+download_url = "https://github.com/veeenu/sekiro-practice-tool/releases"
+category = "practice"
+required = false
+
+[autosplitter]
+enabled = true
+algorithm = "category_decomposition"
+
+# Category decomposition algorithm configuration (Sekiro style)
+# Based on SoulSplitter by FrankvdStam
+# Sekiro uses different offsets than DS3
+[autosplitter.category_config]
+primary_pattern = "event_flag_man"
+secondary_pattern = "field_area"
+base_offset = 536           # 0x218
+entry_size = 24             # 0x18
+category_count = 6
+category_multiplier = 168   # 0xa8
+# Sekiro: FieldArea -> 0x48 -> 0x18
+field_area_base_offset = 72 # 0x48
+world_info_offset = 24      # 0x18
+world_info_struct_size = 56 # 0x38
+world_block_struct_size = 176  # 0xb0
+
+# Memory patterns for finding game data structures
+[[autosplitter.patterns]]
+name = "event_flag_man"
+pattern = "48 8b 0d ? ? ? ? 48 89 5c 24 50 48 89 6c 24 58 48 89 74 24 60"
+rip_offset = 3
+instruction_len = 7
+
+[[autosplitter.patterns]]
+name = "field_area"
+pattern = "48 8B 0D ? ? ? ? 48 85 C9 74 26 44 8B 41 28 48 8D 54 24 40"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = []  # No dereference - raw address
+
+[[autosplitter.patterns]]
+name = "world_chr_man"
+pattern = "48 8B 35 ? ? ? ? 44 0F 28 18"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "igt"
+pattern = "48 8B 05 ? ? ? ? 32 D2 48 8B 48"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0, 0x9C]
+
+[[autosplitter.patterns]]
+name = "fade_man_imp"
+pattern = "48 89 35 ? ? ? ? 48 8B C7 48 8B"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "player_game_data"
+pattern = "48 8B 0D ? ? ? ? 48 8B 41 20 C6"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0, 0x8]
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# Player position from WorldChrMan
+player_pos = { base = "world_chr_man", offsets = [0, 0x48, 0x28] }
+
+# Fade system from FadeManImp
+fade_system = { base = "fade_man_imp", offsets = [0, 0x8] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# Event flag calculation offsets (similar to DS3 but different strides)
+event_flag_base_offset = 0x218
+event_flag_stride = 0x18
+block_stride = 0xB0  # Sekiro-specific
+block_category_stride = 0xA8
+field_area_offset = 0x18  # Sekiro-specific
+
+# Position offsets from PlayerPos
+position_x = 0x80
+position_y = 0x84
+position_z = 0x88
+
+# Player loaded check at WorldChrMan + 0x88
+player_loaded_offset = 0x88
+
+# Blackscreen check at FadeSystem + 0x2DC
+blackscreen_offset = 0x2DC
+
+# Attribute offsets from PlayerGameData
+[autosplitter.memory_layout.attributes]
+vitality = 0x44
+attack_power = 0x48
+
+# =============================================================================
+# LIVESPLIT-STYLE SCRIPT CONFIGURATION
+# =============================================================================
+
+[script]
+version = "1.0"
+name = "Sekiro Script"
+description = "LiveSplit-style autosplitter script for Sekiro: Shadows Die Twice"
+
+[script.state.eventFlagMan]
+type = "ptr"
+pattern = "48 8b 0d ?? ?? ?? ?? 48 89 5c 24 50 48 89 6c 24 58 48 89 74 24 60"
+pattern_offset = 3
+pattern_length = 7
+
+[script.state.inGame]
+type = "bool"
+base_watcher = "eventFlagMan"
+offsets = [0x0]
+
+[script.hooks]
+start = "settings.autostart && current.inGame && !old.inGame"
+reset = "settings.autoreset && !current.inGame && old.inGame"
+split = "settings.splitOnDeath && current.playerHP == 0 && old.playerHP > 0"
+
+[script.settings]
+autostart = { default = true, label = "Auto-start timer", description = "Start timer when entering a new game" }
+autoreset = { default = false, label = "Auto-reset on menu", description = "Reset timer when returning to main menu" }
+splitOnDeath = { default = false, label = "Split on death", description = "Trigger split when player dies" }
+
+# =============================================================================
+# BOSSES & MINI-BOSSES
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# MAIN BOSSES (in typical route order)
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "genichiro_tutorial"
+name = "Genichiro Ashina (Tutorial)"
+location = "Ashina Reservoir"
+required = false
+is_dlc = false
+flag_id = 11120800
+order = 0
+category = "boss"
+
+[[bosses]]
+id = "gyoubu"
+name = "Gyoubu Masataka Oniwa"
+location = "Ashina Outskirts"
+required = true
+is_dlc = false
+flag_id = 9301
+order = 10
+aliases = ["Gyoubu Oniwa"]
+
+[[bosses]]
+id = "genichiro"
+name = "Genichiro Ashina"
+location = "Ashina Castle"
+required = true
+is_dlc = false
+flag_id = 9303
+order = 20
+
+[[bosses]]
+id = "folding_monkeys"
+name = "Folding Screen Monkeys"
+location = "Senpou Temple"
+required = true
+is_dlc = false
+flag_id = 9305
+order = 30
+
+[[bosses]]
+id = "guardian_ape"
+name = "Guardian Ape"
+location = "Sunken Valley"
+required = true
+is_dlc = false
+flag_id = 9304
+order = 40
+
+[[bosses]]
+id = "headless_ape"
+name = "Headless Ape"
+location = "Ashina Depths"
+required = false
+is_dlc = false
+flag_id = 9307
+order = 45
+
+[[bosses]]
+id = "corrupted_monk_illusion"
+name = "Corrupted Monk (Illusion)"
+location = "Mibu Village"
+required = true
+is_dlc = false
+flag_id = 9306
+order = 50
+aliases = ["Ghost Monk"]
+
+[[bosses]]
+id = "great_shinobi_owl"
+name = "Great Shinobi Owl"
+location = "Ashina Castle"
+required = true
+is_dlc = false
+flag_id = 9308
+order = 60
+aliases = ["Owl"]
+
+[[bosses]]
+id = "corrupted_monk"
+name = "True Corrupted Monk"
+location = "Fountainhead Palace"
+required = true
+is_dlc = false
+flag_id = 9309
+order = 70
+
+[[bosses]]
+id = "divine_dragon"
+name = "Divine Dragon"
+location = "Fountainhead Palace"
+required = true
+is_dlc = false
+flag_id = 9310
+order = 80
+
+[[bosses]]
+id = "demon_of_hatred"
+name = "Demon of Hatred"
+location = "Ashina Outskirts"
+required = false
+is_dlc = false
+flag_id = 9313
+order = 85
+
+[[bosses]]
+id = "isshin_glock"
+name = "Isshin, the Sword Saint"
+location = "Ashina Reservoir"
+required = true
+is_dlc = false
+flag_id = 9312
+order = 90
+
+# Shura ending bosses
+[[bosses]]
+id = "emma"
+name = "Emma, the Gentle Blade"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 9315
+order = 95
+
+[[bosses]]
+id = "isshin_sword"
+name = "Isshin Ashina"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 9316
+order = 96
+
+# Hirata bosses
+[[bosses]]
+id = "owl_father"
+name = "Owl (Father)"
+location = "Hirata Estate"
+required = false
+is_dlc = false
+flag_id = 9317
+order = 97
+aliases = ["Father Owl"]
+
+# -----------------------------------------------------------------------------
+# MINI-BOSSES - Shura/Immortal Severance Route
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "chained_ogre_1"
+name = "Chained Ogre"
+location = "Ashina Outskirts"
+required = false
+is_dlc = false
+flag_id = 11100310
+order = 101
+category = "miniboss"
+
+[[bosses]]
+id = "blazing_bull"
+name = "Blazing Bull"
+location = "Ashina Castle Gate"
+required = false
+is_dlc = false
+flag_id = 11110440
+order = 102
+category = "miniboss"
+
+[[bosses]]
+id = "armored_warrior"
+name = "Armored Warrior"
+location = "Senpou Temple"
+required = false
+is_dlc = false
+flag_id = 12000400
+order = 103
+category = "miniboss"
+aliases = ["Roberto's Dad"]
+
+[[bosses]]
+id = "centipede_giraffe"
+name = "Long-arm Centipede Giraffe"
+location = "Sunken Valley"
+required = false
+is_dlc = false
+flag_id = 11700425
+order = 104
+category = "miniboss"
+
+[[bosses]]
+id = "snake_eyes_shirahagi"
+name = "Snake Eyes Shirahagi"
+location = "Ashina Depths"
+required = false
+is_dlc = false
+flag_id = 11700201
+order = 105
+category = "miniboss"
+
+[[bosses]]
+id = "mist_noble"
+name = "Mist Noble"
+location = "Mibu Village"
+required = false
+is_dlc = false
+flag_id = 11500200
+order = 106
+category = "miniboss"
+
+# -----------------------------------------------------------------------------
+# MINI-BOSSES - Immortal Severance Only (Fountainhead Palace)
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "sakura_bull"
+name = "Sakura Bull of the Palace"
+location = "Fountainhead Palace"
+required = false
+is_dlc = false
+flag_id = 12500570
+order = 110
+category = "miniboss"
+
+[[bosses]]
+id = "okami_leader"
+name = "Okami Leader Shizu"
+location = "Fountainhead Palace"
+required = false
+is_dlc = false
+flag_id = 12500406
+order = 111
+category = "miniboss"
+
+# -----------------------------------------------------------------------------
+# MINI-BOSSES - Hirata Estate (First Memory)
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "shinobi_hunter"
+name = "Shinobi Hunter Enshin of Misen"
+location = "Hirata Estate"
+required = false
+is_dlc = false
+flag_id = 11000330
+order = 120
+category = "miniboss"
+
+[[bosses]]
+id = "juzou_1"
+name = "Juzou the Drunkard"
+location = "Hirata Estate"
+required = false
+is_dlc = false
+flag_id = 11000300
+order = 121
+category = "miniboss"
+
+# -----------------------------------------------------------------------------
+# MINI-BOSSES - Hirata Estate (Second Memory / Owl Father)
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "lone_shadow_masanaga_hirata"
+name = "Lone Shadow Masanaga the Spear-bearer"
+location = "Hirata Estate"
+required = false
+is_dlc = false
+flag_id = 11000353
+order = 130
+category = "miniboss"
+
+[[bosses]]
+id = "juzou_2"
+name = "Juzou the Drunkard (Second Memory)"
+location = "Hirata Estate"
+required = false
+is_dlc = false
+flag_id = 11000301
+order = 131
+category = "miniboss"
+
+# -----------------------------------------------------------------------------
+# MINI-BOSSES - Commonly Killed (Optional Routes)
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "lone_shadow_longswordsman"
+name = "Lone Shadow Longswordsman"
+location = "Ashina Reservoir"
+required = false
+is_dlc = false
+flag_id = 11120450
+order = 140
+category = "miniboss"
+
+[[bosses]]
+id = "shichimen_warrior_tanto"
+name = "Shichimen Warrior (Abandoned Dungeon)"
+location = "Abandoned Dungeon"
+required = false
+is_dlc = false
+flag_id = 11300200
+order = 141
+category = "miniboss"
+
+[[bosses]]
+id = "headless_yashariku"
+name = "Headless (Fountainhead)"
+location = "Fountainhead Palace"
+required = false
+is_dlc = false
+flag_id = 12500550
+order = 142
+category = "miniboss"
+
+[[bosses]]
+id = "shichimen_warrior_sunken"
+name = "Shichimen Warrior (Sunken Valley)"
+location = "Sunken Valley"
+required = false
+is_dlc = false
+flag_id = 11700520
+order = 143
+category = "miniboss"
+
+# -----------------------------------------------------------------------------
+# MINI-BOSSES - All Others
+# -----------------------------------------------------------------------------
+
+[[bosses]]
+id = "general_naomori"
+name = "General Naomori Kawarada"
+location = "Ashina Outskirts"
+required = false
+is_dlc = false
+flag_id = 11100300
+order = 150
+category = "miniboss"
+
+[[bosses]]
+id = "general_tenzen"
+name = "General Tenzen Yamauchi"
+location = "Ashina Outskirts"
+required = false
+is_dlc = false
+flag_id = 11100301
+order = 151
+category = "miniboss"
+
+[[bosses]]
+id = "headless_ako"
+name = "Headless (Ako)"
+location = "Ashina Outskirts"
+required = false
+is_dlc = false
+flag_id = 11100330
+order = 152
+category = "miniboss"
+
+[[bosses]]
+id = "general_shigenori"
+name = "Leader Shigenori Yamauchi"
+location = "Ashina Reservoir"
+required = false
+is_dlc = false
+flag_id = 11120390
+order = 153
+category = "miniboss"
+
+[[bosses]]
+id = "general_kuranosuke"
+name = "General Kuranosuke Matsumoto"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110410
+order = 154
+category = "miniboss"
+
+[[bosses]]
+id = "ashina_elite_jinsuke"
+name = "Ashina Elite - Jinsuke Saze"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110504
+order = 155
+category = "miniboss"
+
+[[bosses]]
+id = "headless_ungo"
+name = "Headless (Ungo)"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110660
+order = 156
+category = "miniboss"
+
+[[bosses]]
+id = "seven_spears_shikibu"
+name = "Seven Ashina Spears - Shikibu Toshikatsu"
+location = "Ashina Reservoir"
+required = false
+is_dlc = false
+flag_id = 11120530
+order = 157
+category = "miniboss"
+
+[[bosses]]
+id = "snake_eyes_shirafuji"
+name = "Snake Eyes Shirafuji"
+location = "Sunken Valley"
+required = false
+is_dlc = false
+flag_id = 11700200
+order = 158
+category = "miniboss"
+
+[[bosses]]
+id = "centipede_senun"
+name = "Long-arm Centipede Sen'un"
+location = "Senpou Temple"
+required = false
+is_dlc = false
+flag_id = 12000279
+order = 159
+category = "miniboss"
+
+[[bosses]]
+id = "headless_gachiin"
+name = "Headless (Gachiin)"
+location = "Hidden Forest"
+required = false
+is_dlc = false
+flag_id = 11500680
+order = 160
+category = "miniboss"
+
+[[bosses]]
+id = "tokujiro"
+name = "Tokujiro the Glutton"
+location = "Ashina Depths"
+required = false
+is_dlc = false
+flag_id = 11500490
+order = 161
+category = "miniboss"
+
+[[bosses]]
+id = "orin"
+name = "O'Rin of the Water"
+location = "Mibu Village"
+required = false
+is_dlc = false
+flag_id = 11500690
+order = 162
+category = "miniboss"
+
+[[bosses]]
+id = "chained_ogre_2"
+name = "Chained Ogre (Ashina Castle)"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110620
+order = 163
+category = "miniboss"
+
+[[bosses]]
+id = "lone_shadow_vilehand"
+name = "Lone Shadow Vilehand"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110305
+order = 164
+category = "miniboss"
+
+[[bosses]]
+id = "lone_shadow_masanaga_ashina"
+name = "Lone Shadow Masanaga the Spear-bearer (Ashina)"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110316
+order = 165
+category = "miniboss"
+
+[[bosses]]
+id = "headless_gokan"
+name = "Headless (Gokan)"
+location = "Sunken Valley"
+required = false
+is_dlc = false
+flag_id = 11700500
+order = 166
+category = "miniboss"
+
+[[bosses]]
+id = "seven_spears_shume"
+name = "Seven Ashina Spears - Shume Masaji Oniwa"
+location = "Ashina Reservoir"
+required = false
+is_dlc = false
+flag_id = 11120521
+order = 167
+category = "miniboss"
+
+[[bosses]]
+id = "ashina_elite_ujinari"
+name = "Ashina Elite - Ujinari Mizuo"
+location = "Ashina Castle"
+required = false
+is_dlc = false
+flag_id = 11110511
+order = 168
+category = "miniboss"
+
+[[bosses]]
+id = "shigekichi"
+name = "Shigekichi of the Red Guard"
+location = "Ashina Outskirts"
+required = false
+is_dlc = false
+flag_id = 11100480
+order = 169
+category = "miniboss"
+
+[[bosses]]
+id = "shichimen_warrior_palace"
+name = "Shichimen Warrior (Fountainhead Palace)"
+location = "Fountainhead Palace"
+required = false
+is_dlc = false
+flag_id = 12500580
+order = 170
+category = "miniboss"
+
+# =============================================================================
+# IDOLS - All 47 Sculptor's Idols from SoulSplitter
+# =============================================================================
+
+# Ashina Outskirts
+[[idols]]
+id = "dilapidated_temple"
+name = "Dilapidated Temple"
+location = "Ashina Outskirts"
+flag_id = 11100000
+
+[[idols]]
+id = "ashina_outskirts"
+name = "Ashina Outskirts"
+location = "Ashina Outskirts"
+flag_id = 11100006
+
+[[idols]]
+id = "outskirts_wall_gate"
+name = "Outskirts Wall - Gate Path"
+location = "Ashina Outskirts"
+flag_id = 11100001
+
+[[idols]]
+id = "outskirts_wall_stairway"
+name = "Outskirts Wall - Stairway"
+location = "Ashina Outskirts"
+flag_id = 11100002
+
+[[idols]]
+id = "underbridge_valley"
+name = "Underbridge Valley"
+location = "Ashina Outskirts"
+flag_id = 11100003
+
+[[idols]]
+id = "ashina_castle_fortress"
+name = "Ashina Castle Fortress"
+location = "Ashina Outskirts"
+flag_id = 11100004
+
+[[idols]]
+id = "ashina_castle_gate"
+name = "Ashina Castle Gate"
+location = "Ashina Outskirts"
+flag_id = 11100005
+
+[[idols]]
+id = "flames_of_hatred"
+name = "Flames of Hatred"
+location = "Ashina Outskirts"
+flag_id = 11100007
+
+# Hirata Estate
+[[idols]]
+id = "dragonspring"
+name = "Dragonspring - Hirata Estate"
+location = "Hirata Estate"
+flag_id = 11000000
+
+[[idols]]
+id = "estate_path"
+name = "Estate Path"
+location = "Hirata Estate"
+flag_id = 11000001
+
+[[idols]]
+id = "bamboo_thicket"
+name = "Bamboo Thicket Slope"
+location = "Hirata Estate"
+flag_id = 11000002
+
+[[idols]]
+id = "hirata_main_hall"
+name = "Hirata Estate - Main Hall"
+location = "Hirata Estate"
+flag_id = 11000003
+
+[[idols]]
+id = "hirata_audience"
+name = "Hirata Audience Chamber"
+location = "Hirata Estate"
+flag_id = 11000005
+
+[[idols]]
+id = "hirata_hidden_temple"
+name = "Hirata Estate - Hidden Temple"
+location = "Hirata Estate"
+flag_id = 11000004
+
+# Ashina Castle
+[[idols]]
+id = "ashina_castle"
+name = "Ashina Castle"
+location = "Ashina Castle"
+flag_id = 11110000
+
+[[idols]]
+id = "upper_tower_antechamber"
+name = "Upper Tower - Antechamber"
+location = "Ashina Castle"
+flag_id = 11110001
+
+[[idols]]
+id = "upper_tower_dojo"
+name = "Upper Tower - Ashina Dojo"
+location = "Ashina Castle"
+flag_id = 11110007
+
+[[idols]]
+id = "castle_tower_lookout"
+name = "Castle Tower Lookout"
+location = "Ashina Castle"
+flag_id = 11110002
+
+[[idols]]
+id = "upper_tower_kuros_room"
+name = "Upper Tower - Kuro's Room"
+location = "Ashina Castle"
+flag_id = 11110003
+
+[[idols]]
+id = "old_grave"
+name = "Old Grave"
+location = "Ashina Castle"
+flag_id = 11110006
+
+[[idols]]
+id = "great_serpent_shrine"
+name = "Great Serpent Shrine"
+location = "Ashina Castle"
+flag_id = 11110004
+
+[[idols]]
+id = "abandoned_dungeon_entrance"
+name = "Abandoned Dungeon Entrance"
+location = "Ashina Castle"
+flag_id = 11110005
+
+[[idols]]
+id = "ashina_reservoir"
+name = "Ashina Reservoir"
+location = "Ashina Castle"
+flag_id = 11120001
+
+[[idols]]
+id = "near_secret_passage"
+name = "Near Secret Passage"
+location = "Ashina Castle"
+flag_id = 11120000
+
+# Abandoned Dungeon
+[[idols]]
+id = "underground_waterway"
+name = "Underground Waterway"
+location = "Abandoned Dungeon"
+flag_id = 11300000
+
+[[idols]]
+id = "bottomless_hole"
+name = "Bottomless Hole"
+location = "Abandoned Dungeon"
+flag_id = 11300001
+
+# Senpou Temple
+[[idols]]
+id = "senpou_temple"
+name = "Senpou Temple, Mt. Kongo"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000000
+
+[[idols]]
+id = "shugendo"
+name = "Shugendo"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000001
+
+[[idols]]
+id = "temple_grounds"
+name = "Temple Grounds"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000002
+
+[[idols]]
+id = "main_hall"
+name = "Main Hall"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000003
+
+[[idols]]
+id = "inner_sanctum"
+name = "Inner Sanctum"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000004
+
+[[idols]]
+id = "sunken_valley_cavern"
+name = "Sunken Valley Cavern"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000005
+
+[[idols]]
+id = "bell_demons_temple"
+name = "Bell Demon's Temple"
+location = "Senpou Temple, Mt. Kongo"
+flag_id = 12000006
+
+# Sunken Valley
+[[idols]]
+id = "under_shrine_valley"
+name = "Under-Shrine Valley"
+location = "Sunken Valley"
+flag_id = 11700007
+
+[[idols]]
+id = "sunken_valley"
+name = "Sunken Valley"
+location = "Sunken Valley"
+flag_id = 11700000
+
+[[idols]]
+id = "gun_fort"
+name = "Gun Fort"
+location = "Sunken Valley"
+flag_id = 11700001
+
+[[idols]]
+id = "riven_cave"
+name = "Riven Cave"
+location = "Sunken Valley"
+flag_id = 11700002
+
+[[idols]]
+id = "bodhisattva_valley"
+name = "Bodhisattva Valley"
+location = "Sunken Valley"
+flag_id = 11700008
+
+[[idols]]
+id = "guardian_ape_watering_hole"
+name = "Guardian Ape's Watering Hole"
+location = "Sunken Valley"
+flag_id = 11700003
+
+# Ashina Depths
+[[idols]]
+id = "ashina_depths"
+name = "Ashina Depths"
+location = "Ashina Depths"
+flag_id = 11700005
+
+[[idols]]
+id = "poison_pool"
+name = "Poison Pool"
+location = "Ashina Depths"
+flag_id = 11700004
+
+[[idols]]
+id = "guardian_ape_burrow"
+name = "Guardian Ape's Burrow"
+location = "Ashina Depths"
+flag_id = 11700006
+
+[[idols]]
+id = "hidden_forest"
+name = "Hidden Forest"
+location = "Ashina Depths"
+flag_id = 11500000
+
+[[idols]]
+id = "mibu_village"
+name = "Mibu Village"
+location = "Ashina Depths"
+flag_id = 11500001
+
+[[idols]]
+id = "water_mill"
+name = "Water Mill"
+location = "Ashina Depths"
+flag_id = 11500002
+
+[[idols]]
+id = "wedding_cave_door"
+name = "Wedding Cave Door"
+location = "Ashina Depths"
+flag_id = 11500003
+
+# Fountainhead Palace
+[[idols]]
+id = "fountainhead_palace"
+name = "Fountainhead Palace"
+location = "Fountainhead Palace"
+flag_id = 12500000
+
+[[idols]]
+id = "vermilion_bridge"
+name = "Vermilion Bridge"
+location = "Fountainhead Palace"
+flag_id = 12500001
+
+[[idols]]
+id = "mibu_manor"
+name = "Mibu Manor"
+location = "Fountainhead Palace"
+flag_id = 12500006
+
+[[idols]]
+id = "flower_viewing_stage"
+name = "Flower Viewing Stage"
+location = "Fountainhead Palace"
+flag_id = 12500002
+
+[[idols]]
+id = "great_sakura"
+name = "Great Sakura"
+location = "Fountainhead Palace"
+flag_id = 12500003
+
+[[idols]]
+id = "palace_grounds"
+name = "Palace Grounds"
+location = "Fountainhead Palace"
+flag_id = 12500004
+
+[[idols]]
+id = "feeding_grounds"
+name = "Feeding Grounds"
+location = "Fountainhead Palace"
+flag_id = 12500007
+
+[[idols]]
+id = "near_pot_noble"
+name = "Near Pot Noble"
+location = "Fountainhead Palace"
+flag_id = 12500008
+
+[[idols]]
+id = "sanctuary"
+name = "Sanctuary"
+location = "Fountainhead Palace"
+flag_id = 12500005
+
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "immortal-severance"
+name = "Immortal Severance"
+description = "Standard ending route with mini-bosses (16 bosses)"
+boss_ids = [
+    "chained_ogre_1", "gyoubu", "blazing_bull", "genichiro",
+    "armored_warrior", "folding_monkeys", "centipede_giraffe",
+    "snake_eyes_shirahagi", "mist_noble", "corrupted_monk_illusion", "guardian_ape",
+    "great_shinobi_owl", "corrupted_monk", "sakura_bull", "okami_leader",
+    "divine_dragon", "isshin_glock"
+]
+
+[[presets]]
+id = "immortal-severance-bosses-only"
+name = "Immortal Severance (Bosses Only)"
+description = "Main bosses only, no mini-bosses (9 bosses)"
+boss_ids = [
+    "gyoubu", "genichiro", "folding_monkeys",
+    "corrupted_monk_illusion", "guardian_ape", "great_shinobi_owl",
+    "corrupted_monk", "divine_dragon", "isshin_glock"
+]
+
+[[presets]]
+id = "shura"
+name = "Shura Ending"
+description = "Shura route - side with Owl (13 bosses)"
+boss_ids = [
+    "genichiro_tutorial", "chained_ogre_1", "gyoubu", "blazing_bull", "genichiro",
+    "armored_warrior", "folding_monkeys", "centipede_giraffe",
+    "snake_eyes_shirahagi", "mist_noble", "corrupted_monk_illusion",
+    "emma", "isshin_sword"
+]
+
+[[presets]]
+id = "shura-bosses-only"
+name = "Shura (Bosses Only)"
+description = "Shura route main bosses (6 bosses)"
+boss_ids = [
+    "gyoubu", "genichiro", "folding_monkeys",
+    "corrupted_monk_illusion", "emma", "isshin_sword"
+]
+
+[[presets]]
+id = "all-bosses"
+name = "All Main Bosses"
+description = "Every main boss (15 bosses)"
+boss_ids = [
+    "gyoubu", "genichiro", "folding_monkeys", "guardian_ape", "headless_ape",
+    "corrupted_monk_illusion", "great_shinobi_owl", "corrupted_monk",
+    "divine_dragon", "demon_of_hatred", "isshin_glock",
+    "owl_father", "emma", "isshin_sword"
+]
+
+[[presets]]
+id = "all-memories"
+name = "All Memories"
+description = "All bosses that drop memories (15 bosses)"
+boss_ids = [
+    "gyoubu", "genichiro", "folding_monkeys",
+    "corrupted_monk_illusion", "guardian_ape", "headless_ape",
+    "great_shinobi_owl", "corrupted_monk", "divine_dragon",
+    "demon_of_hatred", "isshin_glock", "owl_father", "emma", "isshin_sword"
+]
+
+[[presets]]
+id = "all-minibosses"
+name = "All Mini-Bosses"
+description = "Every mini-boss in game (35 mini-bosses)"
+boss_ids = [
+    "chained_ogre_1", "blazing_bull", "armored_warrior", "centipede_giraffe",
+    "snake_eyes_shirahagi", "mist_noble", "sakura_bull", "okami_leader",
+    "shinobi_hunter", "juzou_1", "lone_shadow_masanaga_hirata", "juzou_2",
+    "lone_shadow_longswordsman", "shichimen_warrior_tanto", "headless_yashariku",
+    "shichimen_warrior_sunken", "general_naomori", "general_tenzen", "headless_ako",
+    "general_shigenori", "general_kuranosuke", "ashina_elite_jinsuke", "headless_ungo",
+    "seven_spears_shikibu", "snake_eyes_shirafuji", "centipede_senun", "headless_gachiin",
+    "tokujiro", "orin", "chained_ogre_2", "lone_shadow_vilehand",
+    "lone_shadow_masanaga_ashina", "headless_gokan", "seven_spears_shume",
+    "ashina_elite_ujinari", "shigekichi", "shichimen_warrior_palace"
+]
+
+[[presets]]
+id = "hirata-all"
+name = "Hirata Estate (All)"
+description = "Both Hirata memories with mini-bosses (4 bosses)"
+boss_ids = [
+    "shinobi_hunter", "juzou_1", "lone_shadow_masanaga_hirata", "juzou_2", "owl_father"
+]
+
+# =============================================================================
+# KNOWN FLAGS - Items, NPCs, Prosthetics, Skills
+# =============================================================================
+
+# Key Items
+[[known_flags]]
+id = "item_mortal_blade"
+name = "Mortal Blade"
+category = "key_items"
+flag_id = 50003000
+
+[[known_flags]]
+id = "item_dragons_tears"
+name = "Dragon's Tears"
+category = "key_items"
+flag_id = 50003001
+
+[[known_flags]]
+id = "item_aromatic_branch"
+name = "Aromatic Branch"
+category = "key_items"
+flag_id = 50003002
+
+[[known_flags]]
+id = "item_shelter_stone"
+name = "Shelter Stone"
+category = "key_items"
+flag_id = 50003003
+
+[[known_flags]]
+id = "item_lotus_divine_realm"
+name = "Lotus of the Palace"
+category = "key_items"
+flag_id = 50003004
+
+[[known_flags]]
+id = "item_frozen_tears"
+name = "Frozen Tears"
+category = "key_items"
+flag_id = 50003005
+
+[[known_flags]]
+id = "item_aromatic_flower"
+name = "Aromatic Flower"
+category = "key_items"
+flag_id = 50003006
+
+[[known_flags]]
+id = "item_gracious_gift_tears"
+name = "Gracious Gift of Tears"
+category = "key_items"
+flag_id = 50003007
+
+[[known_flags]]
+id = "item_secret_text"
+name = "Secret Passage Text"
+category = "key_items"
+flag_id = 50003010
+
+[[known_flags]]
+id = "item_young_lords_bell"
+name = "Young Lord's Bell Charm"
+category = "key_items"
+flag_id = 50003011
+
+[[known_flags]]
+id = "item_fathers_bell"
+name = "Father's Bell Charm"
+category = "key_items"
+flag_id = 50003012
+
+[[known_flags]]
+id = "item_gun_fort_shrine_key"
+name = "Gun Fort Shrine Key"
+category = "key_items"
+flag_id = 50003013
+
+[[known_flags]]
+id = "item_gatehouse_key"
+name = "Gatehouse Key"
+category = "key_items"
+flag_id = 50003014
+
+[[known_flags]]
+id = "item_hidden_temple_key"
+name = "Hidden Temple Key"
+category = "key_items"
+flag_id = 50003015
+
+[[known_flags]]
+id = "item_puppeteer_ninjutsu"
+name = "Puppeteer Ninjutsu"
+category = "key_items"
+flag_id = 50003020
+
+[[known_flags]]
+id = "item_bestowal_ninjutsu"
+name = "Bestowal Ninjutsu"
+category = "key_items"
+flag_id = 50003021
+
+[[known_flags]]
+id = "item_bloodsmoke_ninjutsu"
+name = "Bloodsmoke Ninjutsu"
+category = "key_items"
+flag_id = 50003022
+
+# Prosthetic Tools
+[[known_flags]]
+id = "prosthetic_shuriken"
+name = "Prosthetic: Loaded Shuriken"
+category = "prosthetics"
+flag_id = 50004000
+
+[[known_flags]]
+id = "prosthetic_firecracker"
+name = "Prosthetic: Shinobi Firecracker"
+category = "prosthetics"
+flag_id = 50004001
+
+[[known_flags]]
+id = "prosthetic_loaded_axe"
+name = "Prosthetic: Loaded Axe"
+category = "prosthetics"
+flag_id = 50004002
+
+[[known_flags]]
+id = "prosthetic_flame_vent"
+name = "Prosthetic: Flame Vent"
+category = "prosthetics"
+flag_id = 50004003
+
+[[known_flags]]
+id = "prosthetic_loaded_spear"
+name = "Prosthetic: Loaded Spear"
+category = "prosthetics"
+flag_id = 50004004
+
+[[known_flags]]
+id = "prosthetic_mist_raven"
+name = "Prosthetic: Mist Raven"
+category = "prosthetics"
+flag_id = 50004005
+
+[[known_flags]]
+id = "prosthetic_sabimaru"
+name = "Prosthetic: Sabimaru"
+category = "prosthetics"
+flag_id = 50004006
+
+[[known_flags]]
+id = "prosthetic_loaded_umbrella"
+name = "Prosthetic: Loaded Umbrella"
+category = "prosthetics"
+flag_id = 50004007
+
+[[known_flags]]
+id = "prosthetic_divine_abduction"
+name = "Prosthetic: Divine Abduction"
+category = "prosthetics"
+flag_id = 50004008
+
+[[known_flags]]
+id = "prosthetic_finger_whistle"
+name = "Prosthetic: Finger Whistle"
+category = "prosthetics"
+flag_id = 50004009
+
+# Gourd Seeds
+[[known_flags]]
+id = "gourd_seed_1"
+name = "Gourd Seed 1 (Outskirts Wall)"
+category = "gourd_seeds"
+flag_id = 50005000
+
+[[known_flags]]
+id = "gourd_seed_2"
+name = "Gourd Seed 2 (Ashina Castle)"
+category = "gourd_seeds"
+flag_id = 50005001
+
+[[known_flags]]
+id = "gourd_seed_3"
+name = "Gourd Seed 3 (Ashina Castle Antechamber)"
+category = "gourd_seeds"
+flag_id = 50005002
+
+[[known_flags]]
+id = "gourd_seed_4"
+name = "Gourd Seed 4 (Senpou Temple)"
+category = "gourd_seeds"
+flag_id = 50005003
+
+[[known_flags]]
+id = "gourd_seed_5"
+name = "Gourd Seed 5 (Sunken Valley)"
+category = "gourd_seeds"
+flag_id = 50005004
+
+[[known_flags]]
+id = "gourd_seed_6"
+name = "Gourd Seed 6 (Mibu Village)"
+category = "gourd_seeds"
+flag_id = 50005005
+
+[[known_flags]]
+id = "gourd_seed_7"
+name = "Gourd Seed 7 (Fountainhead Palace)"
+category = "gourd_seeds"
+flag_id = 50005006
+
+[[known_flags]]
+id = "gourd_seed_8"
+name = "Gourd Seed 8 (Hirata Estate)"
+category = "gourd_seeds"
+flag_id = 50005007
+
+[[known_flags]]
+id = "gourd_seed_9"
+name = "Gourd Seed 9 (Ashina Depths)"
+category = "gourd_seeds"
+flag_id = 50005008
+
+# Prayer Necklaces (4 Prayer Beads = 1 Necklace)
+[[known_flags]]
+id = "prayer_necklace_1"
+name = "Prayer Necklace 1"
+category = "prayer_necklaces"
+flag_id = 50006000
+
+[[known_flags]]
+id = "prayer_necklace_2"
+name = "Prayer Necklace 2"
+category = "prayer_necklaces"
+flag_id = 50006001
+
+[[known_flags]]
+id = "prayer_necklace_3"
+name = "Prayer Necklace 3"
+category = "prayer_necklaces"
+flag_id = 50006002
+
+[[known_flags]]
+id = "prayer_necklace_4"
+name = "Prayer Necklace 4"
+category = "prayer_necklaces"
+flag_id = 50006003
+
+[[known_flags]]
+id = "prayer_necklace_5"
+name = "Prayer Necklace 5"
+category = "prayer_necklaces"
+flag_id = 50006004
+
+[[known_flags]]
+id = "prayer_necklace_6"
+name = "Prayer Necklace 6"
+category = "prayer_necklaces"
+flag_id = 50006005
+
+[[known_flags]]
+id = "prayer_necklace_7"
+name = "Prayer Necklace 7"
+category = "prayer_necklaces"
+flag_id = 50006006
+
+[[known_flags]]
+id = "prayer_necklace_8"
+name = "Prayer Necklace 8"
+category = "prayer_necklaces"
+flag_id = 50006007
+
+[[known_flags]]
+id = "prayer_necklace_9"
+name = "Prayer Necklace 9"
+category = "prayer_necklaces"
+flag_id = 50006008
+
+[[known_flags]]
+id = "prayer_necklace_10"
+name = "Prayer Necklace 10"
+category = "prayer_necklaces"
+flag_id = 50006009
+
+# Memories (Attack Power)
+[[known_flags]]
+id = "memory_gyoubu"
+name = "Memory: Gyoubu Oniwa"
+category = "memories"
+flag_id = 50007000
+
+[[known_flags]]
+id = "memory_lady_butterfly"
+name = "Memory: Lady Butterfly"
+category = "memories"
+flag_id = 50007001
+
+[[known_flags]]
+id = "memory_genichiro"
+name = "Memory: Genichiro"
+category = "memories"
+flag_id = 50007002
+
+[[known_flags]]
+id = "memory_guardian_ape"
+name = "Memory: Guardian Ape"
+category = "memories"
+flag_id = 50007003
+
+[[known_flags]]
+id = "memory_screen_monkeys"
+name = "Memory: Screen Monkeys"
+category = "memories"
+flag_id = 50007004
+
+[[known_flags]]
+id = "memory_corrupted_monk"
+name = "Memory: Corrupted Monk"
+category = "memories"
+flag_id = 50007005
+
+[[known_flags]]
+id = "memory_headless_ape"
+name = "Memory: Headless Ape"
+category = "memories"
+flag_id = 50007006
+
+[[known_flags]]
+id = "memory_owl"
+name = "Memory: Great Shinobi Owl"
+category = "memories"
+flag_id = 50007007
+
+[[known_flags]]
+id = "memory_true_monk"
+name = "Memory: True Corrupted Monk"
+category = "memories"
+flag_id = 50007008
+
+[[known_flags]]
+id = "memory_divine_dragon"
+name = "Memory: Divine Dragon"
+category = "memories"
+flag_id = 50007009
+
+[[known_flags]]
+id = "memory_sword_saint"
+name = "Memory: Isshin, the Sword Saint"
+category = "memories"
+flag_id = 50007010
+
+[[known_flags]]
+id = "memory_demon_hatred"
+name = "Memory: Demon of Hatred"
+category = "memories"
+flag_id = 50007011
+
+[[known_flags]]
+id = "memory_emma"
+name = "Memory: Emma, the Gentle Blade"
+category = "memories"
+flag_id = 50007012
+
+[[known_flags]]
+id = "memory_isshin_ashina"
+name = "Memory: Isshin Ashina"
+category = "memories"
+flag_id = 50007013
+
+[[known_flags]]
+id = "memory_owl_father"
+name = "Memory: Foster Father"
+category = "memories"
+flag_id = 50007014
+
+# Esoteric Texts (Skill Trees)
+[[known_flags]]
+id = "text_shinobi"
+name = "Esoteric Text: Shinobi Arts"
+category = "esoteric_texts"
+flag_id = 50008000
+
+[[known_flags]]
+id = "text_prosthetic"
+name = "Esoteric Text: Prosthetic Arts"
+category = "esoteric_texts"
+flag_id = 50008001
+
+[[known_flags]]
+id = "text_ashina"
+name = "Esoteric Text: Ashina Arts"
+category = "esoteric_texts"
+flag_id = 50008002
+
+[[known_flags]]
+id = "text_senpou"
+name = "Esoteric Text: Senpou Arts"
+category = "esoteric_texts"
+flag_id = 50008003
+
+[[known_flags]]
+id = "text_mushin"
+name = "Esoteric Text: Mushin Arts"
+category = "esoteric_texts"
+flag_id = 50008004
+
+# Mini-Bosses
+[[known_flags]]
+id = "miniboss_general_naomori"
+name = "General Naomori Kawarada"
+category = "minibosses"
+flag_id = 50009000
+
+[[known_flags]]
+id = "miniboss_shinobi_hunter"
+name = "Shinobi Hunter Enshin of Misen"
+category = "minibosses"
+flag_id = 50009001
+
+[[known_flags]]
+id = "miniboss_juzou"
+name = "Juzou the Drunkard"
+category = "minibosses"
+flag_id = 50009002
+
+[[known_flags]]
+id = "miniboss_general_tenzen"
+name = "General Tenzen Yamauchi"
+category = "minibosses"
+flag_id = 50009003
+
+[[known_flags]]
+id = "miniboss_blazing_bull"
+name = "Blazing Bull"
+category = "minibosses"
+flag_id = 50009004
+
+[[known_flags]]
+id = "miniboss_general_kuranosuke"
+name = "General Kuranosuke Matsumoto"
+category = "minibosses"
+flag_id = 50009005
+
+[[known_flags]]
+id = "miniboss_seven_spears"
+name = "Seven Ashina Spears - Shume Masaji"
+category = "minibosses"
+flag_id = 50009006
+
+[[known_flags]]
+id = "miniboss_lone_shadow_vilehand"
+name = "Lone Shadow Longswordsman"
+category = "minibosses"
+flag_id = 50009007
+
+[[known_flags]]
+id = "miniboss_ashina_elite_jinsuke"
+name = "Ashina Elite - Jinsuke Saze"
+category = "minibosses"
+flag_id = 50009008
+
+[[known_flags]]
+id = "miniboss_armored_warrior"
+name = "Armored Warrior"
+category = "minibosses"
+flag_id = 50009009
+
+[[known_flags]]
+id = "miniboss_long_arm_centipede_sen"
+name = "Long-arm Centipede Sen'un"
+category = "minibosses"
+flag_id = 50009010
+
+[[known_flags]]
+id = "miniboss_snake_eyes_shirafuji"
+name = "Snake Eyes Shirafuji"
+category = "minibosses"
+flag_id = 50009011
+
+[[known_flags]]
+id = "miniboss_long_arm_centipede_giraffe"
+name = "Long-arm Centipede Giraffe"
+category = "minibosses"
+flag_id = 50009012
+
+[[known_flags]]
+id = "miniboss_snake_eyes_shirahagi"
+name = "Snake Eyes Shirahagi"
+category = "minibosses"
+flag_id = 50009013
+
+[[known_flags]]
+id = "miniboss_tokujiro"
+name = "Tokujiro the Glutton"
+category = "minibosses"
+flag_id = 50009014
+
+[[known_flags]]
+id = "miniboss_mist_noble"
+name = "Mist Noble"
+category = "minibosses"
+flag_id = 50009015
+
+[[known_flags]]
+id = "miniboss_orin"
+name = "O'Rin of the Water"
+category = "minibosses"
+flag_id = 50009016
+
+[[known_flags]]
+id = "miniboss_sakura_bull"
+name = "Sakura Bull of the Palace"
+category = "minibosses"
+flag_id = 50009017
+
+[[known_flags]]
+id = "miniboss_okami_leader"
+name = "Okami Leader Shizu"
+category = "minibosses"
+flag_id = 50009018
+
+# NPCs
+[[known_flags]]
+id = "npc_sculptor_talk"
+name = "NPC: Sculptor First Talk"
+category = "npc"
+flag_id = 71000000
+
+[[known_flags]]
+id = "npc_emma_talk"
+name = "NPC: Emma First Talk"
+category = "npc"
+flag_id = 71000100
+
+[[known_flags]]
+id = "npc_kuro_rescue"
+name = "NPC: Kuro Rescued"
+category = "npc"
+flag_id = 71000200
+
+[[known_flags]]
+id = "npc_isshin_talk"
+name = "NPC: Isshin First Talk"
+category = "npc"
+flag_id = 71000300
+
+[[known_flags]]
+id = "npc_tengu_talk"
+name = "NPC: Tengu of Ashina First Talk"
+category = "npc"
+flag_id = 71000400
+
+[[known_flags]]
+id = "npc_blackhat_badger"
+name = "NPC: Blackhat Badger Encounter"
+category = "npc"
+flag_id = 71000500
+
+[[known_flags]]
+id = "npc_kotaro"
+name = "NPC: Kotaro Encounter"
+category = "npc"
+flag_id = 71000600
+
+[[known_flags]]
+id = "npc_anayama"
+name = "NPC: Anayama the Peddler"
+category = "npc"
+flag_id = 71000700
+
+[[known_flags]]
+id = "npc_pot_noble_harunaga"
+name = "NPC: Pot Noble Harunaga"
+category = "npc"
+flag_id = 71000800
+
+[[known_flags]]
+id = "npc_pot_noble_koremori"
+name = "NPC: Pot Noble Koremori"
+category = "npc"
+flag_id = 71000801
+
+# Endings
+[[known_flags]]
+id = "ending_immortal_severance"
+name = "Ending: Immortal Severance"
+category = "endings"
+flag_id = 50010000
+
+[[known_flags]]
+id = "ending_purification"
+name = "Ending: Purification"
+category = "endings"
+flag_id = 50010001
+
+[[known_flags]]
+id = "ending_return"
+name = "Ending: Return"
+category = "endings"
+flag_id = 50010002
+
+[[known_flags]]
+id = "ending_shura"
+name = "Ending: Shura"
+category = "endings"
+flag_id = 50010003

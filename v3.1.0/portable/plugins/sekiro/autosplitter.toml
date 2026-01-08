@@ -1,0 +1,134 @@
+# =============================================================================
+# AUTOSPLITTER CONFIGURATION
+# =============================================================================
+
+[autosplitter]
+enabled = true
+algorithm = "category_decomposition"
+
+# Category decomposition algorithm configuration (Sekiro style)
+# Based on SoulSplitter by FrankvdStam
+# Sekiro uses different offsets than DS3
+[autosplitter.category_config]
+primary_pattern = "event_flag_man"
+secondary_pattern = "field_area"
+base_offset = 536           # 0x218
+entry_size = 24             # 0x18
+category_count = 6
+category_multiplier = 168   # 0xa8
+# Sekiro: FieldArea -> 0x48 -> 0x18
+field_area_base_offset = 72 # 0x48
+world_info_offset = 24      # 0x18
+world_info_struct_size = 56 # 0x38
+world_block_struct_size = 176  # 0xb0
+
+# Memory patterns for finding game data structures
+[[autosplitter.patterns]]
+name = "event_flag_man"
+pattern = "48 8b 0d ? ? ? ? 48 89 5c 24 50 48 89 6c 24 58 48 89 74 24 60"
+rip_offset = 3
+instruction_len = 7
+
+[[autosplitter.patterns]]
+name = "field_area"
+pattern = "48 8B 0D ? ? ? ? 48 85 C9 74 26 44 8B 41 28 48 8D 54 24 40"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = []  # No dereference - raw address
+
+[[autosplitter.patterns]]
+name = "world_chr_man"
+pattern = "48 8B 35 ? ? ? ? 44 0F 28 18"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "igt"
+pattern = "48 8B 05 ? ? ? ? 32 D2 48 8B 48"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0, 0x9C]
+
+[[autosplitter.patterns]]
+name = "fade_man_imp"
+pattern = "48 89 35 ? ? ? ? 48 8B C7 48 8B"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0]
+
+[[autosplitter.patterns]]
+name = "player_game_data"
+pattern = "48 8B 0D ? ? ? ? 48 8B 41 20 C6"
+rip_offset = 3
+instruction_len = 7
+pointer_offsets = [0, 0x8]
+
+# =============================================================================
+# POINTER CHAINS - Derived pointers from base patterns
+# =============================================================================
+
+[autosplitter.pointers]
+# Player position from WorldChrMan
+player_pos = { base = "world_chr_man", offsets = [0, 0x48, 0x28] }
+
+# Fade system from FadeManImp
+fade_system = { base = "fade_man_imp", offsets = [0, 0x8] }
+
+# =============================================================================
+# MEMORY LAYOUT - Offsets for reading values
+# =============================================================================
+
+[autosplitter.memory_layout]
+# Event flag calculation offsets (similar to DS3 but different strides)
+event_flag_base_offset = 0x218
+event_flag_stride = 0x18
+block_stride = 0xB0  # Sekiro-specific
+block_category_stride = 0xA8
+field_area_offset = 0x18  # Sekiro-specific
+
+# Position offsets from PlayerPos
+position_x = 0x80
+position_y = 0x84
+position_z = 0x88
+
+# Player loaded check at WorldChrMan + 0x88
+player_loaded_offset = 0x88
+
+# Blackscreen check at FadeSystem + 0x2DC
+blackscreen_offset = 0x2DC
+
+# Attribute offsets from PlayerGameData
+[autosplitter.memory_layout.attributes]
+vitality = 0x44
+attack_power = 0x48
+
+# =============================================================================
+# LIVESPLIT-STYLE SCRIPT CONFIGURATION
+# =============================================================================
+
+[script]
+version = "1.0"
+name = "Sekiro Script"
+description = "LiveSplit-style autosplitter script for Sekiro: Shadows Die Twice"
+
+[script.state.eventFlagMan]
+type = "ptr"
+pattern = "48 8b 0d ?? ?? ?? ?? 48 89 5c 24 50 48 89 6c 24 58 48 89 74 24 60"
+pattern_offset = 3
+pattern_length = 7
+
+[script.state.inGame]
+type = "bool"
+base_watcher = "eventFlagMan"
+offsets = [0x0]
+
+[script.hooks]
+start = "settings.autostart && current.inGame && !old.inGame"
+reset = "settings.autoreset && !current.inGame && old.inGame"
+split = "settings.splitOnDeath && current.playerHP == 0 && old.playerHP > 0"
+
+[script.settings]
+autostart = { default = true, label = "Auto-start timer", description = "Start timer when entering a new game" }
+autoreset = { default = false, label = "Auto-reset on menu", description = "Reset timer when returning to main menu" }
+splitOnDeath = { default = false, label = "Split on death", description = "Trigger split when player dies" }

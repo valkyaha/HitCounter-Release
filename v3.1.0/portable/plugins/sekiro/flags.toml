@@ -1,0 +1,247 @@
+# =============================================================================
+# KNOWN FLAGS - Items, NPCs, Prosthetics, Skills
+# =============================================================================
+
+# Key Items
+[[known_flags]]
+id = "item_mortal_blade"
+name = "Mortal Blade"
+category = "key_items"
+flag_id = 50003000
+
+[[known_flags]]
+id = "item_dragons_tears"
+name = "Dragon's Tears"
+category = "key_items"
+flag_id = 50003001
+
+[[known_flags]]
+id = "item_aromatic_branch"
+name = "Aromatic Branch"
+category = "key_items"
+flag_id = 50003002
+
+[[known_flags]]
+id = "item_shelter_stone"
+name = "Shelter Stone"
+category = "key_items"
+flag_id = 50003003
+
+[[known_flags]]
+id = "item_lotus_divine_realm"
+name = "Lotus of the Palace"
+category = "key_items"
+flag_id = 50003004
+
+[[known_flags]]
+id = "item_frozen_tears"
+name = "Frozen Tears"
+category = "key_items"
+flag_id = 50003005
+
+[[known_flags]]
+id = "item_aromatic_flower"
+name = "Aromatic Flower"
+category = "key_items"
+flag_id = 50003006
+
+[[known_flags]]
+id = "item_gracious_gift_tears"
+name = "Gracious Gift of Tears"
+category = "key_items"
+flag_id = 50003007
+
+[[known_flags]]
+id = "item_secret_text"
+name = "Secret Passage Text"
+category = "key_items"
+flag_id = 50003010
+
+[[known_flags]]
+id = "item_young_lords_bell"
+name = "Young Lord's Bell Charm"
+category = "key_items"
+flag_id = 50003011
+
+[[known_flags]]
+id = "item_fathers_bell"
+name = "Father's Bell Charm"
+category = "key_items"
+flag_id = 50003012
+
+[[known_flags]]
+id = "item_gun_fort_shrine_key"
+name = "Gun Fort Shrine Key"
+category = "key_items"
+flag_id = 50003013
+
+[[known_flags]]
+id = "item_gatehouse_key"
+name = "Gatehouse Key"
+category = "key_items"
+flag_id = 50003014
+
+[[known_flags]]
+id = "item_hidden_temple_key"
+name = "Hidden Temple Key"
+category = "key_items"
+flag_id = 50003015
+
+[[known_flags]]
+id = "item_puppeteer_ninjutsu"
+name = "Puppeteer Ninjutsu"
+category = "key_items"
+flag_id = 50003020
+
+[[known_flags]]
+id = "item_bestowal_ninjutsu"
+name = "Bestowal Ninjutsu"
+category = "key_items"
+flag_id = 50003021
+
+[[known_flags]]
+id = "item_bloodsmoke_ninjutsu"
+name = "Bloodsmoke Ninjutsu"
+category = "key_items"
+flag_id = 50003022
+
+# Prosthetic Tools
+[[known_flags]]
+id = "prosthetic_shuriken"
+name = "Prosthetic: Loaded Shuriken"
+category = "prosthetics"
+flag_id = 50004000
+
+[[known_flags]]
+id = "prosthetic_firecracker"
+name = "Prosthetic: Shinobi Firecracker"
+category = "prosthetics"
+flag_id = 50004001
+
+[[known_flags]]
+id = "prosthetic_loaded_axe"
+name = "Prosthetic: Loaded Axe"
+category = "prosthetics"
+flag_id = 50004002
+
+[[known_flags]]
+id = "prosthetic_flame_vent"
+name = "Prosthetic: Flame Vent"
+category = "prosthetics"
+flag_id = 50004003
+
+[[known_flags]]
+id = "prosthetic_loaded_spear"
+name = "Prosthetic: Loaded Spear"
+category = "prosthetics"
+flag_id = 50004004
+
+[[known_flags]]
+id = "prosthetic_mist_raven"
+name = "Prosthetic: Mist Raven"
+category = "prosthetics"
+flag_id = 50004005
+
+[[known_flags]]
+id = "prosthetic_sabimaru"
+name = "Prosthetic: Sabimaru"
+category = "prosthetics"
+flag_id = 50004006
+
+[[known_flags]]
+id = "prosthetic_loaded_umbrella"
+name = "Prosthetic: Loaded Umbrella"
+category = "prosthetics"
+flag_id = 50004007
+
+[[known_flags]]
+id = "prosthetic_divine_abduction"
+name = "Prosthetic: Divine Abduction"
+category = "prosthetics"
+flag_id = 50004008
+
+[[known_flags]]
+id = "prosthetic_finger_whistle"
+name = "Prosthetic: Finger Whistle"
+category = "prosthetics"
+flag_id = 50004009
+
+# Gourd Seeds
+[[known_flags]]
+id = "gourd_seed_1"
+name = "Gourd Seed 1 (Outskirts Wall)"
+category = "gourd_seeds"
+flag_id = 50005000
+
+[[known_flags]]
+id = "gourd_seed_2"
+name = "Gourd Seed 2 (Ashina Castle)"
+category = "gourd_seeds"
+flag_id = 50005001
+
+[[known_flags]]
+id = "gourd_seed_3"
+name = "Gourd Seed 3 (Ashina Castle Antechamber)"
+category = "gourd_seeds"
+flag_id = 50005002
+
+[[known_flags]]
+id = "gourd_seed_4"
+name = "Gourd Seed 4 (Senpou Temple)"
+category = "gourd_seeds"
+flag_id = 50005003
+
+[[known_flags]]
+id = "gourd_seed_5"
+name = "Gourd Seed 5 (Sunken Valley)"
+category = "gourd_seeds"
+flag_id = 50005004
+
+[[known_flags]]
+id = "gourd_seed_6"
+name = "Gourd Seed 6 (Mibu Village)"
+category = "gourd_seeds"
+flag_id = 50005005
+
+[[known_flags]]
+id = "gourd_seed_7"
+name = "Gourd Seed 7 (Fountainhead Palace)"
+category = "gourd_seeds"
+flag_id = 50005006
+
+[[known_flags]]
+id = "gourd_seed_8"
+name = "Gourd Seed 8 (Hirata Estate)"
+category = "gourd_seeds"
+flag_id = 50005007
+
+[[known_flags]]
+id = "gourd_seed_9"
+name = "Gourd Seed 9 (Ashina Depths)"
+category = "gourd_seeds"
+flag_id = 50005008
+
+# Endings
+[[known_flags]]
+id = "ending_immortal_severance"
+name = "Ending: Immortal Severance"
+category = "endings"
+flag_id = 50010000
+
+[[known_flags]]
+id = "ending_purification"
+name = "Ending: Purification"
+category = "endings"
+flag_id = 50010001
+
+[[known_flags]]
+id = "ending_return"
+name = "Ending: Return"
+category = "endings"
+flag_id = 50010002
+
+[[known_flags]]
+id = "ending_shura"
+name = "Ending: Shura"
+category = "endings"
+flag_id = 50010003

@@ -1,0 +1,37 @@
+# =============================================================================
+# PRESETS
+# =============================================================================
+
+[[presets]]
+id = "all-bosses"
+name = "All Bosses"
+description = "All main game bosses (22 bosses)"
+boss_ids = [
+    "asylum_demon", "taurus_demon", "bell_gargoyles", "quelaag", "iron_golem",
+    "ornstein_smough", "sif", "four_kings", "seath", "nito", "bed_of_chaos", "gwyn",
+    "capra_demon", "gaping_dragon", "moonlight_butterfly", "stray_demon",
+    "demon_firesage", "centipede_demon", "crossbreed_priscilla", "dark_sun_gwyndolin",
+    "ceaseless_discharge", "pinwheel"
+]
+
+[[presets]]
+id = "all-bosses-dlc"
+name = "All Bosses + DLC"
+description = "All bosses including DLC (26 bosses)"
+boss_ids = [
+    "asylum_demon", "taurus_demon", "bell_gargoyles", "quelaag", "iron_golem",
+    "ornstein_smough", "sif", "four_kings", "seath", "nito", "bed_of_chaos", "gwyn",
+    "capra_demon", "gaping_dragon", "moonlight_butterfly", "stray_demon",
+    "demon_firesage", "centipede_demon", "crossbreed_priscilla", "dark_sun_gwyndolin",
+    "ceaseless_discharge", "pinwheel",
+    "sanctuary_guardian", "artorias", "manus", "kalameet"
+]
+
+[[presets]]
+id = "any-percent"
+name = "Any%"
+description = "Required bosses only (12 bosses)"
+boss_ids = [
+    "asylum_demon", "bell_gargoyles", "quelaag", "iron_golem",
+    "ornstein_smough", "sif", "four_kings", "seath", "nito", "bed_of_chaos", "gwyn"
+]

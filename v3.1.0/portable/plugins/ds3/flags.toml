@@ -1,0 +1,560 @@
+# =============================================================================
+# KNOWN FLAGS - Event flags for tracking game progress
+# =============================================================================
+
+# Covenants
+[[known_flags]]
+id = "covenant_way_of_blue"
+name = "Covenant Joined: Way of Blue"
+category = "covenants"
+flag_id = 13000100
+
+[[known_flags]]
+id = "covenant_warrior_sunlight"
+name = "Covenant Joined: Warriors of Sunlight"
+category = "covenants"
+flag_id = 13000101
+
+[[known_flags]]
+id = "covenant_mound_makers"
+name = "Covenant Joined: Mound-Makers"
+category = "covenants"
+flag_id = 13000102
+
+[[known_flags]]
+id = "covenant_watchdog_farron"
+name = "Covenant Joined: Watchdogs of Farron"
+category = "covenants"
+flag_id = 13000103
+
+[[known_flags]]
+id = "covenant_aldrich_faithful"
+name = "Covenant Joined: Aldrich Faithful"
+category = "covenants"
+flag_id = 13000104
+
+[[known_flags]]
+id = "covenant_rosaria"
+name = "Covenant Joined: Rosaria's Fingers"
+category = "covenants"
+flag_id = 13000105
+
+[[known_flags]]
+id = "covenant_blade_darkmoon"
+name = "Covenant Joined: Blade of the Darkmoon"
+category = "covenants"
+flag_id = 13000106
+
+[[known_flags]]
+id = "covenant_spear_church"
+name = "Covenant Joined: Spears of the Church"
+category = "covenants"
+flag_id = 15100020
+
+# =============================================================================
+# BOSS ARENAS / EVENTS
+# =============================================================================
+
+[[known_flags]]
+id = "arena_vordt"
+name = "Boss Arena: Vordt of the Boreal Valley"
+category = "boss_events"
+flag_id = 13000850
+
+[[known_flags]]
+id = "arena_dancer"
+name = "Boss Arena: Dancer of the Boreal Valley"
+category = "boss_events"
+flag_id = 13000892
+
+[[known_flags]]
+id = "arena_abyss_watchers"
+name = "Boss Arena: Abyss Watchers"
+category = "boss_events"
+flag_id = 13300852
+
+[[known_flags]]
+id = "arena_pontiff"
+name = "Boss Arena: Pontiff Sulyvahn"
+category = "boss_events"
+flag_id = 13700852
+
+[[known_flags]]
+id = "arena_aldrich"
+name = "Boss Arena: Aldrich"
+category = "boss_events"
+flag_id = 13700802
+
+[[known_flags]]
+id = "arena_twin_princes"
+name = "Boss Arena: Twin Princes"
+category = "boss_events"
+flag_id = 13410832
+
+[[known_flags]]
+id = "arena_soul_cinder"
+name = "Boss Arena: Soul of Cinder"
+category = "boss_events"
+flag_id = 14100802
+
+[[known_flags]]
+id = "arena_friede"
+name = "Boss Arena: Sister Friede"
+category = "boss_events"
+flag_id = 14500802
+
+[[known_flags]]
+id = "arena_demon_prince"
+name = "Boss Arena: Demon Prince"
+category = "boss_events"
+flag_id = 15000802
+
+[[known_flags]]
+id = "arena_gael"
+name = "Boss Arena: Slave Knight Gael"
+category = "boss_events"
+flag_id = 15110802
+
+[[known_flags]]
+id = "arena_midir"
+name = "Boss Arena: Darkeater Midir"
+category = "boss_events"
+flag_id = 15100852
+
+# =============================================================================
+# KEY ITEMS
+# =============================================================================
+
+[[known_flags]]
+id = "item_small_lothric_banner"
+name = "Small Lothric Banner"
+category = "key_items"
+flag_id = 50006070
+
+[[known_flags]]
+id = "item_basin_vows"
+name = "Basin of Vows"
+category = "key_items"
+flag_id = 50006071
+
+[[known_flags]]
+id = "item_grave_key"
+name = "Grave Key"
+category = "key_items"
+flag_id = 50006072
+
+[[known_flags]]
+id = "item_morticians_ashes"
+name = "Mortician's Ashes"
+category = "key_items"
+flag_id = 50006073
+
+[[known_flags]]
+id = "item_cell_key"
+name = "Cell Key"
+category = "key_items"
+flag_id = 50006074
+
+[[known_flags]]
+id = "item_tower_key"
+name = "Tower Key"
+category = "key_items"
+flag_id = 50006075
+
+[[known_flags]]
+id = "item_jailbreakers_key"
+name = "Jailbreaker's Key"
+category = "key_items"
+flag_id = 50006076
+
+[[known_flags]]
+id = "item_jailers_key_ring"
+name = "Jailer's Key Ring"
+category = "key_items"
+flag_id = 50006077
+
+[[known_flags]]
+id = "item_prisoner_chief_ashes"
+name = "Prisoner Chief's Ashes"
+category = "key_items"
+flag_id = 50006078
+
+[[known_flags]]
+id = "item_small_doll"
+name = "Small Doll"
+category = "key_items"
+flag_id = 50006079
+
+[[known_flags]]
+id = "item_coiled_sword"
+name = "Coiled Sword"
+category = "key_items"
+flag_id = 50006090
+
+# =============================================================================
+# CINDERS OF A LORD
+# =============================================================================
+
+[[known_flags]]
+id = "item_cinders_aldrich"
+name = "Cinders of a Lord: Aldrich"
+category = "cinders"
+flag_id = 50006080
+
+[[known_flags]]
+id = "item_cinders_yhorm"
+name = "Cinders of a Lord: Yhorm"
+category = "cinders"
+flag_id = 50006081
+
+[[known_flags]]
+id = "item_cinders_abyss_watchers"
+name = "Cinders of a Lord: Abyss Watchers"
+category = "cinders"
+flag_id = 50006082
+
+[[known_flags]]
+id = "item_cinders_lothric"
+name = "Cinders of a Lord: Lothric"
+category = "cinders"
+flag_id = 50006083
+
+# =============================================================================
+# DOORS AND SHORTCUTS
+# =============================================================================
+
+[[known_flags]]
+id = "door_high_wall_shortcut"
+name = "High Wall: Shortcut Door Opened"
+category = "doors"
+flag_id = 13000500
+
+[[known_flags]]
+id = "door_undead_settlement_shortcut"
+name = "Undead Settlement: Elevator Shortcut"
+category = "doors"
+flag_id = 13100500
+
+[[known_flags]]
+id = "door_road_sacrifices_shortcut"
+name = "Road of Sacrifices: Shortcut"
+category = "doors"
+flag_id = 13300500
+
+[[known_flags]]
+id = "door_cathedral_rosaria"
+name = "Cathedral: Rosaria's Bed Chamber"
+category = "doors"
+flag_id = 13500500
+
+[[known_flags]]
+id = "door_irithyll_water_reserve"
+name = "Irithyll: Water Reserve Ladder"
+category = "doors"
+flag_id = 13700500
+
+[[known_flags]]
+id = "door_irithyll_dungeon_shortcut"
+name = "Irithyll Dungeon: Shortcut"
+category = "doors"
+flag_id = 13900500
+
+[[known_flags]]
+id = "door_grand_archives_shortcut"
+name = "Grand Archives: Shortcut Opened"
+category = "doors"
+flag_id = 13410500
+
+[[known_flags]]
+id = "door_archdragon_peak_gate"
+name = "Archdragon Peak: Gate Opened"
+category = "doors"
+flag_id = 13200500
+
+# =============================================================================
+# ESTUS FLASK
+# =============================================================================
+
+[[known_flags]]
+id = "estus_shard_1"
+name = "Estus Shard 1"
+category = "estus"
+flag_id = 50006100
+
+[[known_flags]]
+id = "estus_shard_2"
+name = "Estus Shard 2"
+category = "estus"
+flag_id = 50006101
+
+[[known_flags]]
+id = "estus_shard_3"
+name = "Estus Shard 3"
+category = "estus"
+flag_id = 50006102
+
+[[known_flags]]
+id = "estus_shard_4"
+name = "Estus Shard 4"
+category = "estus"
+flag_id = 50006103
+
+[[known_flags]]
+id = "estus_shard_5"
+name = "Estus Shard 5"
+category = "estus"
+flag_id = 50006104
+
+[[known_flags]]
+id = "undead_bone_shard_1"
+name = "Undead Bone Shard 1"
+category = "estus"
+flag_id = 50006110
+
+[[known_flags]]
+id = "undead_bone_shard_2"
+name = "Undead Bone Shard 2"
+category = "estus"
+flag_id = 50006111
+
+[[known_flags]]
+id = "undead_bone_shard_3"
+name = "Undead Bone Shard 3"
+category = "estus"
+flag_id = 50006112
+
+[[known_flags]]
+id = "undead_bone_shard_4"
+name = "Undead Bone Shard 4"
+category = "estus"
+flag_id = 50006113
+
+[[known_flags]]
+id = "undead_bone_shard_5"
+name = "Undead Bone Shard 5"
+category = "estus"
+flag_id = 50006114
+
+# =============================================================================
+# NPC EVENTS
+# =============================================================================
+
+[[known_flags]]
+id = "npc_greirat_cell"
+name = "NPC: Greirat Freed from Cell"
+category = "npc"
+flag_id = 74000100
+
+[[known_flags]]
+id = "npc_greirat_firelink"
+name = "NPC: Greirat at Firelink"
+category = "npc"
+flag_id = 74000101
+
+[[known_flags]]
+id = "npc_greirat_pillage_1"
+name = "NPC: Greirat First Pillaging"
+category = "npc"
+flag_id = 74000102
+
+[[known_flags]]
+id = "npc_greirat_pillage_2"
+name = "NPC: Greirat Second Pillaging"
+category = "npc"
+flag_id = 74000103
+
+[[known_flags]]
+id = "npc_greirat_dead"
+name = "NPC: Greirat Dead"
+category = "npc"
+flag_id = 74000199
+
+[[known_flags]]
+id = "npc_siegward_well"
+name = "NPC: Siegward in the Well"
+category = "npc"
+flag_id = 74000200
+
+[[known_flags]]
+id = "npc_siegward_kitchen"
+name = "NPC: Siegward in Kitchen"
+category = "npc"
+flag_id = 74000201
+
+[[known_flags]]
+id = "npc_siegward_cell"
+name = "NPC: Siegward in Irithyll Dungeon Cell"
+category = "npc"
+flag_id = 74000202
+
+[[known_flags]]
+id = "npc_siegward_yhorm"
+name = "NPC: Siegward at Yhorm Fight"
+category = "npc"
+flag_id = 74000203
+
+[[known_flags]]
+id = "npc_yoel_firelink"
+name = "NPC: Yoel at Firelink"
+category = "npc"
+flag_id = 74000300
+
+[[known_flags]]
+id = "npc_yoel_dead"
+name = "NPC: Yoel Dead"
+category = "npc"
+flag_id = 74000399
+
+[[known_flags]]
+id = "npc_yuria_firelink"
+name = "NPC: Yuria at Firelink"
+category = "npc"
+flag_id = 74000400
+
+[[known_flags]]
+id = "npc_yuria_hostile"
+name = "NPC: Yuria Hostile"
+category = "npc"
+flag_id = 74000498
+
+[[known_flags]]
+id = "npc_yuria_dead"
+name = "NPC: Yuria Dead"
+category = "npc"
+flag_id = 74000499
+
+[[known_flags]]
+id = "npc_anri_road_sacrifices"
+name = "NPC: Anri at Road of Sacrifices"
+category = "npc"
+flag_id = 74000500
+
+[[known_flags]]
+id = "npc_anri_firelink"
+name = "NPC: Anri at Firelink"
+category = "npc"
+flag_id = 74000501
+
+[[known_flags]]
+id = "npc_anri_church_yorshka"
+name = "NPC: Anri at Church of Yorshka"
+category = "npc"
+flag_id = 74000502
+
+[[known_flags]]
+id = "npc_anri_dead"
+name = "NPC: Anri Dead"
+category = "npc"
+flag_id = 74000599
+
+[[known_flags]]
+id = "npc_orbeck_firelink"
+name = "NPC: Orbeck at Firelink"
+category = "npc"
+flag_id = 74000600
+
+[[known_flags]]
+id = "npc_orbeck_dead"
+name = "NPC: Orbeck Dead"
+category = "npc"
+flag_id = 74000699
+
+[[known_flags]]
+id = "npc_karla_cell"
+name = "NPC: Karla Freed from Cell"
+category = "npc"
+flag_id = 74000700
+
+[[known_flags]]
+id = "npc_karla_firelink"
+name = "NPC: Karla at Firelink"
+category = "npc"
+flag_id = 74000701
+
+[[known_flags]]
+id = "npc_cornyx_firelink"
+name = "NPC: Cornyx at Firelink"
+category = "npc"
+flag_id = 74000800
+
+[[known_flags]]
+id = "npc_irina_firelink"
+name = "NPC: Irina at Firelink"
+category = "npc"
+flag_id = 74000900
+
+[[known_flags]]
+id = "npc_eygon_undead_settlement"
+name = "NPC: Eygon at Undead Settlement"
+category = "npc"
+flag_id = 74001000
+
+[[known_flags]]
+id = "npc_eygon_firelink"
+name = "NPC: Eygon at Firelink"
+category = "npc"
+flag_id = 74001001
+
+[[known_flags]]
+id = "npc_patches_cathedral"
+name = "NPC: Patches at Cathedral"
+category = "npc"
+flag_id = 74001100
+
+[[known_flags]]
+id = "npc_patches_firelink"
+name = "NPC: Patches at Firelink"
+category = "npc"
+flag_id = 74001101
+
+[[known_flags]]
+id = "npc_leonhard_firelink"
+name = "NPC: Leonhard at Firelink"
+category = "npc"
+flag_id = 74001200
+
+[[known_flags]]
+id = "npc_hawkwood_firelink"
+name = "NPC: Hawkwood at Firelink"
+category = "npc"
+flag_id = 74001300
+
+[[known_flags]]
+id = "npc_hawkwood_duel"
+name = "NPC: Hawkwood Duel Completed"
+category = "npc"
+flag_id = 74001301
+
+[[known_flags]]
+id = "npc_sirris_firelink"
+name = "NPC: Sirris at Firelink"
+category = "npc"
+flag_id = 74001400
+
+[[known_flags]]
+id = "npc_sirris_questline_complete"
+name = "NPC: Sirris Questline Complete"
+category = "npc"
+flag_id = 74001401
+
+# =============================================================================
+# ENDINGS
+# =============================================================================
+
+[[known_flags]]
+id = "ending_link_fire"
+name = "Ending: Link the First Flame"
+category = "endings"
+flag_id = 14100850
+
+[[known_flags]]
+id = "ending_usurpation"
+name = "Ending: Usurpation of Fire"
+category = "endings"
+flag_id = 14100851
+
+[[known_flags]]
+id = "ending_end_of_fire"
+name = "Ending: End of Fire"
+category = "endings"
+flag_id = 14100852
