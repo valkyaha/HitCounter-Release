@@ -111,7 +111,7 @@ The autosplitter uses memory reading APIs which may trigger antivirus false posi
 
 ## License
 
-- **NYA Core Application**: MIT OR Apache-2.0
+- **NYA Core Application**: Copyright - All Rights Reserved
 - **Plugins**: GPL-3.0 (due to derivative data from SoulSplitter)
 
 ## Special Thanks
